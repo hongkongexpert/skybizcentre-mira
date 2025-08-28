@@ -217,8 +217,8 @@ export default function HomePage() {
               className="relative h-[400px] sm:h-[500px] lg:h-[600px] rounded-2xl overflow-hidden shadow-2xl group cursor-pointer"
               onClick={() =>
                 openImagePopup(
-                  "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Times%20Square.jpg-28hpRP9MTx2sxbNJz3xD1zL8TUIEyE.jpeg",
-                  "Times Square Building - Sky Business Centre Location",
+                  "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Reception%20Area_3.jpg-todAwnXIZ4WcSmdBr8S2PGoAJKhLnm.jpeg",
+                  "Elegant Reception Area - Sky Business Centre Times Square",
                 )
               }
             >
@@ -226,8 +226,8 @@ export default function HomePage() {
               <div className="relative h-full">
                 <div className="absolute inset-0">
                   <img
-                    src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Times%20Square.jpg-28hpRP9MTx2sxbNJz3xD1zL8TUIEyE.jpeg"
-                    alt="Times Square Building - Sky Business Centre Location"
+                    src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Reception%20Area_3.jpg-todAwnXIZ4WcSmdBr8S2PGoAJKhLnm.jpeg"
+                    alt="Elegant Reception Area - Sky Business Centre Times Square"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     loading="eager"
                   />
