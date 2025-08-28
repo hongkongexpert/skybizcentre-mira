@@ -1,31 +1,112 @@
 "use client"
 
+import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { BookingForm } from "@/components/booking-form"
 import { Badge } from "@/components/ui/badge"
 import {
-  MapPin,
   Phone,
-  Mail,
+  MapPin,
+  Clock,
   Wifi,
   Shield,
-  Clock,
-  Users,
   Coffee,
   Printer,
+  Users,
   Building,
-  Star,
-  CheckCircle,
   Award,
   TrendingUp,
+  Star,
+  X,
+  ChevronLeft,
+  ChevronRight,
+  CheckCircle,
   Zap,
+  Mail,
 } from "lucide-react"
+import { BookingForm } from "@/components/booking-form"
 import Image from "next/image"
 
+const ImagePopup = ({ src, alt, isOpen, onClose, onPrev, onNext, showNavigation = false }) => {
+  if (!isOpen) return null
+
+  return (
+    <div className="fixed inset-0 bg-black/90 z-[100] flex items-center justify-center p-4">
+      <div className="relative max-w-7xl max-h-full w-full h-full flex items-center justify-center">
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 z-10 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-full p-2 transition-colors"
+        >
+          <X className="h-6 w-6 text-white" />
+        </button>
+
+        {showNavigation && (
+          <>
+            <button
+              onClick={onPrev}
+              className="absolute left-4 z-10 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-full p-2 transition-colors"
+            >
+              <ChevronLeft className="h-6 w-6 text-white" />
+            </button>
+            <button
+              onClick={onNext}
+              className="absolute right-4 z-10 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-full p-2 transition-colors"
+            >
+              <ChevronRight className="h-6 w-6 text-white" />
+            </button>
+          </>
+        )}
+
+        <img
+          src={src || "/placeholder.svg"}
+          alt={alt}
+          className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
+        />
+      </div>
+    </div>
+  )
+}
+
 export default function HomePage() {
+  const [popupImage, setPopupImage] = useState(null)
+  const [currentImageIndex, setCurrentImageIndex] = useState(0)
+  const [imageGallery, setImageGallery] = useState([])
+
+  const openImagePopup = (src, alt, gallery = [], index = 0) => {
+    setPopupImage({ src, alt })
+    setImageGallery(gallery)
+    setCurrentImageIndex(index)
+  }
+
+  const closeImagePopup = () => {
+    setPopupImage(null)
+    setImageGallery([])
+  }
+
+  const navigateImage = (direction) => {
+    if (imageGallery.length === 0) return
+
+    const newIndex =
+      direction === "next"
+        ? (currentImageIndex + 1) % imageGallery.length
+        : (currentImageIndex - 1 + imageGallery.length) % imageGallery.length
+
+    setCurrentImageIndex(newIndex)
+    setPopupImage(imageGallery[newIndex])
+  }
+
   return (
     <div className="min-h-screen bg-background">
+      <ImagePopup
+        src={popupImage?.src || "/placeholder.svg"}
+        alt={popupImage?.alt}
+        isOpen={!!popupImage}
+        onClose={closeImagePopup}
+        onPrev={() => navigateImage("prev")}
+        onNext={() => navigateImage("next")}
+        showNavigation={imageGallery.length > 1}
+      />
+
       {/* Header */}
       <header className="border-b border-border/40 bg-white/98 backdrop-blur-md sticky top-0 z-50 shadow-sm">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between max-w-8xl">
@@ -43,7 +124,7 @@ export default function HomePage() {
             </a>
             <BookingForm
               trigger={
-                <Button className="bg-primary hover:bg-primary/90 shadow-md font-semibold text-sm px-6">
+                <Button className="bg-primary hover:bg-primary/90 shadow-md font-semibold text-sm px-6 hover:shadow-lg transition-all duration-300">
                   Book Tour - Save 20%
                 </Button>
               }
@@ -132,14 +213,22 @@ export default function HomePage() {
             </div>
 
             {/* Hero Image */}
-            <div className="relative h-[400px] sm:h-[500px] lg:h-[600px] rounded-2xl overflow-hidden shadow-2xl">
-              <div className="absolute inset-0 bg-gradient-to-r from-slate-900/20 to-transparent z-10" />
+            <div
+              className="relative h-[400px] sm:h-[500px] lg:h-[600px] rounded-2xl overflow-hidden shadow-2xl group cursor-pointer"
+              onClick={() =>
+                openImagePopup(
+                  "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Times%20Square.jpg-28hpRP9MTx2sxbNJz3xD1zL8TUIEyE.jpeg",
+                  "Times Square Building - Sky Business Centre Location",
+                )
+              }
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-slate-900/20 to-transparent z-10 group-hover:from-slate-900/10 transition-all duration-300" />
               <div className="relative h-full">
                 <div className="absolute inset-0">
                   <img
                     src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Times%20Square.jpg-28hpRP9MTx2sxbNJz3xD1zL8TUIEyE.jpeg"
                     alt="Times Square Building - Sky Business Centre Location"
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     loading="eager"
                   />
                 </div>
@@ -195,13 +284,21 @@ export default function HomePage() {
           </div>
 
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-6">
-            <Card className="group hover:shadow-xl transition-all duration-300 border-0 shadow-md">
+            <Card className="group hover:shadow-2xl transition-all duration-500 border-0 shadow-lg hover:-translate-y-1">
               <CardContent className="p-4 sm:p-6">
-                <div className="aspect-[4/3] rounded-xl overflow-hidden mb-4">
+                <div
+                  className="aspect-[4/3] rounded-xl overflow-hidden mb-4 cursor-pointer"
+                  onClick={() =>
+                    openImagePopup(
+                      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/TS3419.jpg-d9dUZvuIX1hnADgOxgPYaynWDmTKTk.jpeg",
+                      "Private Office with Glass Walls",
+                    )
+                  }
+                >
                   <img
                     src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/TS3419.jpg-d9dUZvuIX1hnADgOxgPYaynWDmTKTk.jpeg"
                     alt="Private Office with Glass Walls"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                     loading="lazy"
                   />
                 </div>
@@ -214,7 +311,7 @@ export default function HomePage() {
                   <Button
                     variant="outline"
                     size="sm"
-                    className="bg-white w-full sm:w-auto border-primary text-primary hover:bg-primary hover:text-white font-semibold text-sm"
+                    className="bg-white w-full sm:w-auto border-primary text-primary hover:bg-primary hover:text-white font-semibold text-sm hover:shadow-md transition-all duration-300"
                   >
                     Book Tour
                   </Button>
@@ -222,13 +319,21 @@ export default function HomePage() {
               </CardContent>
             </Card>
 
-            <Card className="group hover:shadow-xl transition-all duration-300 border-0 shadow-md">
+            <Card className="group hover:shadow-2xl transition-all duration-500 border-0 shadow-lg hover:-translate-y-1">
               <CardContent className="p-4 sm:p-6">
-                <div className="aspect-[4/3] rounded-xl overflow-hidden mb-4">
+                <div
+                  className="aspect-[4/3] rounded-xl overflow-hidden mb-4 cursor-pointer"
+                  onClick={() =>
+                    openImagePopup(
+                      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Meeting%20Room_Gobi_3.jpg-NJB8gDP4ikhGtWYIFdJxMyoOILBsJY.jpeg",
+                      "Professional Conference Room with Modern Lighting",
+                    )
+                  }
+                >
                   <img
                     src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Meeting%20Room_Gobi_3.jpg-NJB8gDP4ikhGtWYIFdJxMyoOILBsJY.jpeg"
                     alt="Professional Conference Room with Modern Lighting"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                     loading="lazy"
                   />
                 </div>
@@ -241,7 +346,7 @@ export default function HomePage() {
                   <Button
                     variant="outline"
                     size="sm"
-                    className="bg-white w-full sm:w-auto border-primary text-primary hover:bg-primary hover:text-white font-semibold text-sm"
+                    className="bg-white w-full sm:w-auto border-primary text-primary hover:bg-primary hover:text-white font-semibold text-sm hover:shadow-md transition-all duration-300"
                   >
                     Book Now
                   </Button>
@@ -249,28 +354,36 @@ export default function HomePage() {
               </CardContent>
             </Card>
 
-            <Card className="group hover:shadow-xl transition-all duration-300 border-0 shadow-md col-span-2 lg:col-span-1">
+            <Card className="group hover:shadow-2xl transition-all duration-500 border-0 shadow-lg col-span-2 lg:col-span-1 hover:-translate-y-1">
               <CardContent className="p-4 sm:p-6">
-                <div className="aspect-[4/3] rounded-xl overflow-hidden mb-4">
+                <div
+                  className="aspect-[4/3] rounded-xl overflow-hidden mb-4 cursor-pointer"
+                  onClick={() =>
+                    openImagePopup(
+                      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Common%20Area_Booth_1.jpg-DNszjJtJYLlFW1WtUp7SS964lbwjvt.jpeg",
+                      "Private Booth Seating Areas",
+                    )
+                  }
+                >
                   <img
-                    src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/TS3402.jpg-5QyC5VKQdSIVK2DJmd2plg6ckyNPap.jpeg"
-                    alt="Team Office with City Views"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Common%20Area_Booth_1.jpg-DNszjJtJYLlFW1WtUp7SS964lbwjvt.jpeg"
+                    alt="Private Booth Seating Areas"
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                     loading="lazy"
                   />
                 </div>
-                <h3 className="font-playfair text-lg sm:text-xl font-bold mb-2 sm:mb-3">Hot Desks</h3>
+                <h3 className="font-playfair text-lg sm:text-xl font-bold mb-2 sm:mb-3">Business Lounges</h3>
                 <p className="text-muted-foreground mb-3 sm:mb-4 leading-relaxed text-sm sm:text-base">
-                  Flexible workspace. No contracts required.
+                  Premium networking and relaxation spaces.
                 </p>
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                  <span className="text-primary font-bold text-base sm:text-lg">From HK$500/day</span>
+                  <span className="text-primary font-bold text-base sm:text-lg">Included</span>
                   <Button
                     variant="outline"
                     size="sm"
-                    className="bg-white w-full sm:w-auto border-primary text-primary hover:bg-primary hover:text-white font-semibold text-sm"
+                    className="bg-white w-full sm:w-auto border-primary text-primary hover:bg-primary hover:text-white font-semibold text-sm hover:shadow-md transition-all duration-300"
                   >
-                    Start Today
+                    View More
                   </Button>
                 </div>
               </CardContent>
@@ -291,116 +404,212 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-            <div className="aspect-square sm:aspect-[4/3] rounded-xl overflow-hidden shadow-lg group">
-              <img
-                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Reception%20Area_1.jpg-w5aSK776Spupq1TnjrikKEQOEoxx3M.jpeg"
-                alt="Main Reception and Lounge Area"
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                loading="lazy"
-              />
-            </div>
-            <div className="aspect-square sm:aspect-[4/3] rounded-xl overflow-hidden shadow-lg group">
-              <img
-                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Meeting%20Room_Gobi_1.jpg-HV7YcDzOAGhjzUcs3o67GUOOYwa5pa.jpeg"
-                alt="Gobi Conference Room with Abstract Art"
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                loading="lazy"
-              />
-            </div>
-            <div className="aspect-square sm:aspect-[4/3] rounded-xl overflow-hidden shadow-lg group">
-              <img
-                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Pantry_3.jpg-RcUNBnEhmF3H4Rr3lI7n2jHvS5RSIB.jpeg"
-                alt="Modern Pantry with Professional Coffee Machines"
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                loading="lazy"
-              />
-            </div>
-            <div className="aspect-square sm:aspect-[4/3] rounded-xl overflow-hidden shadow-lg group">
-              <img
-                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Meeting%20Room_Salzbury_2.jpg-7cCJnwvbtOvyYBWeAzrPS35PidfzSv.jpeg"
-                alt="Salzburg Meeting Room Entrance"
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                loading="lazy"
-              />
-            </div>
-            <div className="aspect-square sm:aspect-[4/3] rounded-xl overflow-hidden shadow-lg group">
-              <img
-                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Sky_20201113_32.jpg-7HzBnQLjA2JceEyLUSN2Drbp3gqRlw.jpeg"
-                alt="Open Workspace with City Views"
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                loading="lazy"
-              />
-            </div>
-            <div className="aspect-square sm:aspect-[4/3] rounded-xl overflow-hidden shadow-lg group">
-              <img
-                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/TS_Meeting%20Room_Gobi_1.jpg-ieIKJi4L9rwgT095FtjczZMkJyyte7.jpeg"
-                alt="Professional Conference Room Setup"
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                loading="lazy"
-              />
-            </div>
-            <div className="aspect-square sm:aspect-[4/3] rounded-xl overflow-hidden shadow-lg group">
-              <img
-                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/WhatsApp%20Image%202025-08-13%20at%2016.29.30.jpg-JUFAVhHYhxN6jSkSIf3UjGq97e9IMn.jpeg"
-                alt="Individual Workstation Setup"
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                loading="lazy"
-              />
-            </div>
-            <div className="aspect-square sm:aspect-[4/3] rounded-xl overflow-hidden shadow-lg group">
-              <img
-                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/TS_Meeting%20Room_Gobi_2.jpg-RurJXyTL1M7NfddZVeuKrogi5w4O9t.jpeg"
-                alt="Modern Meeting Room with LED Lighting"
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                loading="lazy"
-              />
-            </div>
-            <div className="aspect-square sm:aspect-[4/3] rounded-xl overflow-hidden shadow-lg group">
-              <img
-                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Common%20Area_Booth_1.jpg-DNszjJtJYLlFW1WtUp7SS964lbwjvt.jpeg"
-                alt="Private Booth Seating Areas"
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                loading="lazy"
-              />
-            </div>
-            <div className="aspect-square sm:aspect-[4/3] rounded-xl overflow-hidden shadow-lg group">
-              <img
-                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Meeting%20Room_Salzbury_1.jpg-CGpG7yBbPmxrDe3JT94RXRttwAdtun.jpeg"
-                alt="Salzburg Conference Room Interior"
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                loading="lazy"
-              />
-            </div>
-            <div className="aspect-square sm:aspect-[4/3] rounded-xl overflow-hidden shadow-lg group">
-              <img
-                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Meeting%20Room_Gobi_4.jpg-OicNAZEonMYryo4eg2oilDqrWBZNgF.jpeg"
-                alt="Gobi Meeting Room Glass Door"
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                loading="lazy"
-              />
-            </div>
-            <div className="aspect-square sm:aspect-[4/3] rounded-xl overflow-hidden shadow-lg group">
-              <img
-                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Meeting%20Room_Gobi_2.jpg-e5KwHLgDhvlVquONan967bX7tbWr3o.jpeg"
-                alt="Executive Conference Room with Artwork"
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                loading="lazy"
-              />
+          {/* Reception Areas */}
+          <div className="mb-12 sm:mb-16">
+            <h3 className="text-xl sm:text-2xl font-bold text-foreground mb-6 sm:mb-8 text-center tracking-tight">
+              Reception Areas
+            </h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+              {[
+                {
+                  src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Reception%20Area_1.jpg-w5aSK776Spupq1TnjrikKEQOEoxx3M.jpeg",
+                  alt: "Main Reception and Lounge Area",
+                },
+                {
+                  src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Reception%20Area_3.jpg-todAwnXIZ4WcSmdBr8S2PGoAJKhLnm.jpeg",
+                  alt: "Spacious Reception with Modern Design",
+                },
+                {
+                  src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Reception%20Area_5.jpg-7lt0rBBA6WChDdeUzUAZuPARIKprpm.jpeg",
+                  alt: "Private Booth Reception Areas",
+                },
+              ].map((image, index) => (
+                <div
+                  key={index}
+                  className="aspect-square sm:aspect-[4/3] rounded-xl overflow-hidden shadow-lg group cursor-pointer hover:shadow-2xl transition-all duration-500"
+                  onClick={() => openImagePopup(image.src, image.alt)}
+                >
+                  <img
+                    src={image.src || "/placeholder.svg"}
+                    alt={image.alt}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    loading="lazy"
+                  />
+                </div>
+              ))}
             </div>
           </div>
 
-          <div className="text-center mt-8 sm:mt-12">
-            <BookingForm
-              trigger={
-                <Button
-                  size="lg"
-                  className="bg-primary hover:bg-primary/90 w-full sm:w-auto font-semibold text-sm sm:text-base shadow-lg"
+          {/* Lounge & Common Areas */}
+          <div className="mb-12 sm:mb-16">
+            <h3 className="text-xl sm:text-2xl font-bold text-foreground mb-6 sm:mb-8 text-center tracking-tight">
+              Lounge & Common Areas
+            </h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+              {[
+                {
+                  src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Common%20Area_1.jpg-iVb9srjlFaKEdZOiimZQGDaWXGQ3RF.jpeg",
+                  alt: "Elegant Seating Area with Modern Furniture",
+                },
+                {
+                  src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Common%20Area_11.jpg-q01DSNEB93BSs87wsj6X8Ms7D3UkDG.jpeg",
+                  alt: "Modern Lounge with Kitchen and Bar Area",
+                },
+                {
+                  src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Common%20Area_7.jpg-HCHIAxjfvqstPrdNpmAkVWI55dU6Sq.jpeg",
+                  alt: "Active Common Area with Kitchen",
+                },
+                {
+                  src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Common%20Area_Booth_1.jpg-DNszjJtJYLlFW1WtUp7SS964lbwjvt.jpeg",
+                  alt: "Private Booth Seating Areas",
+                },
+              ].map((image, index) => (
+                <div
+                  key={index}
+                  className="aspect-square sm:aspect-[4/3] rounded-xl overflow-hidden shadow-lg group cursor-pointer hover:shadow-2xl transition-all duration-500"
+                  onClick={() => openImagePopup(image.src, image.alt)}
                 >
-                  Schedule Your Private Tour - Save 20%
-                </Button>
-              }
-            />
+                  <img
+                    src={image.src || "/placeholder.svg"}
+                    alt={image.alt}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    loading="lazy"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Private Offices & Workspaces */}
+          <div className="mb-12 sm:mb-16">
+            <h3 className="text-xl sm:text-2xl font-bold text-foreground mb-6 sm:mb-8 text-center tracking-tight">
+              Private Offices & Workspaces
+            </h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+              {[
+                {
+                  src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Sky_20201113_32.jpg-7HzBnQLjA2JceEyLUSN2Drbp3gqRlw.jpeg",
+                  alt: "Open Workspace with City Views",
+                },
+                {
+                  src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/WhatsApp%20Image%202025-08-13%20at%2016.29.30.jpg-JUFAVhHYhxN6jSkSIf3UjGq97e9IMn.jpeg",
+                  alt: "Individual Workstation Setup",
+                },
+                {
+                  src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/TS3402.jpg-5QyC5VKQdSIVK2DJmd2plg6ckyNPap.jpeg",
+                  alt: "Team Office with Harbor Views",
+                },
+              ].map((image, index) => (
+                <div
+                  key={index}
+                  className="aspect-square sm:aspect-[4/3] rounded-xl overflow-hidden shadow-lg group cursor-pointer hover:shadow-2xl transition-all duration-500"
+                  onClick={() => openImagePopup(image.src, image.alt)}
+                >
+                  <img
+                    src={image.src || "/placeholder.svg"}
+                    alt={image.alt}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    loading="lazy"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Pantry & Kitchen Facilities */}
+          <div className="mb-12 sm:mb-16">
+            <h3 className="text-xl sm:text-2xl font-bold text-foreground mb-6 sm:mb-8 text-center tracking-tight">
+              Pantry & Kitchen Facilities
+            </h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+              {[
+                {
+                  src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Pantry_3.jpg-RcUNBnEhmF3H4Rr3lI7n2jHvS5RSIB.jpeg",
+                  alt: "Modern Kitchen with Premium Appliances",
+                },
+                {
+                  src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Pantry_4.jpg-xh8GtDtsriNwe5MBiAhOuu3LCM4t6l.jpeg",
+                  alt: "Professional Coffee Machines",
+                },
+              ].map((image, index) => (
+                <div
+                  key={index}
+                  className="aspect-[16/10] rounded-xl overflow-hidden shadow-lg group cursor-pointer hover:shadow-2xl transition-all duration-500"
+                  onClick={() => openImagePopup(image.src, image.alt)}
+                >
+                  <img
+                    src={image.src || "/placeholder.svg"}
+                    alt={image.alt}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    loading="lazy"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Professional Meeting Rooms */}
+      <section className="py-12 sm:py-16 lg:py-20 bg-muted/30">
+        <div className="container mx-auto px-4 max-w-8xl">
+          <div className="text-center mb-12 sm:mb-16">
+            <h2 className="font-playfair text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 sm:mb-6 tracking-tight">
+              Professional Meeting Rooms
+            </h2>
+            <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+              State-of-the-art conference facilities with advanced AV equipment and professional ambiance
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+            {[
+              {
+                src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Meeting%20Room_Gobi_3.jpg-NJB8gDP4ikhGtWYIFdJxMyoOILBsJY.jpeg",
+                alt: "Gobi Conference Room with Modern Lighting",
+              },
+              {
+                src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Meeting%20Room_Gobi_1.jpg-HV7YcDzOAGhjzUcs3o67GUOOYwa5pa.jpeg",
+                alt: "Gobi Meeting Room with Abstract Art",
+              },
+              {
+                src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Meeting%20Room_Salzbury_2.jpg-7cCJnwvbtOvyYBWeAzrPS35PidfzSv.jpeg",
+                alt: "Salzburg Meeting Room Entrance",
+              },
+              {
+                src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/TS_Meeting%20Room_Gobi_1.jpg-ieIKJi4L9rwgT095FtjczZMkJyyte7.jpeg",
+                alt: "Executive Conference Room",
+              },
+              {
+                src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/TS_Meeting%20Room_Gobi_2.jpg-RurJXyTL1M7NfddZVeuKrogi5w4O9t.jpeg",
+                alt: "Modern Meeting Space with AV Equipment",
+              },
+              {
+                src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Meeting%20Room_Salzbury_1.jpg-CGpG7yBbPmxrDe3JT94RXRttwAdtun.jpeg",
+                alt: "Salzburg Conference Room Interior",
+              },
+              {
+                src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Meeting%20Room_Gobi_4.jpg-OicNAZEonMYryo4eg2oilDqrWBZNgF.jpeg",
+                alt: "Gobi Room Entrance with Branding",
+              },
+              {
+                src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Meeting%20Room_Gobi_2.jpg-e5KwHLgDhvlVquONan967bX7tbWr3o.jpeg",
+                alt: "Premium Conference Room with City Views",
+              },
+            ].map((image, index) => (
+              <div
+                key={index}
+                className="aspect-square sm:aspect-[4/3] rounded-xl overflow-hidden shadow-lg group cursor-pointer hover:shadow-2xl transition-all duration-500"
+                onClick={() => openImagePopup(image.src, image.alt)}
+              >
+                <img
+                  src={image.src || "/placeholder.svg"}
+                  alt={image.alt}
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  loading="lazy"
+                />
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -459,10 +668,6 @@ export default function HomePage() {
                   <span className="text-muted-foreground text-base sm:text-lg">/hour</span>
                 </div>
                 <ul className="space-y-2 sm:space-y-3 text-muted-foreground mb-6 sm:mb-8">
-                  <li className="flex items-center gap-3 text-sm sm:text-base">
-                    <CheckCircle className="h-4 sm:h-5 w-4 sm:w-5 text-emerald-600" />
-                    Professional boardroom
-                  </li>
                   <li className="flex items-center gap-3 text-sm sm:text-base">
                     <CheckCircle className="h-4 sm:h-5 w-4 sm:w-5 text-emerald-600" />
                     Video conferencing
@@ -876,11 +1081,19 @@ export default function HomePage() {
           </div>
 
           <div className="mb-8 sm:mb-12">
-            <div className="aspect-[16/9] sm:aspect-[21/9] rounded-xl overflow-hidden shadow-lg mx-auto max-w-4xl">
+            <div
+              className="aspect-[16/9] sm:aspect-[21/9] rounded-xl overflow-hidden shadow-lg mx-auto max-w-4xl cursor-pointer group hover:shadow-2xl transition-all duration-500"
+              onClick={() =>
+                openImagePopup(
+                  "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Pantry_4.jpg-xh8GtDtsriNwe5MBiAhOuu3LCM4t6l.jpeg",
+                  "Premium Coffee Machines and Pantry Facilities",
+                )
+              }
+            >
               <img
                 src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Pantry_4.jpg-xh8GtDtsriNwe5MBiAhOuu3LCM4t6l.jpeg"
                 alt="Premium Coffee Machines and Pantry Facilities"
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 loading="lazy"
               />
             </div>
@@ -929,7 +1142,10 @@ export default function HomePage() {
                 desc: "Professional reception and business support services",
               },
             ].map((facility, index) => (
-              <Card key={index} className="text-center p-4 sm:p-6 hover:shadow-md transition-shadow">
+              <Card
+                key={index}
+                className="text-center p-4 sm:p-6 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 border-0 shadow-sm"
+              >
                 <facility.icon className="h-6 w-6 sm:h-8 sm:w-8 text-primary mx-auto mb-2 sm:mb-3" />
                 <h3 className="font-semibold mb-1 sm:mb-2 text-sm sm:text-base">{facility.title}</h3>
                 <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">{facility.desc}</p>
@@ -940,14 +1156,14 @@ export default function HomePage() {
       </section>
 
       {/* FAQ Section */}
-      <section className="py-12 sm:py-16 bg-white">
+      <section className="py-12 sm:py-16 lg:py-20">
         <div className="container mx-auto px-4 max-w-8xl">
-          <div className="text-center mb-8 sm:mb-12">
-            <h2 className="font-playfair text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 sm:mb-6 tracking-tight">
+          <div className="text-center mb-12 sm:mb-16">
+            <h2 className="font-playfair text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 sm:mb-6">
               Frequently Asked Questions
             </h2>
             <p className="text-base sm:text-lg text-muted-foreground">
-              Everything you need to know about Sky Business Centre
+              Everything you need to know about our premium office spaces
             </p>
           </div>
 
@@ -1007,154 +1223,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Office Gallery Section */}
-      <section className="py-12 sm:py-16 lg:py-20">
-        <div className="container mx-auto px-4 max-w-8xl">
-          <div className="text-center mb-12 sm:mb-16">
-            <h2 className="font-playfair text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 sm:mb-6">
-              See Why Clients Choose Us
-            </h2>
-            <p className="text-base sm:text-lg text-muted-foreground">
-              Premium facilities in Hong Kong's most prestigious business address
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-            <div className="aspect-square sm:aspect-[4/3] rounded-xl overflow-hidden shadow-lg group">
-              <img
-                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Common%20Area_11.jpg-q01DSNEB93BSs87wsj6X8Ms7D3UkDG.jpeg"
-                alt="Modern Lounge with Kitchen and Bar Area"
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform"
-              />
-            </div>
-            <div className="aspect-square sm:aspect-[4/3] rounded-xl overflow-hidden shadow-lg group">
-              <img
-                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Common%20Area_7.jpg-HCHIAxjfvqstPrdNpmAkVWI55dU6Sq.jpeg"
-                alt="Active Common Area with Kitchen"
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform"
-              />
-            </div>
-            <div className="aspect-square sm:aspect-[4/3] rounded-xl overflow-hidden shadow-lg group">
-              <img
-                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Sky_20201113_12.jpg-VutctFm0lnXMYSz7LYtYlf2QY35ZYy.jpeg"
-                alt="Team Office with Multiple Workstations"
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform"
-              />
-            </div>
-            <div className="aspect-square sm:aspect-[4/3] rounded-xl overflow-hidden shadow-lg group">
-              <img
-                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Common%20Area_1.jpg-D7tUKuM7ldbTmMvovbnlybDoJLkWvK.jpeg"
-                alt="Elegant Meeting and Seating Area"
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform"
-              />
-            </div>
-            <div className="aspect-square sm:aspect-[4/3] rounded-xl overflow-hidden shadow-lg group">
-              <img
-                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Sky_20201113_26.jpg-cPYgIp8W9fyOIM18bYlGRDJErlvy3m.jpeg"
-                alt="Private Office with Stunning City Views"
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform"
-              />
-            </div>
-            <div className="aspect-square sm:aspect-[4/3] rounded-xl overflow-hidden shadow-lg group">
-              <img
-                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Reception%20Area_2.jpg-eCEGPeQnTHhDiXt5qmSC1OlhMumbAM.jpeg"
-                alt="Modern Reception Desk and Waiting Area"
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform"
-              />
-            </div>
-          </div>
-
-          <div className="text-center mt-8 sm:mt-12">
-            <BookingForm
-              trigger={
-                <Button
-                  size="lg"
-                  className="bg-primary hover:bg-primary/90 w-full sm:w-auto font-semibold text-sm sm:text-base"
-                >
-                  Book Your Tour - Save 20%
-                </Button>
-              }
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* Facilities Section */}
-      <section className="py-12 sm:py-16 lg:py-20 bg-muted/30">
-        <div className="container mx-auto px-4 max-w-8xl">
-          <div className="text-center mb-12 sm:mb-16">
-            <h2 className="font-playfair text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 sm:mb-6">
-              Everything Included. No Hidden Fees.
-            </h2>
-            <p className="text-base sm:text-lg text-muted-foreground">Premium amenities at no extra cost</p>
-          </div>
-
-          <div className="mb-8 sm:mb-12">
-            <div className="aspect-[16/9] sm:aspect-[21/9] rounded-xl overflow-hidden shadow-lg mx-auto max-w-4xl">
-              <img
-                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Pantry_4.jpg-xh8GtDtsriNwe5MBiAhOuu3LCM4t6l.jpeg"
-                alt="Premium Coffee Machines and Pantry Facilities"
-                className="w-full h-full object-cover"
-                loading="lazy"
-              />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-            {[
-              {
-                icon: Clock,
-                title: "24/7 Secure Access",
-                desc: "Round-the-clock access with advanced security systems",
-              },
-              {
-                icon: Wifi,
-                title: "Enterprise-Grade Internet",
-                desc: "Dedicated high-speed fiber with backup connections",
-              },
-              {
-                icon: Shield,
-                title: "On-Site IT Support",
-                desc: "Professional technical assistance and troubleshooting",
-              },
-              {
-                icon: Coffee,
-                title: "Premium Refreshments",
-                desc: "Complimentary barista-quality coffee and beverages",
-              },
-              {
-                icon: Printer,
-                title: "Professional Print Center",
-                desc: "High-quality printing, scanning, and copying services",
-              },
-              {
-                icon: Users,
-                title: "Equipped Meeting Spaces",
-                desc: "Boardrooms with video conferencing and presentation tech",
-              },
-              {
-                icon: Phone,
-                title: "Private Phone Booths",
-                desc: "Soundproof spaces for confidential calls and video meetings",
-              },
-              {
-                icon: Building,
-                title: "Dedicated Concierge",
-                desc: "Professional reception and business support services",
-              },
-            ].map((facility, index) => (
-              <Card key={index} className="text-center p-4 sm:p-6 hover:shadow-md transition-shadow">
-                <facility.icon className="h-6 w-6 sm:h-8 sm:w-8 text-primary mx-auto mb-2 sm:mb-3" />
-                <h3 className="font-semibold mb-1 sm:mb-2 text-sm sm:text-base">{facility.title}</h3>
-                <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">{facility.desc}</p>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Location Section */}
-      <section id="location" className="py-12 sm:py-16 lg:py-20">
+      <section className="py-12 sm:py-16 lg:py-20 bg-muted/30">
         <div className="container mx-auto px-4 max-w-8xl">
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             <div className="order-2 lg:order-1">
@@ -1216,7 +1286,8 @@ export default function HomePage() {
             <div className="relative order-1 lg:order-2">
               <div className="aspect-[16/10] sm:aspect-[4/3] rounded-lg overflow-hidden shadow-2xl">
                 <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3691.8944!2d114.1823!3d22.2783!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x340400f9df0e7b85%3A0x8d8d8d8d8d8d8d8d!2sTimes%20Square%2C%20Causeway%20Bay%2C%20Hong%20Kong!5e0!3m2!1sen!2shk!4v1234567890"
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3691.8944!2d114.1823!3d22.2783!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x340400f9df0e7b85%3A0x8d8d8d8d8d8d8d8d!2s\`\`\`
+d22.2783!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x340400f9df0e7b85%3A0x8d8d8d8d8d8d8d8d!2sTimes%20Square%2C%20Causeway%20Bay%2C%20Hong%20Kong!5e0!3m2!1sen!2shk!4v1234567890"
                   width="100%"
                   height="100%"
                   style={{ border: 0 }}
@@ -1309,32 +1380,24 @@ export default function HomePage() {
         </div>
       </div>
 
-      <div className="fixed bottom-0 left-0 right-0 z-40 md:hidden bg-white/98 backdrop-blur-md border-t border-border/40 shadow-2xl">
-        <div className="container mx-auto px-4 py-3">
-          <div className="flex items-center gap-3">
-            <a href="tel:+85239510100" className="flex-1">
-              <Button
-                variant="outline"
-                className="w-full h-11 border-2 border-primary text-primary hover:bg-primary hover:text-white font-bold bg-white text-sm"
-              >
-                <Phone className="h-4 w-4 mr-2" />
-                Call Now
+      {/* Sticky Mobile CTA */}
+      <div className="fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-border/40 p-4 shadow-2xl backdrop-blur-md lg:hidden">
+        <div className="flex gap-3">
+          <a
+            href="tel:+85221627306"
+            className="flex-1 bg-slate-900 hover:bg-slate-800 text-white py-3 px-4 rounded-lg font-semibold text-center transition-all duration-300 hover:shadow-lg"
+          >
+            Call Now
+          </a>
+          <BookingForm
+            trigger={
+              <Button className="flex-1 bg-primary hover:bg-primary/90 py-3 px-4 rounded-lg font-semibold transition-all duration-300 hover:shadow-lg">
+                Book Tour
               </Button>
-            </a>
-            <div className="flex-[2]">
-              <BookingForm
-                trigger={
-                  <Button className="w-full h-11 bg-primary hover:bg-primary/90 font-bold text-white shadow-lg text-sm">
-                    Book Tour - Save 20%
-                  </Button>
-                }
-              />
-            </div>
-          </div>
+            }
+          />
         </div>
       </div>
-
-      <div className="h-16 md:hidden" />
     </div>
   )
 }
