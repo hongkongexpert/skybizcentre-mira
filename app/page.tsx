@@ -35,11 +35,11 @@ export default function HomePage() {
 
           <div className="flex items-center gap-4">
             <a
-              href="tel:+85239510100"
+              href="tel:+85221627306"
               className="hidden sm:flex items-center gap-2 text-foreground/80 hover:text-primary transition-colors"
             >
               <Phone className="h-4 w-4" />
-              <span className="font-semibold text-sm">+852 3951 0100</span>
+              <span className="font-semibold text-sm">+852 2162 7306</span>
             </a>
             <BookingForm
               trigger={
@@ -82,8 +82,7 @@ export default function HomePage() {
                 Prime Hong Kong Office Space <span className="text-primary">Times Square • Move In Today</span>
               </h1>
               <p className="text-base sm:text-lg lg:text-xl text-muted-foreground leading-[1.6] max-w-2xl font-medium">
-                Hong Kong's leading provider of premium office spaces since 2011. Fully furnished. Zero setup fees. Move
-                in today.
+                Hong Kong's leading provider of premium office spaces since 2011. Fully furnished. Move in today.
               </p>
 
               <div className="bg-gradient-to-r from-amber-50 to-orange-50 p-4 sm:p-5 rounded-xl border border-amber-200 shadow-sm">
@@ -91,9 +90,7 @@ export default function HomePage() {
                   <Clock className="h-4 sm:h-5 w-4 sm:w-5 text-amber-700" />
                   <span className="font-bold text-amber-800 text-base sm:text-lg">ENDS FRIDAY</span>
                 </div>
-                <p className="text-amber-800 font-semibold text-sm sm:text-base">
-                  20% off first month + HK$5,000 setup fee waived
-                </p>
+                <p className="text-amber-800 font-semibold text-sm sm:text-base">20% off first month</p>
               </div>
 
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-2">
@@ -107,13 +104,13 @@ export default function HomePage() {
                     </Button>
                   }
                 />
-                <a href="tel:+85239510100">
+                <a href="tel:+85221627306">
                   <Button
                     variant="outline"
                     size="lg"
                     className="text-base sm:text-lg px-6 sm:px-8 h-12 sm:h-14 bg-white font-semibold border-2 border-primary text-primary hover:bg-primary hover:text-white transition-all duration-200 w-full"
                   >
-                    Call Now: +852 3951 0100
+                    Call Now: +852 2162 7306
                   </Button>
                 </a>
               </div>
@@ -134,24 +131,17 @@ export default function HomePage() {
               </div>
             </div>
 
-            <div className="relative order-1 lg:order-2">
-              <div className="aspect-[16/10] sm:aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl">
-                <img
-                  src="/main-lounge-overview.jpg"
-                  alt="Main Lounge and Common Area Overview"
-                  className="w-full h-full object-cover"
-                  loading="eager"
-                />
-              </div>
-              <div className="absolute -bottom-6 -left-6 bg-white p-4 rounded-xl shadow-xl border border-border/20">
-                <div className="flex items-center gap-3">
-                  <div className="flex items-center gap-1">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="h-4 w-4 text-yellow-400 fill-current" />
-                    ))}
-                  </div>
-                  <span className="font-bold text-lg">5.0/5</span>
-                  <span className="text-sm text-muted-foreground hidden sm:inline">Client Rating</span>
+            {/* Hero Image */}
+            <div className="relative h-[400px] sm:h-[500px] lg:h-[600px] rounded-2xl overflow-hidden shadow-2xl">
+              <div className="absolute inset-0 bg-gradient-to-r from-slate-900/20 to-transparent z-10" />
+              <div className="relative h-full">
+                <div className="absolute inset-0">
+                  <img
+                    src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Times%20Square.jpg-28hpRP9MTx2sxbNJz3xD1zL8TUIEyE.jpeg"
+                    alt="Times Square Building - Sky Business Centre Location"
+                    className="w-full h-full object-cover"
+                    loading="eager"
+                  />
                 </div>
               </div>
             </div>
@@ -209,18 +199,18 @@ export default function HomePage() {
               <CardContent className="p-4 sm:p-6">
                 <div className="aspect-[4/3] rounded-xl overflow-hidden mb-4">
                   <img
-                    src="/executive-office-view.jpg"
-                    alt="Private Office with City View"
+                    src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/TS3419.jpg-d9dUZvuIX1hnADgOxgPYaynWDmTKTk.jpeg"
+                    alt="Private Office with Glass Walls"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     loading="lazy"
                   />
                 </div>
                 <h3 className="font-playfair text-lg sm:text-xl font-bold mb-2 sm:mb-3">Private Offices</h3>
                 <p className="text-muted-foreground mb-3 sm:mb-4 leading-relaxed text-sm sm:text-base">
-                  Executive offices with city views. Fully furnished.
+                  Fully furnished private offices for 1-20 people. Premium location.
                 </p>
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                  <span className="text-primary font-bold text-base sm:text-lg">From HK$8,000/month</span>
+                  <span className="text-primary font-bold text-base sm:text-lg">From HK$6,000/month</span>
                   <Button
                     variant="outline"
                     size="sm"
@@ -236,8 +226,8 @@ export default function HomePage() {
               <CardContent className="p-4 sm:p-6">
                 <div className="aspect-[4/3] rounded-xl overflow-hidden mb-4">
                   <img
-                    src="/conference-room-sky.jpg"
-                    alt="Conference Room with Sky Branding"
+                    src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Meeting%20Room_Gobi_3.jpg-NJB8gDP4ikhGtWYIFdJxMyoOILBsJY.jpeg"
+                    alt="Professional Conference Room with Modern Lighting"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     loading="lazy"
                   />
@@ -263,8 +253,8 @@ export default function HomePage() {
               <CardContent className="p-4 sm:p-6">
                 <div className="aspect-[4/3] rounded-xl overflow-hidden mb-4">
                   <img
-                    src="/open-workspace.jpg"
-                    alt="Open Workspace Area"
+                    src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/TS3402.jpg-5QyC5VKQdSIVK2DJmd2plg6ckyNPap.jpeg"
+                    alt="Team Office with City Views"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     loading="lazy"
                   />
@@ -301,51 +291,99 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
             <div className="aspect-square sm:aspect-[4/3] rounded-xl overflow-hidden shadow-lg group">
               <img
-                src="/lounge-seating-area.jpg"
-                alt="Executive Lounge with Premium Designer Furniture"
+                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Reception%20Area_1.jpg-w5aSK776Spupq1TnjrikKEQOEoxx3M.jpeg"
+                alt="Main Reception and Lounge Area"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 loading="lazy"
               />
             </div>
             <div className="aspect-square sm:aspect-[4/3] rounded-xl overflow-hidden shadow-lg group">
               <img
-                src="/modern-kitchen-area.jpg"
-                alt="State-of-the-Art Kitchen and Refreshment Area"
+                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Meeting%20Room_Gobi_1.jpg-HV7YcDzOAGhjzUcs3o67GUOOYwa5pa.jpeg"
+                alt="Gobi Conference Room with Abstract Art"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 loading="lazy"
               />
             </div>
             <div className="aspect-square sm:aspect-[4/3] rounded-xl overflow-hidden shadow-lg group">
               <img
-                src="/private-office-green.jpg"
-                alt="Private Executive Office with Modern Design"
+                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Pantry_3.jpg-RcUNBnEhmF3H4Rr3lI7n2jHvS5RSIB.jpeg"
+                alt="Modern Pantry with Professional Coffee Machines"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 loading="lazy"
               />
             </div>
             <div className="aspect-square sm:aspect-[4/3] rounded-xl overflow-hidden shadow-lg group">
               <img
-                src="/meeting-area-chairs.jpg"
-                alt="Professional Meeting Area for Client Consultations"
+                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Meeting%20Room_Salzbury_2.jpg-7cCJnwvbtOvyYBWeAzrPS35PidfzSv.jpeg"
+                alt="Salzburg Meeting Room Entrance"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 loading="lazy"
               />
             </div>
             <div className="aspect-square sm:aspect-[4/3] rounded-xl overflow-hidden shadow-lg group">
               <img
-                src="/private-office-city-view.jpg"
-                alt="Corner Office with Panoramic Hong Kong City Views"
+                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Sky_20201113_32.jpg-7HzBnQLjA2JceEyLUSN2Drbp3gqRlw.jpeg"
+                alt="Open Workspace with City Views"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 loading="lazy"
               />
             </div>
             <div className="aspect-square sm:aspect-[4/3] rounded-xl overflow-hidden shadow-lg group">
               <img
-                src="/lobby-reception-area.jpg"
-                alt="Prestigious Reception Area and Business Lobby"
+                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/TS_Meeting%20Room_Gobi_1.jpg-ieIKJi4L9rwgT095FtjczZMkJyyte7.jpeg"
+                alt="Professional Conference Room Setup"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                loading="lazy"
+              />
+            </div>
+            <div className="aspect-square sm:aspect-[4/3] rounded-xl overflow-hidden shadow-lg group">
+              <img
+                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/WhatsApp%20Image%202025-08-13%20at%2016.29.30.jpg-JUFAVhHYhxN6jSkSIf3UjGq97e9IMn.jpeg"
+                alt="Individual Workstation Setup"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                loading="lazy"
+              />
+            </div>
+            <div className="aspect-square sm:aspect-[4/3] rounded-xl overflow-hidden shadow-lg group">
+              <img
+                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/TS_Meeting%20Room_Gobi_2.jpg-RurJXyTL1M7NfddZVeuKrogi5w4O9t.jpeg"
+                alt="Modern Meeting Room with LED Lighting"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                loading="lazy"
+              />
+            </div>
+            <div className="aspect-square sm:aspect-[4/3] rounded-xl overflow-hidden shadow-lg group">
+              <img
+                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Common%20Area_Booth_1.jpg-DNszjJtJYLlFW1WtUp7SS964lbwjvt.jpeg"
+                alt="Private Booth Seating Areas"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                loading="lazy"
+              />
+            </div>
+            <div className="aspect-square sm:aspect-[4/3] rounded-xl overflow-hidden shadow-lg group">
+              <img
+                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Meeting%20Room_Salzbury_1.jpg-CGpG7yBbPmxrDe3JT94RXRttwAdtun.jpeg"
+                alt="Salzburg Conference Room Interior"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                loading="lazy"
+              />
+            </div>
+            <div className="aspect-square sm:aspect-[4/3] rounded-xl overflow-hidden shadow-lg group">
+              <img
+                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Meeting%20Room_Gobi_4.jpg-OicNAZEonMYryo4eg2oilDqrWBZNgF.jpeg"
+                alt="Gobi Meeting Room Glass Door"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                loading="lazy"
+              />
+            </div>
+            <div className="aspect-square sm:aspect-[4/3] rounded-xl overflow-hidden shadow-lg group">
+              <img
+                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Meeting%20Room_Gobi_2.jpg-e5KwHLgDhvlVquONan967bX7tbWr3o.jpeg"
+                alt="Executive Conference Room with Artwork"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 loading="lazy"
               />
@@ -382,30 +420,30 @@ export default function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 max-w-5xl mx-auto">
             <Card className="p-5 sm:p-6 hover:shadow-xl transition-all duration-300 border-0 shadow-md">
               <div className="text-center">
-                <h3 className="font-playfair text-xl sm:text-2xl font-bold mb-3 tracking-tight">Hot Desk</h3>
+                <h3 className="font-playfair text-xl sm:text-2xl font-bold mb-3 tracking-tight">Private Office</h3>
                 <div className="mb-4 sm:mb-5">
-                  <span className="text-3xl sm:text-4xl font-bold text-primary tracking-tight">HK$500</span>
-                  <span className="text-muted-foreground text-base sm:text-lg font-medium">/day</span>
+                  <span className="text-3xl sm:text-4xl font-bold text-primary tracking-tight">HK$6,000</span>
+                  <span className="text-muted-foreground text-base sm:text-lg font-medium">/month</span>
                 </div>
                 <ul className="space-y-2 text-muted-foreground mb-5 sm:mb-6">
                   <li className="flex items-center gap-3 text-sm sm:text-base font-medium">
                     <CheckCircle className="h-4 sm:h-5 w-4 sm:w-5 text-emerald-600" />
-                    Flexible workspace
+                    1-20 person capacity
                   </li>
                   <li className="flex items-center gap-3 text-sm sm:text-base font-medium">
                     <CheckCircle className="h-4 sm:h-5 w-4 sm:w-5 text-emerald-600" />
-                    All amenities included
+                    Fully furnished
                   </li>
                   <li className="flex items-center gap-3 text-sm sm:text-base font-medium">
                     <CheckCircle className="h-4 sm:h-5 w-4 sm:w-5 text-emerald-600" />
-                    No contract required
+                    Premium location
                   </li>
                 </ul>
                 <Button
                   variant="outline"
                   className="w-full border-2 border-primary text-primary hover:bg-primary hover:text-white bg-white font-semibold h-11 sm:h-12 text-sm sm:text-base"
                 >
-                  Start Today
+                  Book Tour
                 </Button>
               </div>
             </Card>
@@ -821,9 +859,7 @@ export default function HomePage() {
                 <TrendingUp className="h-6 w-6 text-primary" />
               </div>
               <h3 className="font-semibold text-lg mb-3">Flexible Terms</h3>
-              <p className="text-muted-foreground">
-                No long-term contracts. Scale up or down as your business grows. Monthly terms available.
-              </p>
+              <p className="text-muted-foreground">Scale up or down as your business grows. Monthly terms available.</p>
             </Card>
           </div>
         </div>
@@ -837,6 +873,17 @@ export default function HomePage() {
               Everything Included. No Hidden Fees.
             </h2>
             <p className="text-base sm:text-lg text-muted-foreground">Premium amenities at no extra cost</p>
+          </div>
+
+          <div className="mb-8 sm:mb-12">
+            <div className="aspect-[16/9] sm:aspect-[21/9] rounded-xl overflow-hidden shadow-lg mx-auto max-w-4xl">
+              <img
+                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Pantry_4.jpg-xh8GtDtsriNwe5MBiAhOuu3LCM4t6l.jpeg"
+                alt="Premium Coffee Machines and Pantry Facilities"
+                className="w-full h-full object-cover"
+                loading="lazy"
+              />
+            </div>
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
@@ -922,18 +969,17 @@ export default function HomePage() {
             </Card>
 
             <Card className="p-6">
-              <h3 className="font-semibold text-lg mb-3">Do I need a long-term contract?</h3>
+              <h3 className="font-semibold text-lg mb-3">What are the contract terms?</h3>
               <p className="text-muted-foreground">
-                No contracts required for hot desks. Private offices have flexible monthly terms. You can scale up or
-                down as your business needs change.
+                Private offices have flexible monthly terms. You can scale up or down as your business needs change.
               </p>
             </Card>
 
             <Card className="p-6">
               <h3 className="font-semibold text-lg mb-3">How does the 20% discount work?</h3>
               <p className="text-muted-foreground">
-                Book your tour this week and get 20% off your first month plus we'll waive the HK$5,000 setup fee. Offer
-                ends Friday - limited to first 3 bookings.
+                Book your tour this week and get 20% off your first month. Offer ends Friday - limited to first 3
+                bookings.
               </p>
             </Card>
 
@@ -973,46 +1019,46 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
-            <div className="aspect-square sm:aspect-[4/3] rounded-lg overflow-hidden shadow-lg group">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+            <div className="aspect-square sm:aspect-[4/3] rounded-xl overflow-hidden shadow-lg group">
               <img
-                src="/lounge-seating-area.jpg"
-                alt="Modern Lounge with Designer Furniture"
+                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Common%20Area_11.jpg-q01DSNEB93BSs87wsj6X8Ms7D3UkDG.jpeg"
+                alt="Modern Lounge with Kitchen and Bar Area"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform"
               />
             </div>
-            <div className="aspect-square sm:aspect-[4/3] rounded-lg overflow-hidden shadow-lg group">
+            <div className="aspect-square sm:aspect-[4/3] rounded-xl overflow-hidden shadow-lg group">
               <img
-                src="/modern-kitchen-area.jpg"
-                alt="Premium Kitchen and Break Area"
+                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Common%20Area_7.jpg-HCHIAxjfvqstPrdNpmAkVWI55dU6Sq.jpeg"
+                alt="Active Common Area with Kitchen"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform"
               />
             </div>
-            <div className="aspect-square sm:aspect-[4/3] rounded-lg overflow-hidden shadow-lg group">
+            <div className="aspect-square sm:aspect-[4/3] rounded-xl overflow-hidden shadow-lg group">
               <img
-                src="/private-office-green.jpg"
-                alt="Private Office with Green Accent Wall"
+                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Sky_20201113_12.jpg-VutctFm0lnXMYSz7LYtYlf2QY35ZYy.jpeg"
+                alt="Team Office with Multiple Workstations"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform"
               />
             </div>
-            <div className="aspect-square sm:aspect-[4/3] rounded-lg overflow-hidden shadow-lg group">
+            <div className="aspect-square sm:aspect-[4/3] rounded-xl overflow-hidden shadow-lg group">
               <img
-                src="/meeting-area-chairs.jpg"
-                alt="Collaborative Meeting Area"
+                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Common%20Area_1.jpg-D7tUKuM7ldbTmMvovbnlybDoJLkWvK.jpeg"
+                alt="Elegant Meeting and Seating Area"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform"
               />
             </div>
-            <div className="aspect-square sm:aspect-[4/3] rounded-lg overflow-hidden shadow-lg group">
+            <div className="aspect-square sm:aspect-[4/3] rounded-xl overflow-hidden shadow-lg group">
               <img
-                src="/private-office-city-view.jpg"
-                alt="Executive Office with Panoramic City Views"
+                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Sky_20201113_26.jpg-cPYgIp8W9fyOIM18bYlGRDJErlvy3m.jpeg"
+                alt="Private Office with Stunning City Views"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform"
               />
             </div>
-            <div className="aspect-square sm:aspect-[4/3] rounded-lg overflow-hidden shadow-lg group">
+            <div className="aspect-square sm:aspect-[4/3] rounded-xl overflow-hidden shadow-lg group">
               <img
-                src="/lobby-reception-area.jpg"
-                alt="Sky Business Centre Lobby and Reception Area"
+                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Reception%20Area_2.jpg-eCEGPeQnTHhDiXt5qmSC1OlhMumbAM.jpeg"
+                alt="Modern Reception Desk and Waiting Area"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform"
               />
             </div>
@@ -1041,6 +1087,17 @@ export default function HomePage() {
               Everything Included. No Hidden Fees.
             </h2>
             <p className="text-base sm:text-lg text-muted-foreground">Premium amenities at no extra cost</p>
+          </div>
+
+          <div className="mb-8 sm:mb-12">
+            <div className="aspect-[16/9] sm:aspect-[21/9] rounded-xl overflow-hidden shadow-lg mx-auto max-w-4xl">
+              <img
+                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Pantry_4.jpg-xh8GtDtsriNwe5MBiAhOuu3LCM4t6l.jpeg"
+                alt="Premium Coffee Machines and Pantry Facilities"
+                className="w-full h-full object-cover"
+                loading="lazy"
+              />
+            </div>
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
@@ -1191,7 +1248,7 @@ export default function HomePage() {
               <Card className="text-center p-4 sm:p-6 sm:col-span-2 lg:col-span-1">
                 <Phone className="h-6 w-6 sm:h-8 sm:w-8 text-primary mx-auto mb-2 sm:mb-3" />
                 <h3 className="font-semibold mb-1 sm:mb-2 text-sm sm:text-base">Phone</h3>
-                <p className="text-muted-foreground text-sm sm:text-base">(852) 3951 0100</p>
+                <p className="text-muted-foreground text-sm sm:text-base">(852) 2162 7306</p>
               </Card>
 
               <Card className="text-center p-4 sm:p-6">
