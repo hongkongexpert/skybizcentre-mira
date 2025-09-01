@@ -343,13 +343,17 @@ export default function HomePage() {
                 </p>
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                   <span className="text-primary font-bold text-base sm:text-lg">From HK$200/hour</span>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="bg-white w-full sm:w-auto border-primary text-primary hover:bg-primary hover:text-white font-semibold text-sm hover:shadow-md transition-all duration-300"
-                  >
-                    Book Now
-                  </Button>
+                  <BookingForm
+                    trigger={
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="bg-white w-full sm:w-auto border-primary text-primary hover:bg-primary hover:text-white font-semibold text-sm hover:shadow-md transition-all duration-300"
+                      >
+                        Book Now
+                      </Button>
+                    }
+                  />
                 </div>
               </CardContent>
             </Card>
@@ -677,9 +681,13 @@ export default function HomePage() {
                     Presentation equipment
                   </li>
                 </ul>
-                <Button className="w-full bg-primary hover:bg-primary/90 font-semibold h-11 sm:h-12 text-sm sm:text-base">
-                  Book Now
-                </Button>
+                <BookingForm
+                  trigger={
+                    <Button className="w-full bg-primary hover:bg-primary/90 font-semibold h-11 sm:h-12 text-sm sm:text-base">
+                      Book Now
+                    </Button>
+                  }
+                />
               </div>
             </Card>
 

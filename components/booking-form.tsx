@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Calendar, Users, Building } from "lucide-react"
+import { useToast } from "@/hooks/use-toast"
 
 interface BookingFormProps {
   trigger: React.ReactNode
@@ -17,6 +18,9 @@ interface BookingFormProps {
 
 export function BookingForm({ trigger }: BookingFormProps) {
   const [step, setStep] = useState(1)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isOpen, setIsOpen] = useState(false)
+  const { toast } = useToast()
   const [formData, setFormData] = useState({
     serviceType: "",
     date: "",
@@ -33,14 +37,55 @@ export function BookingForm({ trigger }: BookingFormProps) {
   const handleNext = () => setStep(step + 1)
   const handlePrev = () => setStep(step - 1)
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Handle form submission
-    console.log("Form submitted:", formData)
+    setIsSubmitting(true)
+
+    try {
+      const response = await fetch("/api/booking", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      })
+
+      if (response.ok) {
+        toast({
+          title: "Booking Request Sent!",
+          description: "We'll contact you within 24 hours to confirm your booking.",
+        })
+        // Reset form and close dialog
+        setFormData({
+          serviceType: "",
+          date: "",
+          time: "",
+          duration: "",
+          attendees: "",
+          name: "",
+          email: "",
+          phone: "",
+          company: "",
+          requirements: "",
+        })
+        setStep(1)
+        setIsOpen(false)
+      } else {
+        throw new Error("Failed to send booking request")
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to send booking request. Please try again or contact us directly.",
+        variant: "destructive",
+      })
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
@@ -67,7 +112,6 @@ export function BookingForm({ trigger }: BookingFormProps) {
                   <SelectContent>
                     <SelectItem value="meeting-room">Meeting Room</SelectItem>
                     <SelectItem value="private-office">Private Office</SelectItem>
-                    <SelectItem value="coworking">Co-working Space</SelectItem>
                     <SelectItem value="virtual-office">Virtual Office</SelectItem>
                   </SelectContent>
                 </Select>
@@ -202,8 +246,8 @@ export function BookingForm({ trigger }: BookingFormProps) {
                 <Button type="button" variant="outline" onClick={handlePrev} className="flex-1 bg-transparent">
                   Previous
                 </Button>
-                <Button type="submit" className="flex-1">
-                  Book Now
+                <Button type="submit" className="flex-1" disabled={isSubmitting}>
+                  {isSubmitting ? "Sending..." : "Book Now"}
                 </Button>
               </div>
             </div>
