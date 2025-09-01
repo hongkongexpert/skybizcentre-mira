@@ -1026,11 +1026,7 @@ export default function HomePage() {
             </Card>
           </div>
 
-          <div className="text-center mt-8">
-            <Button variant="outline" className="border-blue-600 text-blue-600 hover:bg-blue-50 bg-transparent">
-              View All Google Reviews
-            </Button>
-          </div>
+          <div className="text-center mt-8"></div>
         </div>
       </section>
 

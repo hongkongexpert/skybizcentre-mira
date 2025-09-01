@@ -268,8 +268,11 @@ export function BookingForm({ trigger }: BookingFormProps) {
       return
     }
 
-    const selectedDate = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day)
-    const formattedDate = selectedDate.toISOString().split("T")[0]
+    const year = currentMonth.getFullYear()
+    const month = String(currentMonth.getMonth() + 1).padStart(2, "0")
+    const dayStr = String(day).padStart(2, "0")
+    const formattedDate = `${year}-${month}-${dayStr}`
+
     setFormData({ ...formData, date: formattedDate })
   }
 
@@ -627,7 +630,7 @@ export function BookingForm({ trigger }: BookingFormProps) {
                 </div>
                 <div>
                   <Label htmlFor="company" className="text-sm font-medium">
-                    Company
+                    Company (optional)
                   </Label>
                   <Input
                     value={formData.company}
