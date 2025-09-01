@@ -1,8 +1,7 @@
 "use client"
 
 import type React from "react"
-
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -25,8 +24,6 @@ export function BookingForm({ trigger }: BookingFormProps) {
     serviceType: "",
     date: "",
     time: "",
-    duration: "",
-    attendees: "",
     name: "",
     email: "",
     phone: "",
@@ -34,8 +31,93 @@ export function BookingForm({ trigger }: BookingFormProps) {
     requirements: "",
   })
 
+  const isWeekday = (dateString: string) => {
+    const date = new Date(dateString + "T00:00:00")
+    const day = date.getDay()
+    return day >= 1 && day <= 5 // Monday (1) to Friday (5)
+  }
+
+  const getMinDate = () => {
+    const today = new Date()
+    const day = today.getDay()
+
+    // If today is Saturday (6) or Sunday (0), set min date to next Monday
+    if (day === 0 || day === 6) {
+      const daysUntilMonday = day === 0 ? 1 : 2
+      const nextMonday = new Date(today)
+      nextMonday.setDate(today.getDate() + daysUntilMonday)
+      return nextMonday.toISOString().split("T")[0]
+    }
+
+    return today.toISOString().split("T")[0]
+  }
+
+  const getMaxDate = () => {
+    const today = new Date()
+    const maxDate = new Date()
+    maxDate.setMonth(today.getMonth() + 3)
+    return maxDate.toISOString().split("T")[0]
+  }
+
+  const getValidDates = () => {
+    const dates = []
+    const today = new Date()
+    const endDate = new Date()
+    endDate.setMonth(today.getMonth() + 3) // 3 months ahead
+
+    for (let d = new Date(today); d <= endDate; d.setDate(d.getDate() + 1)) {
+      const dayOfWeek = d.getDay()
+      if (dayOfWeek >= 1 && dayOfWeek <= 5) {
+        // Monday to Friday only
+        dates.push(d.toISOString().split("T")[0])
+      }
+    }
+    return dates
+  }
+
+  const getBusinessHours = () => {
+    const times = []
+    for (let hour = 9; hour <= 18; hour++) {
+      for (let minute = 0; minute < 60; minute += 30) {
+        if (hour === 18 && minute > 0) break // Stop at 6:00 PM
+        const timeString = `${hour.toString().padStart(2, "0")}:${minute.toString().padStart(2, "0")}`
+        const displayTime = new Date(`2000-01-01T${timeString}`).toLocaleTimeString("en-US", {
+          hour: "numeric",
+          minute: "2-digit",
+          hour12: true,
+        })
+        times.push({ value: timeString, label: displayTime })
+      }
+    }
+    return times
+  }
+
+  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedDate = e.target.value
+    console.log("[v0] Date selected:", selectedDate)
+
+    if (selectedDate) {
+      const date = new Date(selectedDate + "T00:00:00")
+      const dayOfWeek = date.getDay()
+
+      // Immediately prevent weekend selection
+      if (dayOfWeek === 0 || dayOfWeek === 6) {
+        console.log("[v0] Weekend date blocked:", selectedDate, "Day:", dayOfWeek)
+        e.target.value = ""
+        toast({
+          title: "Weekends Not Available",
+          description: "Please select Monday through Friday only. We're closed on weekends.",
+          variant: "destructive",
+        })
+        return
+      }
+    }
+
+    setFormData({ ...formData, date: selectedDate })
+  }
+
   const validateStep1 = () => {
-    if (!formData.serviceType || !formData.date || !formData.time || !formData.duration) {
+    if (!formData.serviceType || !formData.date || !formData.time) {
       toast({
         title: "Missing Information",
         description: "Please fill in all required fields before proceeding.",
@@ -43,6 +125,16 @@ export function BookingForm({ trigger }: BookingFormProps) {
       })
       return false
     }
+
+    if (!isWeekday(formData.date)) {
+      toast({
+        title: "Invalid Date",
+        description: "Please select a weekday (Monday to Friday). We're closed on weekends.",
+        variant: "destructive",
+      })
+      return false
+    }
+
     return true
   }
 
@@ -76,7 +168,16 @@ export function BookingForm({ trigger }: BookingFormProps) {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          service: formData.serviceType,
+          date: formData.date,
+          time: formData.time,
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          company: formData.company,
+          requirements: formData.requirements,
+        }),
       })
 
       console.log("[v0] Response status:", response.status)
@@ -100,8 +201,6 @@ export function BookingForm({ trigger }: BookingFormProps) {
           serviceType: "",
           date: "",
           time: "",
-          duration: "",
-          attendees: "",
           name: "",
           email: "",
           phone: "",
@@ -128,6 +227,90 @@ export function BookingForm({ trigger }: BookingFormProps) {
       setIsSubmitting(false)
     }
   }
+
+  useEffect(() => {
+    if (!isOpen) return
+
+    const timer = setTimeout(() => {
+      const dateInput = document.querySelector('input[type="date"]') as HTMLInputElement
+      if (dateInput) {
+        console.log("[v0] Setting up weekend blocking for date input")
+
+        // Add comprehensive event listeners
+        const blockWeekends = (e: Event) => {
+          const target = e.target as HTMLInputElement
+          const selectedDate = target.value
+
+          if (selectedDate) {
+            const date = new Date(selectedDate + "T00:00:00")
+            const dayOfWeek = date.getDay()
+
+            if (dayOfWeek === 0 || dayOfWeek === 6) {
+              console.log("[v0] Blocking weekend selection:", selectedDate)
+              target.value = ""
+              setFormData((prev) => ({ ...prev, date: "" }))
+              toast({
+                title: "Weekends Not Available",
+                description: "Please select Monday through Friday only.",
+                variant: "destructive",
+              })
+            }
+          }
+        }
+
+        // Remove existing listeners to prevent duplicates
+        dateInput.removeEventListener("change", blockWeekends)
+        dateInput.removeEventListener("input", blockWeekends)
+
+        // Add fresh listeners
+        dateInput.addEventListener("change", blockWeekends)
+        dateInput.addEventListener("input", blockWeekends)
+
+        // Add CSS to visually disable weekends
+        const styleId = "weekend-disable-styles"
+        if (!document.getElementById(styleId)) {
+          const style = document.createElement("style")
+          style.id = styleId
+          style.textContent = `
+            /* Enhanced weekend blocking styles */
+            input[type="date"]::-webkit-calendar-picker-indicator {
+              cursor: pointer;
+            }
+            
+            /* Prevent interaction with weekend days */
+            input[type="date"] {
+              position: relative;
+            }
+            
+            /* Custom validation styling */
+            input[type="date"]:invalid {
+              border-color: #ef4444 !important;
+              box-shadow: 0 0 0 1px #ef4444;
+            }
+            
+            /* Additional browser-specific weekend blocking */
+            input[type="date"]::-webkit-datetime-edit-day-field[aria-disabled="true"],
+            input[type="date"]::-webkit-datetime-edit-month-field[aria-disabled="true"],
+            input[type="date"]::-webkit-datetime-edit-year-field[aria-disabled="true"] {
+              color: #9ca3af !important;
+              pointer-events: none !important;
+            }
+          `
+          document.head.appendChild(style)
+        }
+      }
+    }, 100)
+
+    return () => {
+      clearTimeout(timer)
+      // Cleanup listeners when component unmounts
+      const dateInput = document.querySelector('input[type="date"]') as HTMLInputElement
+      if (dateInput) {
+        dateInput.removeEventListener("change", handleDateChange)
+        dateInput.removeEventListener("input", handleDateChange)
+      }
+    }
+  }, [isOpen, toast])
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -168,45 +351,37 @@ export function BookingForm({ trigger }: BookingFormProps) {
                   <Input
                     type="date"
                     value={formData.date}
-                    onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                    min={getMinDate()}
+                    max={getMaxDate()}
+                    onChange={handleDateChange}
+                    className="[&::-webkit-calendar-picker-indicator]:cursor-pointer"
+                    style={{
+                      colorScheme: "light",
+                    }}
+                    onKeyDown={(e) => {
+                      // Prevent manual typing to force calendar usage
+                      if (e.key !== "Tab" && e.key !== "Shift" && e.key !== "Enter") {
+                        e.preventDefault()
+                      }
+                    }}
                   />
+                  <p className="text-xs text-muted-foreground mt-1">Monday - Friday only</p>
                 </div>
                 <div>
                   <Label htmlFor="time">Time *</Label>
-                  <Input
-                    type="time"
-                    value={formData.time}
-                    onChange={(e) => setFormData({ ...formData, time: e.target.value })}
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="duration">Duration (hours) *</Label>
-                  <Select
-                    value={formData.duration}
-                    onValueChange={(value) => setFormData({ ...formData, duration: value })}
-                  >
+                  <Select value={formData.time} onValueChange={(value) => setFormData({ ...formData, time: value })}>
                     <SelectTrigger>
-                      <SelectValue placeholder="Duration" />
+                      <SelectValue placeholder="Select time" />
                     </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="1">1 hour</SelectItem>
-                      <SelectItem value="2">2 hours</SelectItem>
-                      <SelectItem value="4">4 hours</SelectItem>
-                      <SelectItem value="8">Full day</SelectItem>
+                    <SelectContent className="max-h-60">
+                      {getBusinessHours().map((time) => (
+                        <SelectItem key={time.value} value={time.value}>
+                          {time.label}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
-                </div>
-                <div>
-                  <Label htmlFor="attendees">Attendees</Label>
-                  <Input
-                    type="number"
-                    placeholder="Number of people"
-                    value={formData.attendees}
-                    onChange={(e) => setFormData({ ...formData, attendees: e.target.value })}
-                  />
+                  <p className="text-xs text-muted-foreground mt-1">9:00 AM - 6:00 PM</p>
                 </div>
               </div>
 
