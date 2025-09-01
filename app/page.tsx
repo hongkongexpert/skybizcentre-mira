@@ -766,9 +766,11 @@ export default function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
             <Card className="p-6 hover:shadow-lg transition-shadow border border-gray-200">
               <div className="flex items-start gap-3 mb-4">
-                <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center flex-shrink-0">
-                  <span className="text-white font-semibold text-sm">SL</span>
-                </div>
+                <img
+                  src="/professional-asian-woman-with-short-black-hair-in-.png"
+                  alt="Sarah Liu"
+                  className="w-10 h-10 rounded-full object-cover flex-shrink-0"
+                />
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
                     <span className="font-semibold text-sm">Sarah Liu</span>
@@ -795,9 +797,11 @@ export default function HomePage() {
 
             <Card className="p-6 hover:shadow-lg transition-shadow border border-gray-200">
               <div className="flex items-start gap-3 mb-4">
-                <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-teal-600 rounded-full flex items-center justify-center flex-shrink-0">
-                  <span className="text-white font-semibold text-sm">MC</span>
-                </div>
+                <img
+                  src="/professional-asian-man-with-glasses-in-business-su.png"
+                  alt="Michael Chen"
+                  className="w-10 h-10 rounded-full object-cover flex-shrink-0"
+                />
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
                     <span className="font-semibold text-sm">Michael Chen</span>
@@ -853,9 +857,11 @@ export default function HomePage() {
 
             <Card className="p-6 hover:shadow-lg transition-shadow border border-gray-200">
               <div className="flex items-start gap-3 mb-4">
-                <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-red-600 rounded-full flex items-center justify-center flex-shrink-0">
-                  <span className="text-white font-semibold text-sm">DK</span>
-                </div>
+                <img
+                  src="/professional-korean-man-in-business-attire-with-fr.png"
+                  alt="David Kim"
+                  className="w-10 h-10 rounded-full object-cover flex-shrink-0"
+                />
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
                     <span className="font-semibold text-sm">David Kim</span>
@@ -940,9 +946,11 @@ export default function HomePage() {
 
             <Card className="p-6 hover:shadow-lg transition-shadow border border-gray-200">
               <div className="flex items-start gap-3 mb-4">
-                <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-green-600 rounded-full flex items-center justify-center flex-shrink-0">
-                  <span className="text-white font-semibold text-sm">LZ</span>
-                </div>
+                <img
+                  src="/professional-chinese-woman-with-long-hair-in-busin.png"
+                  alt="Lisa Zhang"
+                  className="w-10 h-10 rounded-full object-cover flex-shrink-0"
+                />
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
                     <span className="font-semibold text-sm">Lisa Zhang</span>
