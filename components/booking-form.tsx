@@ -13,7 +13,7 @@ import {
   ArrowRight,
   ArrowLeft,
   Building2,
-  Mail,
+  Globe,
   ChevronLeft,
   ChevronRight,
   CheckCircle,
@@ -57,7 +57,7 @@ export function BookingForm({ trigger }: BookingFormProps) {
     {
       id: "virtual-office",
       title: "Virtual Office",
-      icon: Mail,
+      icon: Globe, // Changed from Mail to Globe icon for virtual office
     },
   ]
 
