@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { Calendar, Users, Building } from "lucide-react"
+import { Calendar, Users } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 
 interface BookingFormProps {
@@ -96,8 +96,8 @@ export function BookingForm({ trigger }: BookingFormProps) {
           {step === 1 && (
             <div className="space-y-4">
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <Building className="h-4 w-4" />
-                Step 1 of 3: Service Selection
+                <Calendar className="h-4 w-4" />
+                Step 1 of 2: Service & Schedule
               </div>
 
               <div>
@@ -136,19 +136,6 @@ export function BookingForm({ trigger }: BookingFormProps) {
                 </div>
               </div>
 
-              <Button type="button" onClick={handleNext} className="w-full">
-                Next Step
-              </Button>
-            </div>
-          )}
-
-          {step === 2 && (
-            <div className="space-y-4">
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <Users className="h-4 w-4" />
-                Step 2 of 3: Details
-              </div>
-
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="duration">Duration (hours)</Label>
@@ -178,31 +165,17 @@ export function BookingForm({ trigger }: BookingFormProps) {
                 </div>
               </div>
 
-              <div>
-                <Label htmlFor="requirements">Special Requirements</Label>
-                <Textarea
-                  placeholder="Any special requirements or equipment needed?"
-                  value={formData.requirements}
-                  onChange={(e) => setFormData({ ...formData, requirements: e.target.value })}
-                />
-              </div>
-
-              <div className="flex gap-2">
-                <Button type="button" variant="outline" onClick={handlePrev} className="flex-1 bg-transparent">
-                  Previous
-                </Button>
-                <Button type="button" onClick={handleNext} className="flex-1">
-                  Next Step
-                </Button>
-              </div>
+              <Button type="button" onClick={handleNext} className="w-full">
+                Next Step
+              </Button>
             </div>
           )}
 
-          {step === 3 && (
+          {step === 2 && (
             <div className="space-y-4">
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <Calendar className="h-4 w-4" />
-                Step 3 of 3: Contact Information
+                <Users className="h-4 w-4" />
+                Step 2 of 2: Contact Information
               </div>
 
               <div className="grid grid-cols-2 gap-4">
@@ -239,6 +212,15 @@ export function BookingForm({ trigger }: BookingFormProps) {
                   type="tel"
                   value={formData.phone}
                   onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="requirements">Special Requirements</Label>
+                <Textarea
+                  placeholder="Any special requirements or equipment needed?"
+                  value={formData.requirements}
+                  onChange={(e) => setFormData({ ...formData, requirements: e.target.value })}
                 />
               </div>
 
