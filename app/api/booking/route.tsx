@@ -5,43 +5,46 @@ const resend = new Resend(process.env.RESEND_API_KEY)
 
 export async function POST(request: NextRequest) {
   try {
-    console.log("[v0] Booking API route called")
+    console.log("[v0] API route called")
 
     const body = await request.json()
-    console.log("[v0] Received booking data:", body)
+    console.log("[v0] Request body:", body)
 
     const { serviceType, date, time, duration, attendees, name, email, phone, company, requirements } = body
 
     // Validate required fields
-    if (!serviceType || !date || !time || !name || !email) {
+    if (!serviceType || !date || !time || !name || !email || !phone) {
       console.log("[v0] Missing required fields")
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 })
     }
 
-    // Format the email content
+    // Format service type for display
+    const serviceTypeDisplay = serviceType
+      .split("-")
+      .map((word: string) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ")
+
+    // Create email content
     const emailContent = `
-      <h2>New Booking Request - Sky Business Centre</h2>
+      <h2>New Booking Enquiry - Sky Business Centre</h2>
       
       <h3>Service Details:</h3>
-      <ul>
-        <li><strong>Service Type:</strong> ${serviceType}</li>
-        <li><strong>Date:</strong> ${date}</li>
-        <li><strong>Time:</strong> ${time}</li>
-        <li><strong>Duration:</strong> ${duration} hours</li>
-        <li><strong>Number of Attendees:</strong> ${attendees}</li>
-      </ul>
+      <p><strong>Service Type:</strong> ${serviceTypeDisplay}</p>
+      <p><strong>Date:</strong> ${date}</p>
+      <p><strong>Time:</strong> ${time}</p>
+      <p><strong>Duration:</strong> ${duration} hours</p>
+      <p><strong>Number of Attendees:</strong> ${attendees}</p>
       
       <h3>Contact Information:</h3>
-      <ul>
-        <li><strong>Name:</strong> ${name}</li>
-        <li><strong>Email:</strong> ${email}</li>
-        <li><strong>Phone:</strong> ${phone}</li>
-        <li><strong>Company:</strong> ${company}</li>
-      </ul>
+      <p><strong>Name:</strong> ${name}</p>
+      <p><strong>Email:</strong> ${email}</p>
+      <p><strong>Phone:</strong> ${phone}</p>
+      <p><strong>Company:</strong> ${company || "Not provided"}</p>
       
       ${requirements ? `<h3>Special Requirements:</h3><p>${requirements}</p>` : ""}
       
-      <p><em>This booking request was submitted through the Sky Business Centre website.</em></p>
+      <hr>
+      <p><em>This enquiry was submitted through the Sky Business Centre website.</em></p>
     `
 
     console.log("[v0] Sending email...")
@@ -51,7 +54,7 @@ export async function POST(request: NextRequest) {
       from: "Sky Business Centre <noreply@skybizcentre.com>",
       to: ["sales@skybizcentre.com", "shahseo5@gmail.com"],
       replyTo: email,
-      subject: `New Booking Request - ${serviceType} for ${date}`,
+      subject: `New Booking Enquiry - ${serviceTypeDisplay} for ${date}`,
       html: emailContent,
     })
 
@@ -59,10 +62,10 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      message: "Booking request sent successfully",
+      message: "Booking enquiry sent successfully",
     })
   } catch (error) {
-    console.error("[v0] Error processing booking:", error)
-    return NextResponse.json({ error: "Failed to process booking request" }, { status: 500 })
+    console.error("[v0] API Error:", error)
+    return NextResponse.json({ error: "Failed to send booking enquiry" }, { status: 500 })
   }
 }
