@@ -34,12 +34,39 @@ export function BookingForm({ trigger }: BookingFormProps) {
     requirements: "",
   })
 
-  const handleNext = () => setStep(step + 1)
+  const validateStep1 = () => {
+    if (!formData.serviceType || !formData.date || !formData.time || !formData.duration) {
+      toast({
+        title: "Missing Information",
+        description: "Please fill in all required fields before proceeding.",
+        variant: "destructive",
+      })
+      return false
+    }
+    return true
+  }
+
+  const handleNext = () => {
+    if (validateStep1()) {
+      setStep(step + 1)
+    }
+  }
+
   const handlePrev = () => setStep(step - 1)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     console.log("[v0] Form submitted with data:", formData)
+
+    if (!formData.name || !formData.email || !formData.phone) {
+      toast({
+        title: "Missing Information",
+        description: "Please fill in all required contact information.",
+        variant: "destructive",
+      })
+      return
+    }
+
     setIsSubmitting(true)
 
     try {
@@ -53,8 +80,15 @@ export function BookingForm({ trigger }: BookingFormProps) {
       })
 
       console.log("[v0] Response status:", response.status)
-      const responseData = await response.json()
-      console.log("[v0] Response data:", responseData)
+
+      let responseData
+      try {
+        responseData = await response.json()
+        console.log("[v0] Response data:", responseData)
+      } catch (jsonError) {
+        console.error("[v0] Failed to parse JSON response:", jsonError)
+        throw new Error("Server returned invalid response")
+      }
 
       if (response.ok) {
         console.log("[v0] Booking successful")
@@ -84,7 +118,10 @@ export function BookingForm({ trigger }: BookingFormProps) {
       console.error("[v0] Error submitting form:", error)
       toast({
         title: "Error",
-        description: "Failed to send booking request. Please try again or contact us directly.",
+        description:
+          error instanceof Error
+            ? error.message
+            : "Failed to send booking request. Please try again or contact us directly.",
         variant: "destructive",
       })
     } finally {
@@ -109,7 +146,7 @@ export function BookingForm({ trigger }: BookingFormProps) {
               </div>
 
               <div>
-                <Label htmlFor="serviceType">Service Type</Label>
+                <Label htmlFor="serviceType">Service Type *</Label>
                 <Select
                   value={formData.serviceType}
                   onValueChange={(value) => setFormData({ ...formData, serviceType: value })}
@@ -127,7 +164,7 @@ export function BookingForm({ trigger }: BookingFormProps) {
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="date">Date</Label>
+                  <Label htmlFor="date">Date *</Label>
                   <Input
                     type="date"
                     value={formData.date}
@@ -135,7 +172,7 @@ export function BookingForm({ trigger }: BookingFormProps) {
                   />
                 </div>
                 <div>
-                  <Label htmlFor="time">Time</Label>
+                  <Label htmlFor="time">Time *</Label>
                   <Input
                     type="time"
                     value={formData.time}
@@ -146,7 +183,7 @@ export function BookingForm({ trigger }: BookingFormProps) {
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="duration">Duration (hours)</Label>
+                  <Label htmlFor="duration">Duration (hours) *</Label>
                   <Select
                     value={formData.duration}
                     onValueChange={(value) => setFormData({ ...formData, duration: value })}
@@ -188,7 +225,7 @@ export function BookingForm({ trigger }: BookingFormProps) {
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="name">Full Name</Label>
+                  <Label htmlFor="name">Full Name *</Label>
                   <Input
                     required
                     value={formData.name}
@@ -205,7 +242,7 @@ export function BookingForm({ trigger }: BookingFormProps) {
               </div>
 
               <div>
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email">Email *</Label>
                 <Input
                   type="email"
                   required
@@ -215,9 +252,10 @@ export function BookingForm({ trigger }: BookingFormProps) {
               </div>
 
               <div>
-                <Label htmlFor="phone">Phone</Label>
+                <Label htmlFor="phone">Phone *</Label>
                 <Input
                   type="tel"
+                  required
                   value={formData.phone}
                   onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                 />
