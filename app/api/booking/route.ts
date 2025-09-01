@@ -56,7 +56,7 @@ Located at Level 34, Tower One, Times Square, Causeway Bay, we offer premium bus
 
 If you have any immediate questions, please don't hesitate to contact us:
 📧 sales@skybizcentre.com
-📞 +852 XXXX XXXX
+📞 +852 3951 0100
 
 Thank you for choosing Sky Business Centre.
 
