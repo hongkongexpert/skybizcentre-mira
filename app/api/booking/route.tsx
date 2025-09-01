@@ -5,11 +5,16 @@ const resend = new Resend(process.env.RESEND_API_KEY)
 
 export async function POST(request: NextRequest) {
   try {
+    console.log("[v0] Booking API route called")
+
     const body = await request.json()
+    console.log("[v0] Received booking data:", body)
+
     const { serviceType, date, time, duration, attendees, name, email, phone, company, requirements } = body
 
     // Validate required fields
     if (!serviceType || !date || !time || !name || !email) {
+      console.log("[v0] Missing required fields")
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 })
     }
 
@@ -36,27 +41,28 @@ export async function POST(request: NextRequest) {
       
       ${requirements ? `<h3>Special Requirements:</h3><p>${requirements}</p>` : ""}
       
-      <hr>
       <p><em>This booking request was submitted through the Sky Business Centre website.</em></p>
     `
 
+    console.log("[v0] Sending email...")
+
     // Send email to both recipients
-    const { data, error } = await resend.emails.send({
+    const emailResponse = await resend.emails.send({
       from: "Sky Business Centre <noreply@skybizcentre.com>",
       to: ["sales@skybizcentre.com", "shahseo5@gmail.com"],
+      replyTo: email,
       subject: `New Booking Request - ${serviceType} for ${date}`,
       html: emailContent,
-      replyTo: email,
     })
 
-    if (error) {
-      console.error("Email sending error:", error)
-      return NextResponse.json({ error: "Failed to send email" }, { status: 500 })
-    }
+    console.log("[v0] Email sent successfully:", emailResponse)
 
-    return NextResponse.json({ success: true, data })
+    return NextResponse.json({
+      success: true,
+      message: "Booking request sent successfully",
+    })
   } catch (error) {
-    console.error("API error:", error)
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 })
+    console.error("[v0] Error processing booking:", error)
+    return NextResponse.json({ error: "Failed to process booking request" }, { status: 500 })
   }
 }

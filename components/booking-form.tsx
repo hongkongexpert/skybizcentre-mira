@@ -39,9 +39,11 @@ export function BookingForm({ trigger }: BookingFormProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    console.log("[v0] Form submitted with data:", formData)
     setIsSubmitting(true)
 
     try {
+      console.log("[v0] Sending request to /api/booking")
       const response = await fetch("/api/booking", {
         method: "POST",
         headers: {
@@ -50,12 +52,16 @@ export function BookingForm({ trigger }: BookingFormProps) {
         body: JSON.stringify(formData),
       })
 
+      console.log("[v0] Response status:", response.status)
+      const responseData = await response.json()
+      console.log("[v0] Response data:", responseData)
+
       if (response.ok) {
+        console.log("[v0] Booking successful")
         toast({
           title: "Booking Request Sent!",
           description: "We'll contact you within 24 hours to confirm your booking.",
         })
-        // Reset form and close dialog
         setFormData({
           serviceType: "",
           date: "",
@@ -71,9 +77,11 @@ export function BookingForm({ trigger }: BookingFormProps) {
         setStep(1)
         setIsOpen(false)
       } else {
-        throw new Error("Failed to send booking request")
+        console.log("[v0] Booking failed:", responseData)
+        throw new Error(responseData.error || "Failed to send booking request")
       }
     } catch (error) {
+      console.error("[v0] Error submitting form:", error)
       toast({
         title: "Error",
         description: "Failed to send booking request. Please try again or contact us directly.",
