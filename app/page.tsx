@@ -117,6 +117,11 @@ export default function HomePage() {
           <div className="flex items-center gap-4">
             <a
               href="tel:+85221627306"
+              onClick={() => {
+                if (typeof window !== "undefined" && (window as any).gtag_report_conversion) {
+                  ;(window as any).gtag_report_conversion("tel:+85221627306")
+                }
+              }}
               className="hidden sm:flex items-center gap-2 text-foreground/80 hover:text-primary transition-colors"
             >
               <Phone className="h-4 w-4" />
@@ -185,7 +190,14 @@ export default function HomePage() {
                     </Button>
                   }
                 />
-                <a href="tel:+85221627306">
+                <a
+                  href="tel:+85221627306"
+                  onClick={() => {
+                    if (typeof window !== "undefined" && (window as any).gtag_report_conversion) {
+                      ;(window as any).gtag_report_conversion("tel:+85221627306")
+                    }
+                  }}
+                >
                   <Button
                     variant="outline"
                     size="lg"
@@ -217,7 +229,7 @@ export default function HomePage() {
               className="relative h-[400px] sm:h-[500px] lg:h-[600px] rounded-2xl overflow-hidden shadow-2xl group cursor-pointer"
               onClick={() =>
                 openImagePopup(
-                  "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Reception%20Area_3.jpg-todAwnXIZ4WcSmdBr8S2PGoAJKhLnm.jpeg",
+                  "/images/reception-20area-3.jpeg",
                   "Elegant Reception Area - Sky Business Centre Times Square",
                 )
               }
@@ -226,7 +238,7 @@ export default function HomePage() {
               <div className="relative h-full">
                 <div className="absolute inset-0">
                   <img
-                    src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Reception%20Area_3.jpg-todAwnXIZ4WcSmdBr8S2PGoAJKhLnm.jpeg"
+                    src="/images/reception-20area-3.jpeg"
                     alt="Elegant Reception Area - Sky Business Centre Times Square"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     loading="eager"
@@ -288,15 +300,10 @@ export default function HomePage() {
               <CardContent className="p-4 sm:p-6">
                 <div
                   className="aspect-[4/3] rounded-xl overflow-hidden mb-4 cursor-pointer"
-                  onClick={() =>
-                    openImagePopup(
-                      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/TS3419.jpg-d9dUZvuIX1hnADgOxgPYaynWDmTKTk.jpeg",
-                      "Private Office with Glass Walls",
-                    )
-                  }
+                  onClick={() => openImagePopup("/images/ts3419.jpeg", "Private Office with Glass Walls")}
                 >
                   <img
-                    src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/TS3419.jpg-d9dUZvuIX1hnADgOxgPYaynWDmTKTk.jpeg"
+                    src="/images/ts3419.jpeg"
                     alt="Private Office with Glass Walls"
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                     loading="lazy"
@@ -325,13 +332,13 @@ export default function HomePage() {
                   className="aspect-[4/3] rounded-xl overflow-hidden mb-4 cursor-pointer"
                   onClick={() =>
                     openImagePopup(
-                      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Meeting%20Room_Gobi_3.jpg-NJB8gDP4ikhGtWYIFdJxMyoOILBsJY.jpeg",
+                      "/images/meeting-20room-gobi-3.jpeg",
                       "Professional Conference Room with Modern Lighting",
                     )
                   }
                 >
                   <img
-                    src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Meeting%20Room_Gobi_3.jpg-NJB8gDP4ikhGtWYIFdJxMyoOILBsJY.jpeg"
+                    src="/images/meeting-20room-gobi-3.jpeg"
                     alt="Professional Conference Room with Modern Lighting"
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                     loading="lazy"
@@ -362,15 +369,10 @@ export default function HomePage() {
               <CardContent className="p-4 sm:p-6">
                 <div
                   className="aspect-[4/3] rounded-xl overflow-hidden mb-4 cursor-pointer"
-                  onClick={() =>
-                    openImagePopup(
-                      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Common%20Area_Booth_1.jpg-DNszjJtJYLlFW1WtUp7SS964lbwjvt.jpeg",
-                      "Private Booth Seating Areas",
-                    )
-                  }
+                  onClick={() => openImagePopup("/images/common-20area-booth-1.jpeg", "Private Booth Seating Areas")}
                 >
                   <img
-                    src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Common%20Area_Booth_1.jpg-DNszjJtJYLlFW1WtUp7SS964lbwjvt.jpeg"
+                    src="/images/common-20area-booth-1.jpeg"
                     alt="Private Booth Seating Areas"
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                     loading="lazy"
@@ -416,15 +418,15 @@ export default function HomePage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
               {[
                 {
-                  src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Reception%20Area_1.jpg-w5aSK776Spupq1TnjrikKEQOEoxx3M.jpeg",
+                  src: "/images/reception-20area-1.jpeg",
                   alt: "Main Reception and Lounge Area",
                 },
                 {
-                  src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Reception%20Area_3.jpg-todAwnXIZ4WcSmdBr8S2PGoAJKhLnm.jpeg",
+                  src: "/images/reception-20area-3.jpeg",
                   alt: "Spacious Reception with Modern Design",
                 },
                 {
-                  src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Reception%20Area_5.jpg-7lt0rBBA6WChDdeUzUAZuPARIKprpm.jpeg",
+                  src: "/images/reception-20area-5.jpeg",
                   alt: "Private Booth Reception Areas",
                 },
               ].map((image, index) => (
@@ -452,19 +454,19 @@ export default function HomePage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
               {[
                 {
-                  src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Common%20Area_1.jpg-iVb9srjlFaKEdZOiimZQGDaWXGQ3RF.jpeg",
+                  src: "/images/common-20area-1.jpeg",
                   alt: "Elegant Seating Area with Modern Furniture",
                 },
                 {
-                  src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Common%20Area_11.jpg-q01DSNEB93BSs87wsj6X8Ms7D3UkDG.jpeg",
+                  src: "/images/common-20area-11.jpeg",
                   alt: "Modern Lounge with Kitchen and Bar Area",
                 },
                 {
-                  src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Common%20Area_7.jpg-HCHIAxjfvqstPrdNpmAkVWI55dU6Sq.jpeg",
+                  src: "/images/common-20area-7.jpeg",
                   alt: "Active Common Area with Kitchen",
                 },
                 {
-                  src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Common%20Area_Booth_1.jpg-DNszjJtJYLlFW1WtUp7SS964lbwjvt.jpeg",
+                  src: "/images/common-20area-booth-1.jpeg",
                   alt: "Private Booth Seating Areas",
                 },
               ].map((image, index) => (
@@ -492,15 +494,15 @@ export default function HomePage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
               {[
                 {
-                  src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Sky_20201113_32.jpg-7HzBnQLjA2JceEyLUSN2Drbp3gqRlw.jpeg",
+                  src: "/images/sky-20201113-32.jpeg",
                   alt: "Open Workspace with City Views",
                 },
                 {
-                  src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/WhatsApp%20Image%202025-08-13%20at%2016.29.30.jpg-JUFAVhHYhxN6jSkSIf3UjGq97e9IMn.jpeg",
+                  src: "/images/whatsapp-20image-202025-08-13-20at-2016.jpeg",
                   alt: "Individual Workstation Setup",
                 },
                 {
-                  src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/TS3402.jpg-5QyC5VKQdSIVK2DJmd2plg6ckyNPap.jpeg",
+                  src: "/images/ts3402.jpeg",
                   alt: "Team Office with Harbor Views",
                 },
               ].map((image, index) => (
@@ -528,11 +530,11 @@ export default function HomePage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
               {[
                 {
-                  src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Pantry_3.jpg-RcUNBnEhmF3H4Rr3lI7n2jHvS5RSIB.jpeg",
+                  src: "/images/pantry-3.jpeg",
                   alt: "Modern Kitchen with Premium Appliances",
                 },
                 {
-                  src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Pantry_4.jpg-xh8GtDtsriNwe5MBiAhOuu3LCM4t6l.jpeg",
+                  src: "/images/pantry-4.jpeg",
                   alt: "Professional Coffee Machines",
                 },
               ].map((image, index) => (
@@ -569,35 +571,35 @@ export default function HomePage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
             {[
               {
-                src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Meeting%20Room_Gobi_3.jpg-NJB8gDP4ikhGtWYIFdJxMyoOILBsJY.jpeg",
+                src: "/images/meeting-20room-gobi-3.jpeg",
                 alt: "Gobi Conference Room with Modern Lighting",
               },
               {
-                src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Meeting%20Room_Gobi_1.jpg-HV7YcDzOAGhjzUcs3o67GUOOYwa5pa.jpeg",
+                src: "/images/meeting-20room-gobi-1.jpeg",
                 alt: "Gobi Meeting Room with Abstract Art",
               },
               {
-                src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Meeting%20Room_Salzbury_2.jpg-7cCJnwvbtOvyYBWeAzrPS35PidfzSv.jpeg",
+                src: "/images/meeting-20room-salzbury-2.jpeg",
                 alt: "Salzburg Meeting Room Entrance",
               },
               {
-                src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/TS_Meeting%20Room_Gobi_1.jpg-ieIKJi4L9rwgT095FtjczZMkJyyte7.jpeg",
+                src: "/images/ts-meeting-20room-gobi-1.jpeg",
                 alt: "Executive Conference Room",
               },
               {
-                src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/TS_Meeting%20Room_Gobi_2.jpg-RurJXyTL1M7NfddZVeuKrogi5w4O9t.jpeg",
+                src: "/images/ts-meeting-20room-gobi-2.jpeg",
                 alt: "Modern Meeting Space with AV Equipment",
               },
               {
-                src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Meeting%20Room_Salzbury_1.jpg-CGpG7yBbPmxrDe3JT94RXRttwAdtun.jpeg",
+                src: "/images/meeting-20room-salzbury-1.jpeg",
                 alt: "Salzburg Conference Room Interior",
               },
               {
-                src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Meeting%20Room_Gobi_4.jpg-OicNAZEonMYryo4eg2oilDqrWBZNgF.jpeg",
+                src: "/images/meeting-20room-gobi-4.jpeg",
                 alt: "Gobi Room Entrance with Branding",
               },
               {
-                src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Meeting%20Room_Gobi_2.jpg-e5KwHLgDhvlVquONan967bX7tbWr3o.jpeg",
+                src: "/images/meeting-20room-gobi-2.jpeg",
                 alt: "Premium Conference Room with City Views",
               },
             ].map((image, index) => (
@@ -1095,15 +1097,10 @@ export default function HomePage() {
           <div className="mb-8 sm:mb-12">
             <div
               className="aspect-[16/9] sm:aspect-[21/9] rounded-xl overflow-hidden shadow-lg mx-auto max-w-4xl cursor-pointer group hover:shadow-2xl transition-all duration-500"
-              onClick={() =>
-                openImagePopup(
-                  "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Pantry_4.jpg-xh8GtDtsriNwe5MBiAhOuu3LCM4t6l.jpeg",
-                  "Premium Coffee Machines and Pantry Facilities",
-                )
-              }
+              onClick={() => openImagePopup("/images/pantry-4.jpeg", "Premium Coffee Machines and Pantry Facilities")}
             >
               <img
-                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Pantry_4.jpg-xh8GtDtsriNwe5MBiAhOuu3LCM4t6l.jpeg"
+                src="/images/pantry-4.jpeg"
                 alt="Premium Coffee Machines and Pantry Facilities"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 loading="lazy"
@@ -1379,7 +1376,15 @@ d22.2783!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x340400f9df0e7b85%3A
             </div>
 
             <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-6 text-sm">
-              <a href="tel:+85239510100" className="flex items-center gap-2 hover:text-background/80">
+              <a
+                href="tel:+85239510100"
+                onClick={() => {
+                  if (typeof window !== "undefined" && (window as any).gtag_report_conversion) {
+                    ;(window as any).gtag_report_conversion("tel:+85239510100")
+                  }
+                }}
+                className="flex items-center gap-2 hover:text-background/80"
+              >
                 <Phone className="h-4 w-4" />
                 (852) 3951 0100
               </a>
@@ -1397,6 +1402,11 @@ d22.2783!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x340400f9df0e7b85%3A
         <div className="flex gap-3">
           <a
             href="tel:+85221627306"
+            onClick={() => {
+              if (typeof window !== "undefined" && (window as any).gtag_report_conversion) {
+                ;(window as any).gtag_report_conversion("tel:+85221627306")
+              }
+            }}
             className="flex-1 bg-slate-900 hover:bg-slate-800 text-white py-3 px-4 rounded-lg font-semibold text-center transition-all duration-300 hover:shadow-lg"
           >
             Call Now

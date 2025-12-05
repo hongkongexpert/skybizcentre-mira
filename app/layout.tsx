@@ -1,9 +1,19 @@
 import type React from "react"
 import type { Metadata, Viewport } from "next"
-import { GeistSans } from "geist/font/sans"
-import { GeistMono } from "geist/font/mono"
-import { Playfair_Display } from "next/font/google"
+import { Inter, JetBrains_Mono, Playfair_Display } from "next/font/google"
 import "./globals.css"
+
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-sans",
+})
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-mono",
+})
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -74,16 +84,32 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-title" content="Sky Business Centre" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <style>{`
-html {
-  font-family: ${GeistSans.style.fontFamily};
-  --font-sans: ${GeistSans.variable};
-  --font-mono: ${GeistMono.variable};
-  --font-playfair: ${playfair.variable};
-}
-        `}</style>
+        <script async src="https://www.googletagmanager.com/gtag/js?id=AW-959736544"></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'AW-959736544');
+              
+              function gtag_report_conversion(url) {
+                var callback = function () {
+                  if (typeof(url) != 'undefined') {
+                    window.location = url;
+                  }
+                };
+                gtag('event', 'conversion', {
+                  'send_to': 'AW-959736544/xdNZCNS0q8IDEODV0ckD',
+                  'event_callback': callback
+                });
+                return false;
+              }
+            `,
+          }}
+        />
       </head>
-      <body className={`${playfair.variable} antialiased`}>{children}</body>
+      <body className={`${inter.variable} ${jetbrainsMono.variable} ${playfair.variable} antialiased`}>{children}</body>
     </html>
   )
 }
