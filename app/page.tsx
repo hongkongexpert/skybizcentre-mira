@@ -117,7 +117,7 @@ export default function HomePage() {
           <div className="flex items-center gap-4">
             <a
               href="tel:+85221627306"
-              onClick={() => {
+              onClick={(e) => {
                 if (typeof window !== "undefined" && (window as any).gtag_report_conversion) {
                   ;(window as any).gtag_report_conversion("tel:+85221627306")
                 }
@@ -192,7 +192,7 @@ export default function HomePage() {
                 />
                 <a
                   href="tel:+85221627306"
-                  onClick={() => {
+                  onClick={(e) => {
                     if (typeof window !== "undefined" && (window as any).gtag_report_conversion) {
                       ;(window as any).gtag_report_conversion("tel:+85221627306")
                     }
@@ -1378,7 +1378,7 @@ d22.2783!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x340400f9df0e7b85%3A
             <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-6 text-sm">
               <a
                 href="tel:+85239510100"
-                onClick={() => {
+                onClick={(e) => {
                   if (typeof window !== "undefined" && (window as any).gtag_report_conversion) {
                     ;(window as any).gtag_report_conversion("tel:+85239510100")
                   }
@@ -1402,7 +1402,7 @@ d22.2783!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x340400f9df0e7b85%3A
         <div className="flex gap-3">
           <a
             href="tel:+85221627306"
-            onClick={() => {
+            onClick={(e) => {
               if (typeof window !== "undefined" && (window as any).gtag_report_conversion) {
                 ;(window as any).gtag_report_conversion("tel:+85221627306")
               }
