@@ -93,17 +93,11 @@ export default function RootLayout({
               gtag('js', new Date());
               gtag('config', 'AW-959736544');
               
-              function gtag_report_conversion(url) {
-                var callback = function () {
-                  if (typeof(url) != 'undefined') {
-                    window.location = url;
-                  }
-                };
+              function gtag_report_conversion() {
                 gtag('event', 'conversion', {
-                  'send_to': 'AW-959736544/xdNZCNS0q8IDEODV0ckD',
-                  'event_callback': callback
+                  'send_to': 'AW-959736544/xdNZCNS0q8IDEODV0ckD'
                 });
-                return false;
+                return true;
               }
             `,
           }}
