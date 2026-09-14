@@ -1,7 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { Resend } from "resend"
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+const resend = new Resend(process.env.RESEND_API_KEY || "re_placeholder")
 
 export async function POST(request: NextRequest) {
   console.log("[v0] API route called")
@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     console.log("[v0] Request body:", body)
 
-    const { service, date, time, name, email, phone, company, requirements } = body
+    const { service, groupSize, date, time, name, email, phone, company, requirements } = body
 
     // Validate required fields
     if (!service || !date || !time || !name || !email || !phone) {
@@ -19,9 +19,10 @@ export async function POST(request: NextRequest) {
     }
 
     const salesEmailContent = `
-New Booking Enquiry - Sky Business Centre
+New Booking Enquiry - Sky Business Centre Mira Place
 
 Service: ${service}
+Group Size: ${groupSize || "Not provided"}
 Date: ${date}
 Time: ${time}
 
@@ -41,7 +42,7 @@ Please follow up with the customer within 24 hours.
     const customerEmailContent = `
 Dear ${name},
 
-Thank you for your booking enquiry with Sky Business Centre at Times Square, Causeway Bay.
+Thank you for your booking enquiry with Sky Business Centre at Mira Place, Tsim Sha Tsui.
 
 Your Booking Details:
 Service: ${service}
@@ -52,34 +53,34 @@ ${requirements ? `Special Requirements: ${requirements}` : ""}
 
 We have received your request and our team will contact you within 24 hours to confirm your booking and discuss any specific requirements.
 
-Located at Level 34, Tower One, Times Square, Causeway Bay, we offer premium business facilities with stunning harbor views and world-class amenities.
+Located at 1001, 10/F Mira Place Tower A, 132 Nathan Road, Tsim Sha Tsui, our new centre opens November 2026 — premium business facilities in the heart of Kowloon's shopping and business district.
 
 If you have any immediate questions, please don't hesitate to contact us:
 📧 sales@skybizcentre.com
-📞 +852 3951 0100
+📞 +852 2162 7306
 
 Thank you for choosing Sky Business Centre.
 
 Best regards,
 Sky Business Centre Team
-Level 34, Tower One, Times Square
-1 Matheson Street, Causeway Bay, Hong Kong
+1001, 10/F Mira Place Tower A
+132 Nathan Road, Tsim Sha Tsui, Kowloon, Hong Kong
     `.trim()
 
     console.log("[v0] Sending emails...")
 
     const salesEmailResponse = await resend.emails.send({
-      from: "bookings@timessquare.skybizcentre.com",
+      from: "bookings@skybizcentre.com",
       to: ["sales@skybizcentre.com", "shahseo5@gmail.com"],
-      subject: `New Booking Enquiry - ${service} - ${name}`,
+      subject: `New Booking Enquiry - Mira Place - ${service} - ${name}`,
       text: salesEmailContent,
       replyTo: email,
     })
 
     const customerEmailResponse = await resend.emails.send({
-      from: "bookings@timessquare.skybizcentre.com",
+      from: "bookings@skybizcentre.com",
       to: [email],
-      subject: `Booking Confirmation - Sky Business Centre - ${service}`,
+      subject: `Booking Confirmation - Sky Business Centre Mira Place - ${service}`,
       text: customerEmailContent,
       replyTo: "sales@skybizcentre.com",
     })

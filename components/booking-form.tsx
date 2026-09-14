@@ -19,12 +19,15 @@ import {
   CheckCircle,
 } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
+import { useLanguage } from "@/lib/i18n/LanguageContext"
 
 interface BookingFormProps {
   trigger: React.ReactNode
 }
 
 export function BookingForm({ trigger }: BookingFormProps) {
+  const { lang, t } = useLanguage()
+  const f = t.form
   const [step, setStep] = useState(1)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
@@ -46,26 +49,26 @@ export function BookingForm({ trigger }: BookingFormProps) {
   const serviceOptions = [
     {
       id: "private-office",
-      title: "Private Office",
+      title: f.svcPrivateOffice,
       icon: Building2,
     },
     {
       id: "meeting-room",
-      title: "Meeting Room",
+      title: f.svcMeetingRoom,
       icon: Users,
     },
     {
       id: "virtual-office",
-      title: "Virtual Office",
+      title: f.svcVirtualOffice,
       icon: Globe, // Changed from Mail to Globe icon for virtual office
     },
   ]
 
   const groupSizeOptions = [
-    { id: "1-2", label: "1-2 people" },
-    { id: "3-5", label: "3-5 people" },
-    { id: "6-10", label: "6-10 people" },
-    { id: "10+", label: "10+ people" },
+    { id: "1-2", label: f.people12 },
+    { id: "3-5", label: f.people35 },
+    { id: "6-10", label: f.people610 },
+    { id: "10+", label: f.people10plus },
   ]
 
   const timeSlots = [
@@ -115,7 +118,7 @@ export function BookingForm({ trigger }: BookingFormProps) {
       if (dayOfWeek === 0 || dayOfWeek === 6) {
         e.target.value = ""
         toast({
-          title: "Weekends Not Available",
+          title: f.toastWeekend,
           variant: "destructive",
         })
         return
@@ -127,7 +130,7 @@ export function BookingForm({ trigger }: BookingFormProps) {
   const validateStep1 = () => {
     if (!formData.serviceType || !formData.groupSize) {
       toast({
-        title: "Please make your selections",
+        title: f.toastSelect,
         variant: "destructive",
       })
       return false
@@ -138,7 +141,7 @@ export function BookingForm({ trigger }: BookingFormProps) {
   const validateStep2 = () => {
     if (!formData.date || !formData.time) {
       toast({
-        title: "Please select date and time",
+        title: f.toastDateTime,
         variant: "destructive",
       })
       return false
@@ -146,7 +149,7 @@ export function BookingForm({ trigger }: BookingFormProps) {
 
     if (!isWeekday(formData.date)) {
       toast({
-        title: "Invalid Date",
+        title: f.toastInvalidDate,
         variant: "destructive",
       })
       return false
@@ -169,7 +172,7 @@ export function BookingForm({ trigger }: BookingFormProps) {
 
     if (!formData.name || !formData.email || !formData.phone) {
       toast({
-        title: "Missing Information",
+        title: f.toastMissing,
         variant: "destructive",
       })
       return
@@ -206,7 +209,7 @@ export function BookingForm({ trigger }: BookingFormProps) {
       }
     } catch (error) {
       toast({
-        title: "Error",
+        title: f.toastError,
         variant: "destructive",
       })
     } finally {
@@ -261,7 +264,7 @@ export function BookingForm({ trigger }: BookingFormProps) {
 
       if (dayOfWeek === 0 || dayOfWeek === 6) {
         toast({
-          title: "Weekends Not Available",
+          title: f.toastWeekend,
           variant: "destructive",
         })
       }
@@ -289,21 +292,8 @@ export function BookingForm({ trigger }: BookingFormProps) {
   const renderCalendar = () => {
     const daysInMonth = getDaysInMonth(currentMonth)
     const firstDay = getFirstDayOfMonth(currentMonth)
-    const monthNames = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ]
-    const dayNames = ["S", "M", "T", "W", "T", "F", "S"]
+    const monthNames = f.months
+    const dayNames = f.days
 
     const days = []
     const selectedDate = formData.date ? new Date(formData.date + "T00:00:00") : null
@@ -391,7 +381,7 @@ export function BookingForm({ trigger }: BookingFormProps) {
               )}
             </div>
             <DialogTitle className="font-playfair text-lg text-foreground">
-              {isSuccess ? "Booking Confirmed!" : "Book Tour"}
+              {isSuccess ? f.successTitle : f.title}
             </DialogTitle>
           </div>
 
@@ -411,37 +401,37 @@ export function BookingForm({ trigger }: BookingFormProps) {
                 <CheckCircle className="h-8 w-8 text-green-600" />
               </div>
               <div className="space-y-2">
-                <h3 className="text-xl font-semibold text-foreground">Thank You!</h3>
-                <p className="text-muted-foreground">Your booking request has been submitted successfully.</p>
+                <h3 className="text-xl font-semibold text-foreground">{f.thankYou}</h3>
+                <p className="text-muted-foreground">{f.successBody}</p>
                 <p className="text-sm text-muted-foreground">
-                  A confirmation email has been sent to <strong>{formData.email}</strong>
+                  {f.successEmail} <strong>{formData.email}</strong>
                 </p>
               </div>
               <div className="bg-muted/50 rounded-lg p-4 text-left space-y-1">
                 <p className="text-sm">
-                  <strong>Service:</strong> {serviceOptions.find((s) => s.id === formData.serviceType)?.title}
+                  <strong>{f.summaryService}</strong> {serviceOptions.find((s) => s.id === formData.serviceType)?.title}
                 </p>
                 <p className="text-sm">
-                  <strong>Date:</strong>{" "}
-                  {new Date(formData.date + "T00:00:00").toLocaleDateString("en-US", {
+                  <strong>{f.summaryDate}</strong>{" "}
+                  {new Date(formData.date + "T00:00:00").toLocaleDateString(lang === "zh" ? "zh-HK" : "en-US", {
                     weekday: "long",
                     month: "long",
                     day: "numeric",
                   })}
                 </p>
                 <p className="text-sm">
-                  <strong>Time:</strong> {timeSlots.find((t) => t.id === formData.time)?.label}
+                  <strong>{f.summaryTime}</strong> {timeSlots.find((t) => t.id === formData.time)?.label}
                 </p>
                 <p className="text-sm">
-                  <strong>Group Size:</strong> {groupSizeOptions.find((g) => g.id === formData.groupSize)?.label}
+                  <strong>{f.summaryGroup}</strong> {groupSizeOptions.find((g) => g.id === formData.groupSize)?.label}
                 </p>
               </div>
               <div className="flex gap-3">
                 <Button type="button" variant="outline" onClick={() => setIsOpen(false)} className="flex-1 h-10">
-                  Close
+                  {f.close}
                 </Button>
                 <Button type="button" onClick={handleNewBooking} className="flex-1 h-10">
-                  Book Another
+                  {f.bookAnother}
                 </Button>
               </div>
             </div>
@@ -450,7 +440,7 @@ export function BookingForm({ trigger }: BookingFormProps) {
           {step === 1 && (
             <div className="space-y-4">
               <div>
-                <Label className="text-base font-semibold mb-3 block">Service Type</Label>
+                <Label className="text-base font-semibold mb-3 block">{f.serviceType}</Label>
                 <div className="grid gap-3">
                   {serviceOptions.map((option) => {
                     const Icon = option.icon
@@ -495,7 +485,7 @@ export function BookingForm({ trigger }: BookingFormProps) {
               </div>
 
               <div>
-                <Label className="text-base font-semibold mb-4 block">How many people?</Label>
+                <Label className="text-base font-semibold mb-4 block">{f.groupSize}</Label>
                 <div className="grid grid-cols-2 gap-3">
                   {groupSizeOptions.map((option) => (
                     <button
@@ -534,7 +524,7 @@ export function BookingForm({ trigger }: BookingFormProps) {
                 onClick={handleNext}
                 className="w-full h-12 text-base font-semibold bg-primary hover:bg-primary/90 shadow-md hover:shadow-lg transition-all duration-300"
               >
-                Continue to Date & Time
+                {f.continueDateTime}
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </div>
@@ -543,7 +533,7 @@ export function BookingForm({ trigger }: BookingFormProps) {
           {step === 2 && (
             <div className="space-y-3">
               <div>
-                <Label className="text-base font-semibold mb-2 block">Date</Label>
+                <Label className="text-base font-semibold mb-2 block">{f.date}</Label>
                 {renderCalendar()}
                 {formData.date && (
                   <div className="mt-2 p-2 bg-primary/5 rounded-lg border border-primary/20">
@@ -559,7 +549,7 @@ export function BookingForm({ trigger }: BookingFormProps) {
               </div>
 
               <div>
-                <Label className="text-base font-semibold mb-2 block">Time</Label>
+                <Label className="text-base font-semibold mb-2 block">{f.time}</Label>
                 <div className="grid grid-cols-2 gap-2 max-h-40 overflow-y-auto">
                   {timeSlots.map((slot) => (
                     <button
@@ -599,14 +589,14 @@ export function BookingForm({ trigger }: BookingFormProps) {
                   className="flex-1 h-10 text-sm border-2 bg-transparent"
                 >
                   <ArrowLeft className="mr-1 h-3 w-3" />
-                  Back
+                  {f.back}
                 </Button>
                 <Button
                   type="button"
                   onClick={handleNext}
                   className="flex-2 h-10 font-semibold bg-primary hover:bg-primary/90 shadow-md hover:shadow-lg transition-all duration-300 text-sm"
                 >
-                  Continue to Contact Details
+                  {f.continueContact}
                   <ArrowRight className="ml-1 h-3 w-3" />
                 </Button>
               </div>
@@ -618,32 +608,32 @@ export function BookingForm({ trigger }: BookingFormProps) {
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <Label htmlFor="name" className="text-sm font-medium">
-                    Name *
+                    {f.name}
                   </Label>
                   <Input
                     required
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     className="h-10 mt-1 border-2 hover:border-primary/50 focus:border-primary text-sm"
-                    placeholder="John Smith"
+                    placeholder={f.namePlaceholder}
                   />
                 </div>
                 <div>
                   <Label htmlFor="company" className="text-sm font-medium">
-                    Company (optional)
+                    {f.company}
                   </Label>
                   <Input
                     value={formData.company}
                     onChange={(e) => setFormData({ ...formData, company: e.target.value })}
                     className="h-10 mt-1 border-2 hover:border-primary/50 focus:border-primary text-sm"
-                    placeholder="Your Company Ltd"
+                    placeholder={f.companyPlaceholder}
                   />
                 </div>
               </div>
 
               <div>
                 <Label htmlFor="email" className="text-sm font-medium">
-                  Email *
+                  {f.email}
                 </Label>
                 <Input
                   type="email"
@@ -651,13 +641,13 @@ export function BookingForm({ trigger }: BookingFormProps) {
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   className="h-10 mt-1 border-2 hover:border-primary/50 focus:border-primary text-sm"
-                  placeholder="john@company.com"
+                  placeholder={f.emailPlaceholder}
                 />
               </div>
 
               <div>
                 <Label htmlFor="phone" className="text-sm font-medium">
-                  Phone *
+                  {f.phone}
                 </Label>
                 <Input
                   type="tel"
@@ -665,16 +655,16 @@ export function BookingForm({ trigger }: BookingFormProps) {
                   value={formData.phone}
                   onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                   className="h-10 mt-1 border-2 hover:border-primary/50 focus:border-primary text-sm"
-                  placeholder="+852 9123 4567"
+                  placeholder={f.phonePlaceholder}
                 />
               </div>
 
               <div>
                 <Label htmlFor="requirements" className="text-sm font-medium">
-                  Requirements
+                  {f.requirements}
                 </Label>
                 <Textarea
-                  placeholder="Special needs?"
+                  placeholder={f.requirementsPlaceholder}
                   value={formData.requirements}
                   onChange={(e) => setFormData({ ...formData, requirements: e.target.value })}
                   className="mt-1 min-h-[60px] border-2 hover:border-primary/50 focus:border-primary text-sm"
@@ -689,14 +679,14 @@ export function BookingForm({ trigger }: BookingFormProps) {
                   className="flex-1 h-10 text-sm border-2 bg-transparent"
                 >
                   <ArrowLeft className="mr-1 h-3 w-3" />
-                  Back
+                  {f.back}
                 </Button>
                 <Button
                   type="submit"
                   className="flex-2 h-10 text-sm font-bold bg-primary hover:bg-primary/90 shadow-md hover:shadow-lg transition-all duration-300"
                   disabled={isSubmitting}
                 >
-                  {isSubmitting ? "Booking..." : "Book Tour"}
+                  {isSubmitting ? f.booking : f.submit}
                 </Button>
               </div>
             </div>

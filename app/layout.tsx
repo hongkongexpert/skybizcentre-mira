@@ -1,6 +1,7 @@
 import type React from "react"
 import type { Metadata, Viewport } from "next"
 import { Inter, JetBrains_Mono, Playfair_Display } from "next/font/google"
+import { LanguageProvider } from "@/lib/i18n/LanguageContext"
 import "./globals.css"
 
 const inter = Inter({
@@ -22,12 +23,12 @@ const playfair = Playfair_Display({
 })
 
 export const metadata: Metadata = {
-  title: "Premium Office Space Hong Kong | Times Square Level 34 | Sky Business Centre",
+  title: "Premium Office Space Tsim Sha Tsui | Mira Place, Nathan Road | Sky Business Centre",
   description:
-    "Premium serviced offices at Times Square Level 34, Causeway Bay. Fully furnished, all-inclusive, immediate move-in. Private offices, meeting rooms, coworking space. Book your tour today.",
+    "Premium serviced offices opening November 2026 at 1001, 10/F Mira Place Tower A, 132 Nathan Road, Tsim Sha Tsui. Fully furnished, all-inclusive. Early bird: 2 months rent free on 12-month contracts. Private offices, meeting rooms, coworking space. Book your tour today.",
   generator: "v0.app",
   keywords:
-    "premium office space Hong Kong, serviced office Times Square, business centre Causeway Bay, private office rental Hong Kong, meeting rooms Hong Kong, coworking space, executive office, furnished office Hong Kong",
+    "premium office space Hong Kong, serviced office Tsim Sha Tsui, business centre Mira Place, private office rental Nathan Road, meeting rooms Hong Kong, coworking space Tsim Sha Tsui, executive office, furnished office Hong Kong",
   authors: [{ name: "Sky Business Centre" }],
   robots: {
     index: true,
@@ -41,17 +42,18 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "Move Into Premium Office Space This Week - Save 20%",
+    title: "New Tsim Sha Tsui Centre Opening Nov 2026 - 2 Months Rent Free",
     description:
-      "Premium offices at Times Square Level 34. No setup fees, immediate move-in. Limited time 20% discount.",
+      "Premium offices at Mira Place Tower A, 132 Nathan Road, Tsim Sha Tsui. No setup fees. Early bird: 2 months rent free on 12-month contracts.",
     type: "website",
     locale: "en_HK",
+    alternateLocale: "zh_HK",
     siteName: "Sky Business Centre",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Premium Office Space - Times Square Level 34",
-    description: "Move in this week and save 20%. No setup fees, immediate availability.",
+    title: "Premium Office Space - Mira Place, Tsim Sha Tsui",
+    description: "Opening November 2026. Early bird: 2 months rent free on 12-month contracts.",
   },
 }
 
@@ -103,7 +105,9 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={`${inter.variable} ${jetbrainsMono.variable} ${playfair.variable} antialiased`}>{children}</body>
+      <body className={`${inter.variable} ${jetbrainsMono.variable} ${playfair.variable} antialiased`}>
+        <LanguageProvider>{children}</LanguageProvider>
+      </body>
     </html>
   )
 }

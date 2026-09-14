@@ -26,6 +26,7 @@ import {
 } from "lucide-react"
 import { BookingForm } from "@/components/booking-form"
 import Image from "next/image"
+import { useLanguage } from "@/lib/i18n/LanguageContext"
 
 const ImagePopup = ({ src, alt, isOpen, onClose, onPrev, onNext, showNavigation = false }) => {
   if (!isOpen) return null
@@ -67,10 +68,22 @@ const ImagePopup = ({ src, alt, isOpen, onClose, onPrev, onNext, showNavigation 
   )
 }
 
+const FACILITY_ICONS = [Clock, Wifi, Shield, Coffee, Printer, Users, Phone, Building]
+
+function getEarlyBirdDeadline(lang: "en" | "zh") {
+  const now = new Date()
+  const deadline = new Date(now.getFullYear(), now.getMonth() + 2, 0)
+  if (lang === "zh") return `${deadline.getFullYear()}年${deadline.getMonth() + 1}月${deadline.getDate()}日`
+  return deadline.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })
+}
+
 export default function HomePage() {
+  const { lang, setLang, t } = useLanguage()
   const [popupImage, setPopupImage] = useState(null)
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [imageGallery, setImageGallery] = useState([])
+
+  const deadline = getEarlyBirdDeadline(lang)
 
   const openImagePopup = (src, alt, gallery = [], index = 0) => {
     setPopupImage({ src, alt })
@@ -95,6 +108,53 @@ export default function HomePage() {
     setPopupImage(imageGallery[newIndex])
   }
 
+  const receptionImages = [
+    { src: "/images/mira/reception-1.jpg", alt: t.imgReception1 },
+    { src: "/images/mira/reception-2.jpg", alt: t.imgReception2 },
+    { src: "/images/mira/reception-3.jpg", alt: t.imgReception3 },
+  ]
+
+  const loungeImages = [
+    { src: "/images/mira/lounge-1.jpg", alt: t.imgLounge1 },
+    { src: "/images/mira/lounge-2.jpg", alt: t.imgLounge2 },
+    { src: "/images/mira/lounge-3.jpg", alt: t.imgLounge3 },
+    { src: "/images/mira/corridor-1.jpg", alt: t.imgCorridor },
+  ]
+
+  const officeImages = [
+    { src: "/images/mira/office-1.jpg", alt: t.imgOffice1 },
+    { src: "/images/mira/office-2.jpg", alt: t.imgOffice2 },
+    { src: "/images/mira/office-3.jpg", alt: t.imgOffice3 },
+    { src: "/images/mira/office-4.jpg", alt: t.imgOffice4 },
+    { src: "/images/mira/office-5.jpg", alt: t.imgOffice5 },
+    { src: "/images/mira/office-6.jpg", alt: t.imgOffice6 },
+  ]
+
+  const pantryImages = [
+    { src: "/images/mira/pantry-1.jpg", alt: t.imgPantry1 },
+    { src: "/images/mira/pantry-2.jpg", alt: t.imgPantry2 },
+  ]
+
+  const meetingImages = [
+    { src: "/images/mira/meeting-1.jpg", alt: t.imgMeeting1 },
+    { src: "/images/mira/meeting-2.jpg", alt: t.imgMeeting2 },
+    { src: "/images/mira/meeting-3.jpg", alt: t.imgMeeting3 },
+    { src: "/images/mira/meeting-4.jpg", alt: t.imgMeeting4 },
+    { src: "/images/mira/meeting-5.jpg", alt: t.imgMeeting5 },
+  ]
+
+  const reviewAvatars: Record<string, { img?: string; initials?: string; gradient?: string }> = {
+    "Sarah Liu": { img: "/professional-asian-woman-with-short-black-hair-in-.png" },
+    "Michael Chen": { img: "/professional-asian-man-with-glasses-in-business-su.png" },
+    "Amanda Wong": { initials: "AW", gradient: "from-pink-500 to-rose-600" },
+    "David Kim": { img: "/professional-korean-man-in-business-attire-with-fr.png" },
+    "Jennifer Tan": { initials: "JT", gradient: "from-purple-500 to-indigo-600" },
+    "Robert Lee": { initials: "RL", gradient: "from-cyan-500 to-blue-600" },
+    "Lisa Zhang": { img: "/professional-chinese-woman-with-long-hair-in-busin.png" },
+    "Mark Harrison": { initials: "MH", gradient: "from-yellow-500 to-orange-600" },
+    "Sophie Taylor": { initials: "ST", gradient: "from-red-500 to-pink-600" },
+  }
+
   return (
     <div className="min-h-screen bg-background">
       <ImagePopup
@@ -115,6 +175,20 @@ export default function HomePage() {
           </div>
 
           <div className="flex items-center gap-4">
+            <div className="flex items-center rounded-full border border-border overflow-hidden text-xs font-semibold">
+              <button
+                onClick={() => setLang("en")}
+                className={`px-3 py-1.5 transition-colors ${lang === "en" ? "bg-primary text-white" : "text-foreground/70 hover:text-primary"}`}
+              >
+                EN
+              </button>
+              <button
+                onClick={() => setLang("zh")}
+                className={`px-3 py-1.5 transition-colors ${lang === "zh" ? "bg-primary text-white" : "text-foreground/70 hover:text-primary"}`}
+              >
+                繁
+              </button>
+            </div>
             <a
               href="tel:+85221627306"
               onClick={(e) => {
@@ -125,12 +199,12 @@ export default function HomePage() {
               className="hidden sm:flex items-center gap-2 text-foreground/80 hover:text-primary transition-colors"
             >
               <Phone className="h-4 w-4" />
-              <span className="font-semibold text-sm">+852 2162 7306</span>
+              <span className="font-semibold text-sm">{t.phoneDisplay}</span>
             </a>
             <BookingForm
               trigger={
                 <Button className="bg-primary hover:bg-primary/90 shadow-md font-semibold text-sm px-6 hover:shadow-lg transition-all duration-300">
-                  Book Tour - Save 20%
+                  {t.bookTourCta}
                 </Button>
               }
             />
@@ -143,17 +217,17 @@ export default function HomePage() {
           <div className="flex items-center justify-center gap-4 sm:gap-6 text-sm text-foreground/70">
             <div className="flex items-center gap-2">
               <Star className="h-4 w-4 text-yellow-500 fill-current" />
-              <span className="font-semibold">500+ Happy Clients</span>
+              <span className="font-semibold">{t.trustClients}</span>
             </div>
             <span className="text-border">•</span>
-            <span className="font-semibold">Featured in SCMP</span>
+            <span className="font-semibold">{t.trustScmp}</span>
             <span className="text-border hidden sm:inline">•</span>
-            <span className="font-semibold hidden sm:inline">Fortune 500 Neighbors</span>
+            <span className="font-semibold hidden sm:inline">{t.trustFortune}</span>
           </div>
         </div>
       </div>
 
-      {/* Hero Section - Reduced padding and optimized typography for better viewport fit */}
+      {/* Hero Section */}
       <section className="relative py-8 sm:py-12 lg:py-16 bg-gradient-to-br from-primary/3 via-background to-secondary/3">
         <div className="container mx-auto px-4 max-w-8xl">
           <div className="grid lg:grid-cols-2 gap-6 lg:gap-10 items-center">
@@ -162,21 +236,21 @@ export default function HomePage() {
                 variant="secondary"
                 className="w-fit text-xs sm:text-sm font-bold bg-amber-50 text-amber-800 border-amber-200 px-3 sm:px-4 py-1.5"
               >
-                ⚡ ONLY 3 OFFICES LEFT • Times Square Level 34
+                {t.heroBadge}
               </Badge>
               <h1 className="font-playfair text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-foreground leading-[1.05] tracking-tight">
-                Prime Hong Kong Office Space <span className="text-primary">Times Square • Move In Today</span>
+                {t.heroTitleA} <span className="text-primary">{t.heroTitleB}</span>
               </h1>
               <p className="text-base sm:text-lg lg:text-xl text-muted-foreground leading-[1.6] max-w-2xl font-medium">
-                Hong Kong's leading provider of premium office spaces since 2011. Fully furnished. Move in today.
+                {t.heroSubtitle}
               </p>
 
               <div className="bg-gradient-to-r from-amber-50 to-orange-50 p-4 sm:p-5 rounded-xl border border-amber-200 shadow-sm">
                 <div className="flex items-center gap-2 mb-2">
                   <Clock className="h-4 sm:h-5 w-4 sm:w-5 text-amber-700" />
-                  <span className="font-bold text-amber-800 text-base sm:text-lg">ENDS FRIDAY</span>
+                  <span className="font-bold text-amber-800 text-base sm:text-lg">{t.offerTitle}</span>
                 </div>
-                <p className="text-amber-800 font-semibold text-sm sm:text-base">20% off first month</p>
+                <p className="text-amber-800 font-semibold text-sm sm:text-base">{t.offerBody(deadline)}</p>
               </div>
 
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-2">
@@ -186,7 +260,7 @@ export default function HomePage() {
                       size="lg"
                       className="bg-primary hover:bg-primary/90 text-base sm:text-lg px-6 sm:px-8 h-12 sm:h-14 shadow-lg font-bold tracking-wide"
                     >
-                      Claim Your 20% Discount
+                      {t.heroCtaPrimary}
                     </Button>
                   }
                 />
@@ -203,7 +277,7 @@ export default function HomePage() {
                     size="lg"
                     className="text-base sm:text-lg px-6 sm:px-8 h-12 sm:h-14 bg-white font-semibold border-2 border-primary text-primary hover:bg-primary hover:text-white transition-all duration-200 w-full"
                   >
-                    Call Now: +852 2162 7306
+                    {t.heroCtaCall}
                   </Button>
                 </a>
               </div>
@@ -211,15 +285,15 @@ export default function HomePage() {
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 pt-3">
                 <div className="flex items-center gap-3">
                   <CheckCircle className="h-5 w-5 text-emerald-600 flex-shrink-0" />
-                  <span className="font-semibold text-sm sm:text-base">Move In Today</span>
+                  <span className="font-semibold text-sm sm:text-base">{t.heroPoint1}</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <CheckCircle className="h-5 w-5 text-emerald-600 flex-shrink-0" />
-                  <span className="font-semibold text-sm sm:text-base">Zero Setup</span>
+                  <span className="font-semibold text-sm sm:text-base">{t.heroPoint2}</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <CheckCircle className="h-5 w-5 text-emerald-600 flex-shrink-0" />
-                  <span className="font-semibold text-sm sm:text-base">No Contract</span>
+                  <span className="font-semibold text-sm sm:text-base">{t.heroPoint3}</span>
                 </div>
               </div>
             </div>
@@ -227,19 +301,14 @@ export default function HomePage() {
             {/* Hero Image */}
             <div
               className="relative h-[400px] sm:h-[500px] lg:h-[600px] rounded-2xl overflow-hidden shadow-2xl group cursor-pointer"
-              onClick={() =>
-                openImagePopup(
-                  "/images/reception-20area-3.jpeg",
-                  "Elegant Reception Area - Sky Business Centre Times Square",
-                )
-              }
+              onClick={() => openImagePopup("/images/mira/hero.jpg", t.heroImageAlt)}
             >
               <div className="absolute inset-0 bg-gradient-to-r from-slate-900/20 to-transparent z-10 group-hover:from-slate-900/10 transition-all duration-300" />
               <div className="relative h-full">
                 <div className="absolute inset-0">
                   <img
-                    src="/images/reception-20area-3.jpeg"
-                    alt="Elegant Reception Area - Sky Business Centre Times Square"
+                    src="/images/mira/hero.jpg"
+                    alt={t.heroImageAlt}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     loading="eager"
                   />
@@ -250,7 +319,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Social Proof Numbers Section - Reduced padding for better viewport optimization */}
+      {/* Social Proof Numbers Section */}
       <section className="py-8 sm:py-12 bg-gradient-to-r from-primary/5 to-secondary/5">
         <div className="container mx-auto px-4 max-w-8xl">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
@@ -258,40 +327,39 @@ export default function HomePage() {
               <div className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary mb-1 sm:mb-2 tracking-tight">
                 500+
               </div>
-              <div className="text-muted-foreground font-medium text-sm sm:text-base">Happy Clients</div>
+              <div className="text-muted-foreground font-medium text-sm sm:text-base">{t.statClients}</div>
             </div>
             <div className="text-center">
               <div className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary mb-1 sm:mb-2 tracking-tight">
                 12
               </div>
-              <div className="text-muted-foreground font-medium text-sm sm:text-base">Years Experience</div>
+              <div className="text-muted-foreground font-medium text-sm sm:text-base">{t.statYears}</div>
             </div>
             <div className="text-center">
               <div className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary mb-1 sm:mb-2 tracking-tight">
                 99%
               </div>
-              <div className="text-muted-foreground font-medium text-sm sm:text-base">Client Satisfaction</div>
+              <div className="text-muted-foreground font-medium text-sm sm:text-base">{t.statSatisfaction}</div>
             </div>
             <div className="text-center">
               <div className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary mb-1 sm:mb-2 tracking-tight">
                 24/7
               </div>
-              <div className="text-muted-foreground font-medium text-sm sm:text-base">Access Available</div>
+              <div className="text-muted-foreground font-medium text-sm sm:text-base">{t.statAccess}</div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Services Section - Reduced padding and improved typography hierarchy */}
+      {/* Services Section */}
       <section id="services" className="py-12 sm:py-16 bg-white">
         <div className="container mx-auto px-4 max-w-8xl">
           <div className="text-center mb-8 sm:mb-12">
             <h2 className="font-playfair text-2xl sm:text-3xl lg:text-4xl font-bold mb-3 sm:mb-4 tracking-tight leading-[1.1]">
-              Choose Your Office. Move In Today.
+              {t.servicesTitle}
             </h2>
             <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-[1.6] font-medium">
-              Complete office solutions for SMEs, MNCs, and professional firms. All fully equipped and ready for
-              immediate occupancy.
+              {t.servicesSubtitle}
             </p>
           </div>
 
@@ -300,27 +368,27 @@ export default function HomePage() {
               <CardContent className="p-4 sm:p-6">
                 <div
                   className="aspect-[4/3] rounded-xl overflow-hidden mb-4 cursor-pointer"
-                  onClick={() => openImagePopup("/images/ts3419.jpeg", "Private Office with Glass Walls")}
+                  onClick={() => openImagePopup("/images/mira/office-1.jpg", t.imgOffice1)}
                 >
                   <img
-                    src="/images/ts3419.jpeg"
-                    alt="Private Office with Glass Walls"
+                    src="/images/mira/office-1.jpg"
+                    alt={t.imgOffice1}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                     loading="lazy"
                   />
                 </div>
-                <h3 className="font-playfair text-lg sm:text-xl font-bold mb-2 sm:mb-3">Private Offices</h3>
+                <h3 className="font-playfair text-lg sm:text-xl font-bold mb-2 sm:mb-3">{t.svcOfficeTitle}</h3>
                 <p className="text-muted-foreground mb-3 sm:mb-4 leading-relaxed text-sm sm:text-base">
-                  Fully furnished private offices for 1-20 people. Premium location.
+                  {t.svcOfficeDesc}
                 </p>
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                  <span className="text-primary font-bold text-base sm:text-lg">From HK$6,000/month</span>
+                  <span className="text-primary font-bold text-base sm:text-lg">{t.svcOfficePrice}</span>
                   <Button
                     variant="outline"
                     size="sm"
                     className="bg-white w-full sm:w-auto border-primary text-primary hover:bg-primary hover:text-white font-semibold text-sm hover:shadow-md transition-all duration-300"
                   >
-                    Book Tour
+                    {t.bookTour}
                   </Button>
                 </div>
               </CardContent>
@@ -330,26 +398,21 @@ export default function HomePage() {
               <CardContent className="p-4 sm:p-6">
                 <div
                   className="aspect-[4/3] rounded-xl overflow-hidden mb-4 cursor-pointer"
-                  onClick={() =>
-                    openImagePopup(
-                      "/images/meeting-20room-gobi-3.jpeg",
-                      "Professional Conference Room with Modern Lighting",
-                    )
-                  }
+                  onClick={() => openImagePopup("/images/mira/meeting-1.jpg", t.imgMeeting1)}
                 >
                   <img
-                    src="/images/meeting-20room-gobi-3.jpeg"
-                    alt="Professional Conference Room with Modern Lighting"
+                    src="/images/mira/meeting-1.jpg"
+                    alt={t.imgMeeting1}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                     loading="lazy"
                   />
                 </div>
-                <h3 className="font-playfair text-lg sm:text-xl font-bold mb-2 sm:mb-3">Meeting Rooms</h3>
+                <h3 className="font-playfair text-lg sm:text-xl font-bold mb-2 sm:mb-3">{t.svcMeetingTitle}</h3>
                 <p className="text-muted-foreground mb-3 sm:mb-4 leading-relaxed text-sm sm:text-base">
-                  Professional conference facilities. Book by the hour.
+                  {t.svcMeetingDesc}
                 </p>
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                  <span className="text-primary font-bold text-base sm:text-lg">From HK$200/hour</span>
+                  <span className="text-primary font-bold text-base sm:text-lg">{t.svcMeetingPrice}</span>
                   <BookingForm
                     trigger={
                       <Button
@@ -357,7 +420,7 @@ export default function HomePage() {
                         size="sm"
                         className="bg-white w-full sm:w-auto border-primary text-primary hover:bg-primary hover:text-white font-semibold text-sm hover:shadow-md transition-all duration-300"
                       >
-                        Book Now
+                        {t.bookNow}
                       </Button>
                     }
                   />
@@ -369,27 +432,27 @@ export default function HomePage() {
               <CardContent className="p-4 sm:p-6">
                 <div
                   className="aspect-[4/3] rounded-xl overflow-hidden mb-4 cursor-pointer"
-                  onClick={() => openImagePopup("/images/common-20area-booth-1.jpeg", "Private Booth Seating Areas")}
+                  onClick={() => openImagePopup("/images/mira/lounge-1.jpg", t.imgLounge1)}
                 >
                   <img
-                    src="/images/common-20area-booth-1.jpeg"
-                    alt="Private Booth Seating Areas"
+                    src="/images/mira/lounge-1.jpg"
+                    alt={t.imgLounge1}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                     loading="lazy"
                   />
                 </div>
-                <h3 className="font-playfair text-lg sm:text-xl font-bold mb-2 sm:mb-3">Business Lounges</h3>
+                <h3 className="font-playfair text-lg sm:text-xl font-bold mb-2 sm:mb-3">{t.svcLoungeTitle}</h3>
                 <p className="text-muted-foreground mb-3 sm:mb-4 leading-relaxed text-sm sm:text-base">
-                  Premium networking and relaxation spaces.
+                  {t.svcLoungeDesc}
                 </p>
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                  <span className="text-primary font-bold text-base sm:text-lg">Included</span>
+                  <span className="text-primary font-bold text-base sm:text-lg">{t.svcLoungePrice}</span>
                   <Button
                     variant="outline"
                     size="sm"
                     className="bg-white w-full sm:w-auto border-primary text-primary hover:bg-primary hover:text-white font-semibold text-sm hover:shadow-md transition-all duration-300"
                   >
-                    View More
+                    {t.viewMore}
                   </Button>
                 </div>
               </CardContent>
@@ -398,42 +461,27 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Office Gallery Section - Now positioned after Services for better conversion flow */}
+      {/* Office Gallery Section */}
       <section className="py-12 sm:py-16 bg-gradient-to-br from-muted/20 to-background">
         <div className="container mx-auto px-4 max-w-8xl">
           <div className="text-center mb-8 sm:mb-12">
             <h2 className="font-playfair text-2xl sm:text-3xl lg:text-4xl font-bold mb-3 sm:mb-4 tracking-tight leading-[1.1]">
-              Tour Our Premium Office Spaces
+              {t.galleryTitle}
             </h2>
-            <p className="text-base sm:text-lg text-muted-foreground font-medium">
-              Level 34 Times Square - Where business excellence meets stunning design
-            </p>
+            <p className="text-base sm:text-lg text-muted-foreground font-medium">{t.gallerySubtitle}</p>
           </div>
 
           {/* Reception Areas */}
           <div className="mb-12 sm:mb-16">
             <h3 className="text-xl sm:text-2xl font-bold text-foreground mb-6 sm:mb-8 text-center tracking-tight">
-              Reception Areas
+              {t.galleryReception}
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-              {[
-                {
-                  src: "/images/reception-20area-1.jpeg",
-                  alt: "Main Reception and Lounge Area",
-                },
-                {
-                  src: "/images/reception-20area-3.jpeg",
-                  alt: "Spacious Reception with Modern Design",
-                },
-                {
-                  src: "/images/reception-20area-5.jpeg",
-                  alt: "Private Booth Reception Areas",
-                },
-              ].map((image, index) => (
+              {receptionImages.map((image, index) => (
                 <div
                   key={index}
                   className="aspect-square sm:aspect-[4/3] rounded-xl overflow-hidden shadow-lg group cursor-pointer hover:shadow-2xl transition-all duration-500"
-                  onClick={() => openImagePopup(image.src, image.alt)}
+                  onClick={() => openImagePopup(image.src, image.alt, receptionImages, index)}
                 >
                   <img
                     src={image.src || "/placeholder.svg"}
@@ -449,31 +497,14 @@ export default function HomePage() {
           {/* Lounge & Common Areas */}
           <div className="mb-12 sm:mb-16">
             <h3 className="text-xl sm:text-2xl font-bold text-foreground mb-6 sm:mb-8 text-center tracking-tight">
-              Lounge & Common Areas
+              {t.galleryLounge}
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-              {[
-                {
-                  src: "/images/common-20area-1.jpeg",
-                  alt: "Elegant Seating Area with Modern Furniture",
-                },
-                {
-                  src: "/images/common-20area-11.jpeg",
-                  alt: "Modern Lounge with Kitchen and Bar Area",
-                },
-                {
-                  src: "/images/common-20area-7.jpeg",
-                  alt: "Active Common Area with Kitchen",
-                },
-                {
-                  src: "/images/common-20area-booth-1.jpeg",
-                  alt: "Private Booth Seating Areas",
-                },
-              ].map((image, index) => (
+              {loungeImages.map((image, index) => (
                 <div
                   key={index}
                   className="aspect-square sm:aspect-[4/3] rounded-xl overflow-hidden shadow-lg group cursor-pointer hover:shadow-2xl transition-all duration-500"
-                  onClick={() => openImagePopup(image.src, image.alt)}
+                  onClick={() => openImagePopup(image.src, image.alt, loungeImages, index)}
                 >
                   <img
                     src={image.src || "/placeholder.svg"}
@@ -489,27 +520,14 @@ export default function HomePage() {
           {/* Private Offices & Workspaces */}
           <div className="mb-12 sm:mb-16">
             <h3 className="text-xl sm:text-2xl font-bold text-foreground mb-6 sm:mb-8 text-center tracking-tight">
-              Private Offices & Workspaces
+              {t.galleryOffices}
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-              {[
-                {
-                  src: "/images/sky-20201113-32.jpeg",
-                  alt: "Open Workspace with City Views",
-                },
-                {
-                  src: "/images/whatsapp-20image-202025-08-13-20at-2016.jpeg",
-                  alt: "Individual Workstation Setup",
-                },
-                {
-                  src: "/images/ts3402.jpeg",
-                  alt: "Team Office with Harbor Views",
-                },
-              ].map((image, index) => (
+              {officeImages.map((image, index) => (
                 <div
                   key={index}
                   className="aspect-square sm:aspect-[4/3] rounded-xl overflow-hidden shadow-lg group cursor-pointer hover:shadow-2xl transition-all duration-500"
-                  onClick={() => openImagePopup(image.src, image.alt)}
+                  onClick={() => openImagePopup(image.src, image.alt, officeImages, index)}
                 >
                   <img
                     src={image.src || "/placeholder.svg"}
@@ -525,23 +543,14 @@ export default function HomePage() {
           {/* Pantry & Kitchen Facilities */}
           <div className="mb-12 sm:mb-16">
             <h3 className="text-xl sm:text-2xl font-bold text-foreground mb-6 sm:mb-8 text-center tracking-tight">
-              Pantry & Kitchen Facilities
+              {t.galleryPantry}
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-              {[
-                {
-                  src: "/images/pantry-3.jpeg",
-                  alt: "Modern Kitchen with Premium Appliances",
-                },
-                {
-                  src: "/images/pantry-4.jpeg",
-                  alt: "Professional Coffee Machines",
-                },
-              ].map((image, index) => (
+              {pantryImages.map((image, index) => (
                 <div
                   key={index}
                   className="aspect-[16/10] rounded-xl overflow-hidden shadow-lg group cursor-pointer hover:shadow-2xl transition-all duration-500"
-                  onClick={() => openImagePopup(image.src, image.alt)}
+                  onClick={() => openImagePopup(image.src, image.alt, pantryImages, index)}
                 >
                   <img
                     src={image.src || "/placeholder.svg"}
@@ -561,52 +570,19 @@ export default function HomePage() {
         <div className="container mx-auto px-4 max-w-8xl">
           <div className="text-center mb-12 sm:mb-16">
             <h2 className="font-playfair text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 sm:mb-6 tracking-tight">
-              Professional Meeting Rooms
+              {t.meetingTitle}
             </h2>
             <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              State-of-the-art conference facilities with advanced AV equipment and professional ambiance
+              {t.meetingSubtitle}
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-            {[
-              {
-                src: "/images/meeting-20room-gobi-3.jpeg",
-                alt: "Gobi Conference Room with Modern Lighting",
-              },
-              {
-                src: "/images/meeting-20room-gobi-1.jpeg",
-                alt: "Gobi Meeting Room with Abstract Art",
-              },
-              {
-                src: "/images/meeting-20room-salzbury-2.jpeg",
-                alt: "Salzburg Meeting Room Entrance",
-              },
-              {
-                src: "/images/ts-meeting-20room-gobi-1.jpeg",
-                alt: "Executive Conference Room",
-              },
-              {
-                src: "/images/ts-meeting-20room-gobi-2.jpeg",
-                alt: "Modern Meeting Space with AV Equipment",
-              },
-              {
-                src: "/images/meeting-20room-salzbury-1.jpeg",
-                alt: "Salzburg Conference Room Interior",
-              },
-              {
-                src: "/images/meeting-20room-gobi-4.jpeg",
-                alt: "Gobi Room Entrance with Branding",
-              },
-              {
-                src: "/images/meeting-20room-gobi-2.jpeg",
-                alt: "Premium Conference Room with City Views",
-              },
-            ].map((image, index) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+            {meetingImages.map((image, index) => (
               <div
                 key={index}
                 className="aspect-square sm:aspect-[4/3] rounded-xl overflow-hidden shadow-lg group cursor-pointer hover:shadow-2xl transition-all duration-500"
-                onClick={() => openImagePopup(image.src, image.alt)}
+                onClick={() => openImagePopup(image.src, image.alt, meetingImages, index)}
               >
                 <img
                   src={image.src || "/placeholder.svg"}
@@ -620,73 +596,71 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Pricing Section - Reduced padding and improved typography */}
+      {/* Pricing Section */}
       <section className="py-12 sm:py-16 bg-gradient-to-br from-muted/30 to-muted/10">
         <div className="container mx-auto px-4 max-w-8xl">
           <div className="text-center mb-8 sm:mb-12">
             <h2 className="font-playfair text-2xl sm:text-3xl lg:text-4xl font-bold mb-3 sm:mb-4 tracking-tight leading-[1.1]">
-              Simple, Transparent Pricing
+              {t.pricingTitle}
             </h2>
-            <p className="text-base sm:text-lg text-muted-foreground font-medium">
-              All-inclusive rates. No hidden fees. Move in today.
-            </p>
+            <p className="text-base sm:text-lg text-muted-foreground font-medium">{t.pricingSubtitle}</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 max-w-5xl mx-auto">
             <Card className="p-5 sm:p-6 hover:shadow-xl transition-all duration-300 border-0 shadow-md">
               <div className="text-center">
-                <h3 className="font-playfair text-xl sm:text-2xl font-bold mb-3 tracking-tight">Private Office</h3>
+                <h3 className="font-playfair text-xl sm:text-2xl font-bold mb-3 tracking-tight">{t.priceOfficeTitle}</h3>
                 <div className="mb-4 sm:mb-5">
                   <span className="text-3xl sm:text-4xl font-bold text-primary tracking-tight">HK$6,000</span>
-                  <span className="text-muted-foreground text-base sm:text-lg font-medium">/month</span>
+                  <span className="text-muted-foreground text-base sm:text-lg font-medium">{t.pricePerMonth}</span>
                 </div>
                 <ul className="space-y-2 text-muted-foreground mb-5 sm:mb-6">
                   <li className="flex items-center gap-3 text-sm sm:text-base font-medium">
                     <CheckCircle className="h-4 sm:h-5 w-4 sm:w-5 text-emerald-600" />
-                    1-20 person capacity
+                    {t.priceOffice1A}
                   </li>
                   <li className="flex items-center gap-3 text-sm sm:text-base font-medium">
                     <CheckCircle className="h-4 sm:h-5 w-4 sm:w-5 text-emerald-600" />
-                    Fully furnished
+                    {t.priceOffice1B}
                   </li>
                   <li className="flex items-center gap-3 text-sm sm:text-base font-medium">
                     <CheckCircle className="h-4 sm:h-5 w-4 sm:w-5 text-emerald-600" />
-                    Premium location
+                    {t.priceOffice1C}
                   </li>
                 </ul>
                 <Button
                   variant="outline"
                   className="w-full border-2 border-primary text-primary hover:bg-primary hover:text-white bg-white font-semibold h-11 sm:h-12 text-sm sm:text-base"
                 >
-                  Book Tour
+                  {t.bookTour}
                 </Button>
               </div>
             </Card>
 
             <Card className="p-6 sm:p-8 hover:shadow-xl transition-all duration-300 border-2 border-primary relative shadow-lg">
               <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                <Badge className="bg-primary text-white px-4 py-1 font-semibold">Most Popular</Badge>
+                <Badge className="bg-primary text-white px-4 py-1 font-semibold">{t.mostPopular}</Badge>
               </div>
               <div className="text-center">
-                <h3 className="font-playfair text-xl sm:text-2xl font-bold mb-3 sm:mb-4">Meeting Room</h3>
+                <h3 className="font-playfair text-xl sm:text-2xl font-bold mb-3 sm:mb-4">{t.priceMeetingTitle}</h3>
                 <div className="mb-4 sm:mb-6">
                   <span className="text-3xl sm:text-4xl font-bold text-primary">HK$200</span>
-                  <span className="text-muted-foreground text-base sm:text-lg">/hour</span>
+                  <span className="text-muted-foreground text-base sm:text-lg">{t.pricePerHour}</span>
                 </div>
                 <ul className="space-y-2 sm:space-y-3 text-muted-foreground mb-6 sm:mb-8">
                   <li className="flex items-center gap-3 text-sm sm:text-base">
                     <CheckCircle className="h-4 sm:h-5 w-4 sm:w-5 text-emerald-600" />
-                    Video conferencing
+                    {t.priceMeetingA}
                   </li>
                   <li className="flex items-center gap-3 text-sm sm:text-base">
                     <CheckCircle className="h-4 sm:h-5 w-4 sm:w-5 text-emerald-600" />
-                    Presentation equipment
+                    {t.priceMeetingB}
                   </li>
                 </ul>
                 <BookingForm
                   trigger={
                     <Button className="w-full bg-primary hover:bg-primary/90 font-semibold h-11 sm:h-12 text-sm sm:text-base">
-                      Book Now
+                      {t.bookNow}
                     </Button>
                   }
                 />
@@ -695,46 +669,44 @@ export default function HomePage() {
 
             <Card className="p-6 sm:p-8 hover:shadow-xl transition-all duration-300 border-0 shadow-md">
               <div className="text-center">
-                <h3 className="font-playfair text-xl sm:text-2xl font-bold mb-3 sm:mb-4">Private Office</h3>
+                <h3 className="font-playfair text-xl sm:text-2xl font-bold mb-3 sm:mb-4">{t.priceOffice2Title}</h3>
                 <div className="mb-4 sm:mb-6">
                   <span className="text-3xl sm:text-4xl font-bold text-primary">HK$8,000</span>
-                  <span className="text-muted-foreground text-base sm:text-lg">/month</span>
+                  <span className="text-muted-foreground text-base sm:text-lg">{t.pricePerMonth}</span>
                 </div>
                 <ul className="space-y-2 sm:space-y-3 text-muted-foreground mb-6 sm:mb-8">
                   <li className="flex items-center gap-3 text-sm sm:text-base">
                     <CheckCircle className="h-4 sm:h-5 w-4 sm:w-5 text-emerald-600" />
-                    Fully furnished office
+                    {t.priceOffice2A}
                   </li>
                   <li className="flex items-center gap-3 text-sm sm:text-base">
                     <CheckCircle className="h-4 sm:h-5 w-4 sm:w-5 text-emerald-600" />
-                    City views included
+                    {t.priceOffice2B}
                   </li>
                   <li className="flex items-center gap-3 text-sm sm:text-base">
                     <CheckCircle className="h-4 sm:h-5 w-4 sm:w-5 text-emerald-600" />
-                    24/7 access
+                    {t.priceOffice2C}
                   </li>
                 </ul>
                 <Button
                   variant="outline"
                   className="w-full border-2 border-primary text-primary hover:bg-primary hover:text-white bg-white font-semibold h-11 sm:h-12 text-sm sm:text-base"
                 >
-                  Book Tour
+                  {t.bookTour}
                 </Button>
               </div>
             </Card>
           </div>
 
           <div className="text-center mt-8 sm:mt-12">
-            <p className="text-muted-foreground mb-4 sm:mb-6 text-base sm:text-lg">
-              🔥 Limited Time: 20% off first month + HK$5,000 setup fee waived
-            </p>
+            <p className="text-muted-foreground mb-4 sm:mb-6 text-base sm:text-lg">{t.pricingOffer(deadline)}</p>
             <BookingForm
               trigger={
                 <Button
                   size="lg"
                   className="bg-primary hover:bg-primary/90 font-bold px-6 sm:px-8 h-12 sm:h-14 shadow-lg text-sm sm:text-base"
                 >
-                  Claim Your 20% Discount
+                  {t.pricingCta}
                 </Button>
               }
             />
@@ -742,7 +714,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Google Reviews Section - Reduced padding for better viewport fit */}
+      {/* Google Reviews Section */}
       <section className="py-12 sm:py-16 bg-white">
         <div className="container mx-auto px-4 max-w-8xl">
           <div className="text-center mb-8 sm:mb-12">
@@ -751,7 +723,7 @@ export default function HomePage() {
                 <span className="text-white font-bold text-sm">G</span>
               </div>
               <h2 className="font-playfair text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight leading-[1.1]">
-                Google Reviews
+                {t.reviewsTitle}
               </h2>
             </div>
             <div className="flex items-center justify-center gap-2 mb-2">
@@ -761,295 +733,67 @@ export default function HomePage() {
                 ))}
               </div>
               <span className="font-bold text-lg">4.9</span>
-              <span className="text-muted-foreground font-medium">(127 reviews)</span>
+              <span className="text-muted-foreground font-medium">{t.reviewsCount}</span>
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-            <Card className="p-6 hover:shadow-lg transition-shadow border border-gray-200">
-              <div className="flex items-start gap-3 mb-4">
-                <img
-                  src="/professional-asian-woman-with-short-black-hair-in-.png"
-                  alt="Sarah Liu"
-                  className="w-10 h-10 rounded-full object-cover flex-shrink-0"
-                />
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="font-semibold text-sm">Sarah Liu</span>
-                    <div className="flex items-center gap-1">
-                      {[...Array(5)].map((_, i) => (
-                        <Star key={i} className="h-3 w-3 text-yellow-400 fill-current" />
-                      ))}
+            {t.reviews.map((review, index) => {
+              const avatar = reviewAvatars[review.name] || {}
+              return (
+                <Card key={index} className="p-6 hover:shadow-lg transition-shadow border border-gray-200">
+                  <div className="flex items-start gap-3 mb-4">
+                    {avatar.img ? (
+                      <img
+                        src={avatar.img}
+                        alt={review.name}
+                        className="w-10 h-10 rounded-full object-cover flex-shrink-0"
+                      />
+                    ) : (
+                      <div
+                        className={`w-10 h-10 bg-gradient-to-br ${avatar.gradient} rounded-full flex items-center justify-center flex-shrink-0`}
+                      >
+                        <span className="text-white font-semibold text-sm">{avatar.initials}</span>
+                      </div>
+                    )}
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="font-semibold text-sm">{review.name}</span>
+                        <div className="flex items-center gap-1">
+                          {[...Array(5)].map((_, i) => (
+                            <Star key={i} className="h-3 w-3 text-yellow-400 fill-current" />
+                          ))}
+                        </div>
+                      </div>
+                      <span className="text-xs text-muted-foreground">{review.when}</span>
                     </div>
                   </div>
-                  <span className="text-xs text-muted-foreground">2 weeks ago</span>
-                </div>
-              </div>
-              <p className="text-sm text-gray-700 leading-relaxed mb-3">
-                "Moved in same day! The location is perfect and the facilities are top-notch. Best business decision we
-                made. The Times Square location gives us incredible credibility with clients."
-              </p>
-              <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                <div className="w-4 h-4 bg-blue-600 rounded-full flex items-center justify-center">
-                  <span className="text-white font-bold text-xs">G</span>
-                </div>
-                <span>Posted on Google</span>
-              </div>
-            </Card>
-
-            <Card className="p-6 hover:shadow-lg transition-shadow border border-gray-200">
-              <div className="flex items-start gap-3 mb-4">
-                <img
-                  src="/professional-asian-man-with-glasses-in-business-su.png"
-                  alt="Michael Chen"
-                  className="w-10 h-10 rounded-full object-cover flex-shrink-0"
-                />
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="font-semibold text-sm">Michael Chen</span>
-                    <div className="flex items-center gap-1">
-                      {[...Array(5)].map((_, i) => (
-                        <Star key={i} className="h-3 w-3 text-yellow-400 fill-current" />
-                      ))}
+                  <p className="text-sm text-gray-700 leading-relaxed mb-3">
+                    &ldquo;{review.text}&rdquo;
+                  </p>
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                    <div className="w-4 h-4 bg-blue-600 rounded-full flex items-center justify-center">
+                      <span className="text-white font-bold text-xs">G</span>
                     </div>
+                    <span>{t.postedOnGoogle}</span>
                   </div>
-                  <span className="text-xs text-muted-foreground">1 month ago</span>
-                </div>
-              </div>
-              <p className="text-sm text-gray-700 leading-relaxed mb-3">
-                "Professional environment, amazing views, and the staff is incredibly helpful. Worth every dollar. The
-                24/7 access and premium amenities make this the best office space in Hong Kong."
-              </p>
-              <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                <div className="w-4 h-4 bg-blue-600 rounded-full flex items-center justify-center">
-                  <span className="text-white font-bold text-xs">G</span>
-                </div>
-                <span>Posted on Google</span>
-              </div>
-            </Card>
-
-            <Card className="p-6 hover:shadow-lg transition-shadow border border-gray-200">
-              <div className="flex items-start gap-3 mb-4">
-                <div className="w-10 h-10 bg-gradient-to-br from-pink-500 to-rose-600 rounded-full flex items-center justify-center flex-shrink-0">
-                  <span className="text-white font-semibold text-sm">AW</span>
-                </div>
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="font-semibold text-sm">Amanda Wong</span>
-                    <div className="flex items-center gap-1">
-                      {[...Array(5)].map((_, i) => (
-                        <Star key={i} className="h-3 w-3 text-yellow-400 fill-current" />
-                      ))}
-                    </div>
-                  </div>
-                  <span className="text-xs text-muted-foreground">3 weeks ago</span>
-                </div>
-              </div>
-              <p className="text-sm text-gray-700 leading-relaxed mb-3">
-                "The flexibility and premium location helped us close deals faster. Our clients are always impressed
-                when they visit. Sky Business Centre exceeded all expectations."
-              </p>
-              <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                <div className="w-4 h-4 bg-blue-600 rounded-full flex items-center justify-center">
-                  <span className="text-white font-bold text-xs">G</span>
-                </div>
-                <span>Posted on Google</span>
-              </div>
-            </Card>
-
-            <Card className="p-6 hover:shadow-lg transition-shadow border border-gray-200">
-              <div className="flex items-start gap-3 mb-4">
-                <img
-                  src="/professional-korean-man-in-business-attire-with-fr.png"
-                  alt="David Kim"
-                  className="w-10 h-10 rounded-full object-cover flex-shrink-0"
-                />
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="font-semibold text-sm">David Kim</span>
-                    <div className="flex items-center gap-1">
-                      {[...Array(5)].map((_, i) => (
-                        <Star key={i} className="h-3 w-3 text-yellow-400 fill-current" />
-                      ))}
-                    </div>
-                  </div>
-                  <span className="text-xs text-muted-foreground">5 days ago</span>
-                </div>
-              </div>
-              <p className="text-sm text-gray-700 leading-relaxed mb-3">
-                "As a startup founder, this place gave us the professional image we needed. The meeting rooms are
-                perfect for investor presentations. Highly recommend!"
-              </p>
-              <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                <div className="w-4 h-4 bg-blue-600 rounded-full flex items-center justify-center">
-                  <span className="text-white font-bold text-xs">G</span>
-                </div>
-                <span>Posted on Google</span>
-              </div>
-            </Card>
-
-            <Card className="p-6 hover:shadow-lg transition-shadow border border-gray-200">
-              <div className="flex items-start gap-3 mb-4">
-                <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-full flex items-center justify-center flex-shrink-0">
-                  <span className="text-white font-semibold text-sm">JT</span>
-                </div>
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="font-semibold text-sm">Jennifer Tan</span>
-                    <div className="flex items-center gap-1">
-                      {[...Array(5)].map((_, i) => (
-                        <Star key={i} className="h-3 w-3 text-yellow-400 fill-current" />
-                      ))}
-                    </div>
-                  </div>
-                  <span className="text-xs text-muted-foreground">1 week ago</span>
-                </div>
-              </div>
-              <p className="text-sm text-gray-700 leading-relaxed mb-3">
-                "The concierge service is exceptional. They handle all our mail and calls professionally. The networking
-                opportunities with other businesses here are invaluable."
-              </p>
-              <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                <div className="w-4 h-4 bg-blue-600 rounded-full flex items-center justify-center">
-                  <span className="text-white font-bold text-xs">G</span>
-                </div>
-                <span>Posted on Google</span>
-              </div>
-            </Card>
-
-            <Card className="p-6 hover:shadow-lg transition-shadow border border-gray-200">
-              <div className="flex items-start gap-3 mb-4">
-                <div className="w-10 h-10 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
-                  <span className="text-white font-semibold text-sm">RL</span>
-                </div>
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="font-semibold text-sm">Robert Lee</span>
-                    <div className="flex items-center gap-1">
-                      {[...Array(5)].map((_, i) => (
-                        <Star key={i} className="h-3 w-3 text-yellow-400 fill-current" />
-                      ))}
-                    </div>
-                  </div>
-                  <span className="text-xs text-muted-foreground">4 days ago</span>
-                </div>
-              </div>
-              <p className="text-sm text-gray-700 leading-relaxed mb-3">
-                "Switched from a traditional lease and saved 40% on overhead costs. The flexibility to scale up during
-                busy periods is exactly what our consulting firm needed."
-              </p>
-              <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                <div className="w-4 h-4 bg-blue-600 rounded-full flex items-center justify-center">
-                  <span className="text-white font-bold text-xs">G</span>
-                </div>
-                <span>Posted on Google</span>
-              </div>
-            </Card>
-
-            <Card className="p-6 hover:shadow-lg transition-shadow border border-gray-200">
-              <div className="flex items-start gap-3 mb-4">
-                <img
-                  src="/professional-chinese-woman-with-long-hair-in-busin.png"
-                  alt="Lisa Zhang"
-                  className="w-10 h-10 rounded-full object-cover flex-shrink-0"
-                />
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="font-semibold text-sm">Lisa Zhang</span>
-                    <div className="flex items-center gap-1">
-                      {[...Array(5)].map((_, i) => (
-                        <Star key={i} className="h-3 w-3 text-yellow-400 fill-current" />
-                      ))}
-                    </div>
-                  </div>
-                  <span className="text-xs text-muted-foreground">2 months ago</span>
-                </div>
-              </div>
-              <p className="text-sm text-gray-700 leading-relaxed mb-3">
-                "The IT support is fantastic - never had any downtime. The location impresses every client who visits.
-                Worth every penny for the professional image it gives our law firm."
-              </p>
-              <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                <div className="w-4 h-4 bg-blue-600 rounded-full flex items-center justify-center">
-                  <span className="text-white font-bold text-xs">G</span>
-                </div>
-                <span>Posted on Google</span>
-              </div>
-            </Card>
-
-            <Card className="p-6 hover:shadow-lg transition-shadow border border-gray-200">
-              <div className="flex items-start gap-3 mb-4">
-                <div className="w-10 h-10 bg-gradient-to-br from-yellow-500 to-orange-600 rounded-full flex items-center justify-center flex-shrink-0">
-                  <span className="text-white font-semibold text-sm">MH</span>
-                </div>
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="font-semibold text-sm">Mark Harrison</span>
-                    <div className="flex items-center gap-1">
-                      {[...Array(5)].map((_, i) => (
-                        <Star key={i} className="h-3 w-3 text-yellow-400 fill-current" />
-                      ))}
-                    </div>
-                  </div>
-                  <span className="text-xs text-muted-foreground">6 days ago</span>
-                </div>
-              </div>
-              <p className="text-sm text-gray-700 leading-relaxed mb-3">
-                "Perfect for international business. The prestigious address and professional setup helped us establish
-                credibility in the Hong Kong market immediately."
-              </p>
-              <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                <div className="w-4 h-4 bg-blue-600 rounded-full flex items-center justify-center">
-                  <span className="text-white font-bold text-xs">G</span>
-                </div>
-                <span>Posted on Google</span>
-              </div>
-            </Card>
-
-            <Card className="p-6 hover:shadow-lg transition-shadow border border-gray-200">
-              <div className="flex items-start gap-3 mb-4">
-                <div className="w-10 h-10 bg-gradient-to-br from-red-500 to-pink-600 rounded-full flex items-center justify-center flex-shrink-0">
-                  <span className="text-white font-semibold text-sm">ST</span>
-                </div>
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="font-semibold text-sm">Sophie Taylor</span>
-                    <div className="flex items-center gap-1">
-                      {[...Array(5)].map((_, i) => (
-                        <Star key={i} className="h-3 w-3 text-yellow-400 fill-current" />
-                      ))}
-                    </div>
-                  </div>
-                  <span className="text-xs text-muted-foreground">3 days ago</span>
-                </div>
-              </div>
-              <p className="text-sm text-gray-700 leading-relaxed mb-3">
-                "The hot desk option is perfect for my freelance work. Great networking environment and the coffee is
-                actually good! The views from Level 34 are incredible."
-              </p>
-              <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                <div className="w-4 h-4 bg-blue-600 rounded-full flex items-center justify-center">
-                  <span className="text-white font-bold text-xs">G</span>
-                </div>
-                <span>Posted on Google</span>
-              </div>
-            </Card>
+                </Card>
+              )
+            })}
           </div>
 
           <div className="text-center mt-8"></div>
         </div>
       </section>
 
-      {/* Why Choose Us Section - Reduced padding and improved typography */}
+      {/* Why Choose Us Section */}
       <section className="py-12 sm:py-16 bg-gradient-to-br from-primary/5 to-secondary/5">
         <div className="container mx-auto px-4 max-w-8xl">
           <div className="text-center mb-8 sm:mb-12">
             <h2 className="font-playfair text-2xl sm:text-3xl lg:text-4xl font-bold mb-3 sm:mb-4 tracking-tight leading-[1.1]">
-              Why 500+ Businesses Choose Sky Business Centre
+              {t.whyTitle}
             </h2>
-            <p className="text-base sm:text-lg text-muted-foreground font-medium">
-              The smart choice for growing businesses in Hong Kong
-            </p>
+            <p className="text-base sm:text-lg text-muted-foreground font-medium">{t.whySubtitle}</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -1057,28 +801,24 @@ export default function HomePage() {
               <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Zap className="h-6 w-6 text-primary" />
               </div>
-              <h3 className="font-semibold text-lg mb-3 tracking-tight">Move In Today</h3>
-              <p className="text-muted-foreground font-medium leading-[1.5]">
-                Fully furnished offices ready for immediate occupancy. No waiting, no setup delays.
-              </p>
+              <h3 className="font-semibold text-lg mb-3 tracking-tight">{t.why1Title}</h3>
+              <p className="text-muted-foreground font-medium leading-[1.5]">{t.why1Desc}</p>
             </Card>
 
             <Card className="p-6 text-center hover:shadow-lg transition-shadow">
               <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Award className="h-6 w-6 text-primary" />
               </div>
-              <h3 className="font-semibold text-lg mb-3">Premium Location</h3>
-              <p className="text-muted-foreground">
-                Times Square Level 34 - Hong Kong's most prestigious business address with Fortune 500 neighbors.
-              </p>
+              <h3 className="font-semibold text-lg mb-3">{t.why2Title}</h3>
+              <p className="text-muted-foreground">{t.why2Desc}</p>
             </Card>
 
             <Card className="p-6 text-center hover:shadow-lg transition-shadow">
               <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
                 <TrendingUp className="h-6 w-6 text-primary" />
               </div>
-              <h3 className="font-semibold text-lg mb-3">Flexible Terms</h3>
-              <p className="text-muted-foreground">Scale up or down as your business grows. Monthly terms available.</p>
+              <h3 className="font-semibold text-lg mb-3">{t.why3Title}</h3>
+              <p className="text-muted-foreground">{t.why3Desc}</p>
             </Card>
           </div>
         </div>
@@ -1089,19 +829,19 @@ export default function HomePage() {
         <div className="container mx-auto px-4 max-w-8xl">
           <div className="text-center mb-12 sm:mb-16">
             <h2 className="font-playfair text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 sm:mb-6">
-              Everything Included. No Hidden Fees.
+              {t.facilitiesTitle}
             </h2>
-            <p className="text-base sm:text-lg text-muted-foreground">Premium amenities at no extra cost</p>
+            <p className="text-base sm:text-lg text-muted-foreground">{t.facilitiesSubtitle}</p>
           </div>
 
           <div className="mb-8 sm:mb-12">
             <div
               className="aspect-[16/9] sm:aspect-[21/9] rounded-xl overflow-hidden shadow-lg mx-auto max-w-4xl cursor-pointer group hover:shadow-2xl transition-all duration-500"
-              onClick={() => openImagePopup("/images/pantry-4.jpeg", "Premium Coffee Machines and Pantry Facilities")}
+              onClick={() => openImagePopup("/images/mira/pantry-1.jpg", t.facilitiesImageAlt)}
             >
               <img
-                src="/images/pantry-4.jpeg"
-                alt="Premium Coffee Machines and Pantry Facilities"
+                src="/images/mira/pantry-1.jpg"
+                alt={t.facilitiesImageAlt}
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 loading="lazy"
               />
@@ -1109,57 +849,19 @@ export default function HomePage() {
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-            {[
-              {
-                icon: Clock,
-                title: "24/7 Secure Access",
-                desc: "Round-the-clock access with advanced security systems",
-              },
-              {
-                icon: Wifi,
-                title: "Enterprise-Grade Internet",
-                desc: "Dedicated high-speed fiber with backup connections",
-              },
-              {
-                icon: Shield,
-                title: "On-Site IT Support",
-                desc: "Professional technical assistance and troubleshooting",
-              },
-              {
-                icon: Coffee,
-                title: "Premium Refreshments",
-                desc: "Complimentary barista-quality coffee and beverages",
-              },
-              {
-                icon: Printer,
-                title: "Professional Print Center",
-                desc: "High-quality printing, scanning, and copying services",
-              },
-              {
-                icon: Users,
-                title: "Equipped Meeting Spaces",
-                desc: "Boardrooms with video conferencing and presentation tech",
-              },
-              {
-                icon: Phone,
-                title: "Private Phone Booths",
-                desc: "Soundproof spaces for confidential calls and video meetings",
-              },
-              {
-                icon: Building,
-                title: "Dedicated Concierge",
-                desc: "Professional reception and business support services",
-              },
-            ].map((facility, index) => (
-              <Card
-                key={index}
-                className="text-center p-4 sm:p-6 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 border-0 shadow-sm"
-              >
-                <facility.icon className="h-6 w-6 sm:h-8 sm:w-8 text-primary mx-auto mb-2 sm:mb-3" />
-                <h3 className="font-semibold mb-1 sm:mb-2 text-sm sm:text-base">{facility.title}</h3>
-                <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">{facility.desc}</p>
-              </Card>
-            ))}
+            {t.facilities.map((facility, index) => {
+              const Icon = FACILITY_ICONS[index % FACILITY_ICONS.length]
+              return (
+                <Card
+                  key={index}
+                  className="text-center p-4 sm:p-6 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 border-0 shadow-sm"
+                >
+                  <Icon className="h-6 w-6 sm:h-8 sm:w-8 text-primary mx-auto mb-2 sm:mb-3" />
+                  <h3 className="font-semibold mb-1 sm:mb-2 text-sm sm:text-base">{facility.title}</h3>
+                  <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">{facility.desc}</p>
+                </Card>
+              )
+            })}
           </div>
         </div>
       </section>
@@ -1168,53 +870,17 @@ export default function HomePage() {
       <section className="py-12 sm:py-16 lg:py-20">
         <div className="container mx-auto px-4 max-w-8xl">
           <div className="text-center mb-12 sm:mb-16">
-            <h2 className="font-playfair text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 sm:mb-6">
-              Frequently Asked Questions
-            </h2>
-            <p className="text-base sm:text-lg text-muted-foreground">
-              Everything you need to know about our premium office spaces
-            </p>
+            <h2 className="font-playfair text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 sm:mb-6">{t.faqTitle}</h2>
+            <p className="text-base sm:text-lg text-muted-foreground">{t.faqSubtitle}</p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-8 sm:mb-12">
-            <Card className="p-6">
-              <h3 className="font-semibold text-lg mb-3">Can I really move in today?</h3>
-              <p className="text-muted-foreground">
-                Yes! Our offices are fully furnished and ready for immediate occupancy. Complete the booking process and
-                you can start working the same day.
-              </p>
-            </Card>
-
-            <Card className="p-6">
-              <h3 className="font-semibold text-lg mb-3">What's included in the price?</h3>
-              <p className="text-muted-foreground">
-                Everything - furniture, high-speed internet, utilities, cleaning, security, reception services, meeting
-                room access, and all amenities. No hidden fees.
-              </p>
-            </Card>
-
-            <Card className="p-6">
-              <h3 className="font-semibold text-lg mb-3">What are the contract terms?</h3>
-              <p className="text-muted-foreground">
-                Private offices have flexible monthly terms. You can scale up or down as your business needs change.
-              </p>
-            </Card>
-
-            <Card className="p-6">
-              <h3 className="font-semibold text-lg mb-3">How does the 20% discount work?</h3>
-              <p className="text-muted-foreground">
-                Book your tour this week and get 20% off your first month. Offer ends Friday - limited to first 3
-                bookings.
-              </p>
-            </Card>
-
-            <Card className="p-6">
-              <h3 className="font-semibold text-lg mb-3">What makes Times Square location special?</h3>
-              <p className="text-muted-foreground">
-                Level 34 offers stunning city views, direct MTR access, and you'll be neighbors with Fortune 500
-                companies. It's Hong Kong's most prestigious business address.
-              </p>
-            </Card>
+            {t.faqs.map((faq, index) => (
+              <Card key={index} className="p-6">
+                <h3 className="font-semibold text-lg mb-3">{faq.q}</h3>
+                <p className="text-muted-foreground">{faq.a}</p>
+              </Card>
+            ))}
           </div>
 
           <div className="text-center">
@@ -1224,7 +890,7 @@ export default function HomePage() {
                   size="lg"
                   className="bg-primary hover:bg-primary/90 text-base sm:text-lg px-8 sm:px-12 w-full sm:w-auto font-semibold"
                 >
-                  Still Have Questions? Book a Tour
+                  {t.faqCta}
                 </Button>
               }
             />
@@ -1238,36 +904,25 @@ export default function HomePage() {
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             <div className="order-2 lg:order-1">
               <h2 className="font-playfair text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 sm:mb-6">
-                Hong Kong's #1 Business Address
+                {t.locationTitle}
               </h2>
-              <p className="text-base sm:text-lg text-muted-foreground mb-6 sm:mb-8">
-                Premium locations in Causeway Bay and Tsim Sha Tsui. Direct MTR access. Fortune 500 neighbors.
-              </p>
+              <p className="text-base sm:text-lg text-muted-foreground mb-6 sm:mb-8">{t.locationSubtitle}</p>
 
               <div className="space-y-3 sm:space-y-4 mb-6 sm:mb-8">
                 <div className="flex items-start gap-3">
                   <MapPin className="h-4 sm:h-5 w-4 sm:w-5 text-primary mt-1 flex-shrink-0" />
                   <div>
-                    <p className="font-semibold text-sm sm:text-base">Level 34, Tower One, Times Square</p>
-                    <p className="text-muted-foreground text-sm sm:text-base">
-                      1 Matheson St., Causeway Bay, Hong Kong
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <MapPin className="h-4 sm:h-5 w-4 sm:w-5 text-primary mt-1 flex-shrink-0" />
-                  <div>
-                    <p className="font-semibold text-sm sm:text-base">Tsim Sha Tsui Location</p>
-                    <p className="text-muted-foreground text-sm sm:text-base">Also available - Contact for details</p>
+                    <p className="font-semibold text-sm sm:text-base">{t.addressLine1}</p>
+                    <p className="text-muted-foreground text-sm sm:text-base">{t.addressLine2}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
                   <Building className="h-4 sm:h-5 w-4 sm:w-5 text-primary flex-shrink-0" />
-                  <span className="text-sm sm:text-base">Direct MTR Station Access</span>
+                  <span className="text-sm sm:text-base">{t.locationMtr}</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <Users className="h-4 sm:h-5 w-4 sm:w-5 text-primary flex-shrink-0" />
-                  <span className="text-sm sm:text-base">Central Business District</span>
+                  <span className="text-sm sm:text-base">{t.locationCbd}</span>
                 </div>
               </div>
 
@@ -1278,25 +933,30 @@ export default function HomePage() {
                       size="lg"
                       className="bg-primary hover:bg-primary/90 w-full sm:w-auto font-semibold text-sm sm:text-base"
                     >
-                      Secure Your Office - 20% Off
+                      {t.locationCta}
                     </Button>
                   }
                 />
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="w-full sm:w-auto bg-transparent font-medium border-primary text-primary hover:bg-primary hover:text-white text-sm sm:text-base"
+                <a
+                  href="https://www.google.com/maps/search/?api=1&query=Mira+Place+Tower+A,+132+Nathan+Road,+Tsim+Sha+Tsui,+Hong+Kong"
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
-                  Get Directions
-                </Button>
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    className="w-full sm:w-auto bg-transparent font-medium border-primary text-primary hover:bg-primary hover:text-white text-sm sm:text-base"
+                  >
+                    {t.getDirections}
+                  </Button>
+                </a>
               </div>
             </div>
 
             <div className="relative order-1 lg:order-2">
               <div className="aspect-[16/10] sm:aspect-[4/3] rounded-lg overflow-hidden shadow-2xl">
                 <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3691.8944!2d114.1823!3d22.2783!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x340400f9df0e7b85%3A0x8d8d8d8d8d8d8d8d!2s\`\`\`
-d22.2783!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x340400f9df0e7b85%3A0x8d8d8d8d8d8d8d8d!2sTimes%20Square%2C%20Causeway%20Bay%2C%20Hong%20Kong!5e0!3m2!1sen!2shk!4v1234567890"
+                  src="https://www.google.com/maps?q=Mira+Place+Tower+A,+132+Nathan+Road,+Tsim+Sha+Tsui,+Hong+Kong&output=embed"
                   width="100%"
                   height="100%"
                   style={{ border: 0 }}
@@ -1317,30 +977,28 @@ d22.2783!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x340400f9df0e7b85%3A
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-8 sm:mb-12">
               <h2 className="font-playfair text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 sm:mb-6 tracking-tight">
-                Don't Miss Out. Only 3 Offices Left.
+                {t.contactTitle}
               </h2>
-              <p className="text-base sm:text-lg text-muted-foreground">
-                Book your tour today and secure 20% off your first month.
-              </p>
+              <p className="text-base sm:text-lg text-muted-foreground">{t.contactSubtitle}</p>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-8 sm:mb-12">
               <Card className="text-center p-4 sm:p-6 sm:col-span-2 lg:col-span-1">
                 <Phone className="h-6 w-6 sm:h-8 sm:w-8 text-primary mx-auto mb-2 sm:mb-3" />
-                <h3 className="font-semibold mb-1 sm:mb-2 text-sm sm:text-base">Phone</h3>
+                <h3 className="font-semibold mb-1 sm:mb-2 text-sm sm:text-base">{t.contactPhone}</h3>
                 <p className="text-muted-foreground text-sm sm:text-base">(852) 2162 7306</p>
               </Card>
 
               <Card className="text-center p-4 sm:p-6">
                 <Mail className="h-6 w-6 sm:h-8 sm:w-8 text-primary mx-auto mb-2 sm:mb-3" />
-                <h3 className="font-semibold mb-1 sm:mb-2 text-sm sm:text-base">Email</h3>
+                <h3 className="font-semibold mb-1 sm:mb-2 text-sm sm:text-base">{t.contactEmail}</h3>
                 <p className="text-muted-foreground text-sm sm:text-base">info@skybizcentre.com</p>
               </Card>
 
               <Card className="text-center p-4 sm:p-6 sm:col-span-2 lg:col-span-1">
                 <MapPin className="h-6 w-6 sm:h-8 sm:w-8 text-primary mx-auto mb-2 sm:mb-3" />
-                <h3 className="font-semibold mb-1 sm:mb-2 text-sm sm:text-base">Visit Us</h3>
-                <p className="text-muted-foreground text-sm sm:text-base">Times Square, Causeway Bay</p>
+                <h3 className="font-semibold mb-1 sm:mb-2 text-sm sm:text-base">{t.contactVisit}</h3>
+                <p className="text-muted-foreground text-sm sm:text-base">{t.locationShort}</p>
               </Card>
             </div>
 
@@ -1351,7 +1009,7 @@ d22.2783!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x340400f9df0e7b85%3A
                     size="lg"
                     className="bg-primary hover:bg-primary/90 font-bold px-8 sm:px-12 w-full sm:w-auto font-semibold text-sm sm:text-base"
                   >
-                    Claim Your Office - 20% Off Ends Friday
+                    {t.contactCta}
                   </Button>
                 }
               />
@@ -1372,26 +1030,26 @@ d22.2783!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x340400f9df0e7b85%3A
                 height={32}
                 className="h-6 sm:h-8 w-auto brightness-0 invert"
               />
-              <span className="font-playfair text-base sm:text-lg font-bold">Sky Business Centre</span>
+              <span className="font-playfair text-base sm:text-lg font-bold">{t.brand}</span>
             </div>
 
             <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-6 text-sm">
               <a
-                href="tel:+85239510100"
+                href="tel:+85221627306"
                 onClick={(e) => {
                   if (typeof window !== "undefined" && (window as any).gtag_report_conversion) {
-                    ;(window as any).gtag_report_conversion("tel:+85239510100")
+                    ;(window as any).gtag_report_conversion()
                   }
                 }}
                 className="flex items-center gap-2 hover:text-background/80"
               >
                 <Phone className="h-4 w-4" />
-                (852) 3951 0100
+                (852) 2162 7306
               </a>
               <span className="text-background/60">|</span>
-              <span>Times Square, Causeway Bay</span>
+              <span>{t.locationShort}</span>
               <span className="text-background/60">|</span>
-              <span className="text-background/80">© 2024 Sky Business Centre</span>
+              <span className="text-background/80">{t.footerCopyright}</span>
             </div>
           </div>
         </div>
@@ -1414,7 +1072,7 @@ d22.2783!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x340400f9df0e7b85%3A
               variant="outline"
               className="w-full border-2 border-primary text-primary font-bold bg-transparent"
             >
-              Call Now
+              {t.callNow}
             </Button>
           </a>
           <BookingForm
@@ -1423,7 +1081,7 @@ d22.2783!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x340400f9df0e7b85%3A
                 size="lg"
                 className="flex-1 bg-primary hover:bg-primary/90 font-bold transition-all duration-300 hover:shadow-lg"
               >
-                Book Tour
+                {t.bookTourCta}
               </Button>
             }
           />
@@ -1457,7 +1115,7 @@ d22.2783!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x340400f9df0e7b85%3A
           {/* Tooltip */}
           <div className="absolute bottom-full right-0 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
             <div className="bg-gray-900 text-white text-sm font-medium px-3 py-2 rounded-lg whitespace-nowrap shadow-lg">
-              Chat with us on WhatsApp
+              {t.whatsappTooltip}
               <div className="absolute top-full right-4 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900"></div>
             </div>
           </div>
