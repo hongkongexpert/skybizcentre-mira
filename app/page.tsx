@@ -32,10 +32,11 @@ const ImagePopup = ({ src, alt, isOpen, onClose, onPrev, onNext, showNavigation 
   if (!isOpen) return null
 
   return (
-    <div className="fixed inset-0 bg-black/90 z-[100] flex items-center justify-center p-4">
+    <div className="fixed inset-0 bg-black/90 z-[100] flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-label={alt}>
       <div className="relative max-w-7xl max-h-full w-full h-full flex items-center justify-center">
         <button
           onClick={onClose}
+          aria-label="Close image viewer"
           className="absolute top-4 right-4 z-10 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-full p-2 transition-colors"
         >
           <X className="h-6 w-6 text-white" />
@@ -45,12 +46,14 @@ const ImagePopup = ({ src, alt, isOpen, onClose, onPrev, onNext, showNavigation 
           <>
             <button
               onClick={onPrev}
+              aria-label="Previous image"
               className="absolute left-4 z-10 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-full p-2 transition-colors"
             >
               <ChevronLeft className="h-6 w-6 text-white" />
             </button>
             <button
               onClick={onNext}
+              aria-label="Next image"
               className="absolute right-4 z-10 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-full p-2 transition-colors"
             >
               <ChevronRight className="h-6 w-6 text-white" />
@@ -108,6 +111,27 @@ export default function HomePage() {
     setPopupImage(imageGallery[newIndex])
   }
 
+  const galleryButton = (
+    image: { src: string; alt: string },
+    index: number,
+    gallery: { src: string; alt: string }[],
+    aspectClass = "aspect-square sm:aspect-[4/3]",
+  ) => (
+    <button
+      type="button"
+      className={`${aspectClass} w-full rounded-xl overflow-hidden shadow-lg group cursor-pointer hover:shadow-2xl transition-all duration-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2`}
+      onClick={() => openImagePopup(image.src, image.alt, gallery, index)}
+      aria-label={`View photo: ${image.alt}`}
+    >
+      <img
+        src={image.src || "/placeholder.svg"}
+        alt={image.alt}
+        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+        loading="lazy"
+      />
+    </button>
+  )
+
   const receptionImages = [
     { src: "/images/mira/reception-1.jpg", alt: t.imgReception1 },
     { src: "/images/mira/reception-2.jpg", alt: t.imgReception2 },
@@ -156,7 +180,7 @@ export default function HomePage() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div id="top" className="min-h-screen bg-background">
       <ImagePopup
         src={popupImage?.src || "/placeholder.svg"}
         alt={popupImage?.alt}
@@ -170,20 +194,22 @@ export default function HomePage() {
       {/* Header */}
       <header className="border-b border-border/40 bg-white/98 backdrop-blur-md sticky top-0 z-50 shadow-sm">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between max-w-8xl">
-          <div className="flex items-center gap-3">
+          <a href="#top" aria-label="Sky Business Centre - back to top" className="flex items-center gap-3">
             <Image src="/sky-logo.png" alt="Sky Business Centre" width={40} height={40} className="h-10 w-auto" />
-          </div>
+          </a>
 
           <div className="flex items-center gap-4">
-            <div className="flex items-center rounded-full border border-border overflow-hidden text-xs font-semibold">
+            <div className="flex items-center rounded-full border border-border overflow-hidden text-xs font-semibold" role="group" aria-label="Language selector">
               <button
                 onClick={() => setLang("en")}
+                aria-pressed={lang === "en"}
                 className={`px-3 py-1.5 transition-colors ${lang === "en" ? "bg-primary text-white" : "text-foreground/70 hover:text-primary"}`}
               >
                 EN
               </button>
               <button
                 onClick={() => setLang("zh")}
+                aria-pressed={lang === "zh"}
                 className={`px-3 py-1.5 transition-colors ${lang === "zh" ? "bg-primary text-white" : "text-foreground/70 hover:text-primary"}`}
               >
                 繁
@@ -299,9 +325,11 @@ export default function HomePage() {
             </div>
 
             {/* Hero Image */}
-            <div
-              className="relative h-[400px] sm:h-[500px] lg:h-[600px] rounded-2xl overflow-hidden shadow-2xl group cursor-pointer"
+            <button
+              type="button"
+              className="relative h-[400px] sm:h-[500px] lg:h-[600px] w-full rounded-2xl overflow-hidden shadow-2xl group cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
               onClick={() => openImagePopup("/images/mira/hero.jpg", t.heroImageAlt)}
+              aria-label={`View photo: ${t.heroImageAlt}`}
             >
               <div className="absolute inset-0 bg-gradient-to-r from-slate-900/20 to-transparent z-10 group-hover:from-slate-900/10 transition-all duration-300" />
               <div className="relative h-full">
@@ -314,7 +342,7 @@ export default function HomePage() {
                   />
                 </div>
               </div>
-            </div>
+            </button>
           </div>
         </div>
       </section>
@@ -366,9 +394,11 @@ export default function HomePage() {
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-6">
             <Card className="group hover:shadow-2xl transition-all duration-500 border-0 shadow-lg hover:-translate-y-1">
               <CardContent className="p-4 sm:p-6">
-                <div
-                  className="aspect-[4/3] rounded-xl overflow-hidden mb-4 cursor-pointer"
+                <button
+                  type="button"
+                  className="aspect-[4/3] w-full rounded-xl overflow-hidden mb-4 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
                   onClick={() => openImagePopup("/images/mira/office-1.jpg", t.imgOffice1)}
+                  aria-label={`View photo: ${t.imgOffice1}`}
                 >
                   <img
                     src="/images/mira/office-1.jpg"
@@ -376,29 +406,35 @@ export default function HomePage() {
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                     loading="lazy"
                   />
-                </div>
+                </button>
                 <h3 className="font-playfair text-lg sm:text-xl font-bold mb-2 sm:mb-3">{t.svcOfficeTitle}</h3>
                 <p className="text-muted-foreground mb-3 sm:mb-4 leading-relaxed text-sm sm:text-base">
                   {t.svcOfficeDesc}
                 </p>
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                   <span className="text-primary font-bold text-base sm:text-lg">{t.svcOfficePrice}</span>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="bg-white w-full sm:w-auto border-primary text-primary hover:bg-primary hover:text-white font-semibold text-sm hover:shadow-md transition-all duration-300"
-                  >
-                    {t.bookTour}
-                  </Button>
+                  <BookingForm
+                    trigger={
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="bg-white w-full sm:w-auto border-primary text-primary hover:bg-primary hover:text-white font-semibold text-sm hover:shadow-md transition-all duration-300"
+                      >
+                        {t.bookTour}
+                      </Button>
+                    }
+                  />
                 </div>
               </CardContent>
             </Card>
 
             <Card className="group hover:shadow-2xl transition-all duration-500 border-0 shadow-lg hover:-translate-y-1">
               <CardContent className="p-4 sm:p-6">
-                <div
-                  className="aspect-[4/3] rounded-xl overflow-hidden mb-4 cursor-pointer"
+                <button
+                  type="button"
+                  className="aspect-[4/3] w-full rounded-xl overflow-hidden mb-4 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
                   onClick={() => openImagePopup("/images/mira/meeting-1.jpg", t.imgMeeting1)}
+                  aria-label={`View photo: ${t.imgMeeting1}`}
                 >
                   <img
                     src="/images/mira/meeting-1.jpg"
@@ -406,7 +442,7 @@ export default function HomePage() {
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                     loading="lazy"
                   />
-                </div>
+                </button>
                 <h3 className="font-playfair text-lg sm:text-xl font-bold mb-2 sm:mb-3">{t.svcMeetingTitle}</h3>
                 <p className="text-muted-foreground mb-3 sm:mb-4 leading-relaxed text-sm sm:text-base">
                   {t.svcMeetingDesc}
@@ -430,9 +466,11 @@ export default function HomePage() {
 
             <Card className="group hover:shadow-2xl transition-all duration-500 border-0 shadow-lg col-span-2 lg:col-span-1 hover:-translate-y-1">
               <CardContent className="p-4 sm:p-6">
-                <div
-                  className="aspect-[4/3] rounded-xl overflow-hidden mb-4 cursor-pointer"
+                <button
+                  type="button"
+                  className="aspect-[4/3] w-full rounded-xl overflow-hidden mb-4 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
                   onClick={() => openImagePopup("/images/mira/lounge-1.jpg", t.imgLounge1)}
+                  aria-label={`View photo: ${t.imgLounge1}`}
                 >
                   <img
                     src="/images/mira/lounge-1.jpg"
@@ -440,20 +478,22 @@ export default function HomePage() {
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                     loading="lazy"
                   />
-                </div>
+                </button>
                 <h3 className="font-playfair text-lg sm:text-xl font-bold mb-2 sm:mb-3">{t.svcLoungeTitle}</h3>
                 <p className="text-muted-foreground mb-3 sm:mb-4 leading-relaxed text-sm sm:text-base">
                   {t.svcLoungeDesc}
                 </p>
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                   <span className="text-primary font-bold text-base sm:text-lg">{t.svcLoungePrice}</span>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="bg-white w-full sm:w-auto border-primary text-primary hover:bg-primary hover:text-white font-semibold text-sm hover:shadow-md transition-all duration-300"
-                  >
-                    {t.viewMore}
-                  </Button>
+                  <a href="#gallery">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="bg-white w-full sm:w-auto border-primary text-primary hover:bg-primary hover:text-white font-semibold text-sm hover:shadow-md transition-all duration-300"
+                    >
+                      {t.viewMore}
+                    </Button>
+                  </a>
                 </div>
               </CardContent>
             </Card>
@@ -462,7 +502,7 @@ export default function HomePage() {
       </section>
 
       {/* Office Gallery Section */}
-      <section className="py-12 sm:py-16 bg-gradient-to-br from-muted/20 to-background">
+      <section id="gallery" className="py-12 sm:py-16 bg-gradient-to-br from-muted/20 to-background">
         <div className="container mx-auto px-4 max-w-8xl">
           <div className="text-center mb-8 sm:mb-12">
             <h2 className="font-playfair text-2xl sm:text-3xl lg:text-4xl font-bold mb-3 sm:mb-4 tracking-tight leading-[1.1]">
@@ -477,20 +517,7 @@ export default function HomePage() {
               {t.galleryReception}
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-              {receptionImages.map((image, index) => (
-                <div
-                  key={index}
-                  className="aspect-square sm:aspect-[4/3] rounded-xl overflow-hidden shadow-lg group cursor-pointer hover:shadow-2xl transition-all duration-500"
-                  onClick={() => openImagePopup(image.src, image.alt, receptionImages, index)}
-                >
-                  <img
-                    src={image.src || "/placeholder.svg"}
-                    alt={image.alt}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                    loading="lazy"
-                  />
-                </div>
-              ))}
+              {receptionImages.map((image, index) => galleryButton(image, index, receptionImages))}
             </div>
           </div>
 
@@ -500,20 +527,7 @@ export default function HomePage() {
               {t.galleryLounge}
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-              {loungeImages.map((image, index) => (
-                <div
-                  key={index}
-                  className="aspect-square sm:aspect-[4/3] rounded-xl overflow-hidden shadow-lg group cursor-pointer hover:shadow-2xl transition-all duration-500"
-                  onClick={() => openImagePopup(image.src, image.alt, loungeImages, index)}
-                >
-                  <img
-                    src={image.src || "/placeholder.svg"}
-                    alt={image.alt}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                    loading="lazy"
-                  />
-                </div>
-              ))}
+              {loungeImages.map((image, index) => galleryButton(image, index, loungeImages))}
             </div>
           </div>
 
@@ -523,20 +537,7 @@ export default function HomePage() {
               {t.galleryOffices}
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-              {officeImages.map((image, index) => (
-                <div
-                  key={index}
-                  className="aspect-square sm:aspect-[4/3] rounded-xl overflow-hidden shadow-lg group cursor-pointer hover:shadow-2xl transition-all duration-500"
-                  onClick={() => openImagePopup(image.src, image.alt, officeImages, index)}
-                >
-                  <img
-                    src={image.src || "/placeholder.svg"}
-                    alt={image.alt}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                    loading="lazy"
-                  />
-                </div>
-              ))}
+              {officeImages.map((image, index) => galleryButton(image, index, officeImages))}
             </div>
           </div>
 
@@ -546,20 +547,9 @@ export default function HomePage() {
               {t.galleryPantry}
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-              {pantryImages.map((image, index) => (
-                <div
-                  key={index}
-                  className="aspect-[16/10] rounded-xl overflow-hidden shadow-lg group cursor-pointer hover:shadow-2xl transition-all duration-500"
-                  onClick={() => openImagePopup(image.src, image.alt, pantryImages, index)}
-                >
-                  <img
-                    src={image.src || "/placeholder.svg"}
-                    alt={image.alt}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                    loading="lazy"
-                  />
-                </div>
-              ))}
+              {pantryImages.map((image, index) =>
+                galleryButton(image, index, pantryImages, "aspect-[16/10]"),
+              )}
             </div>
           </div>
         </div>
@@ -578,20 +568,7 @@ export default function HomePage() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-            {meetingImages.map((image, index) => (
-              <div
-                key={index}
-                className="aspect-square sm:aspect-[4/3] rounded-xl overflow-hidden shadow-lg group cursor-pointer hover:shadow-2xl transition-all duration-500"
-                onClick={() => openImagePopup(image.src, image.alt, meetingImages, index)}
-              >
-                <img
-                  src={image.src || "/placeholder.svg"}
-                  alt={image.alt}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                  loading="lazy"
-                />
-              </div>
-            ))}
+            {meetingImages.map((image, index) => galleryButton(image, index, meetingImages))}
           </div>
         </div>
       </section>
@@ -628,12 +605,16 @@ export default function HomePage() {
                     {t.priceOffice1C}
                   </li>
                 </ul>
-                <Button
-                  variant="outline"
-                  className="w-full border-2 border-primary text-primary hover:bg-primary hover:text-white bg-white font-semibold h-11 sm:h-12 text-sm sm:text-base"
-                >
-                  {t.bookTour}
-                </Button>
+                <BookingForm
+                  trigger={
+                    <Button
+                      variant="outline"
+                      className="w-full border-2 border-primary text-primary hover:bg-primary hover:text-white bg-white font-semibold h-11 sm:h-12 text-sm sm:text-base"
+                    >
+                      {t.bookTour}
+                    </Button>
+                  }
+                />
               </div>
             </Card>
 
@@ -688,12 +669,16 @@ export default function HomePage() {
                     {t.priceOffice2C}
                   </li>
                 </ul>
-                <Button
-                  variant="outline"
-                  className="w-full border-2 border-primary text-primary hover:bg-primary hover:text-white bg-white font-semibold h-11 sm:h-12 text-sm sm:text-base"
-                >
-                  {t.bookTour}
-                </Button>
+                <BookingForm
+                  trigger={
+                    <Button
+                      variant="outline"
+                      className="w-full border-2 border-primary text-primary hover:bg-primary hover:text-white bg-white font-semibold h-11 sm:h-12 text-sm sm:text-base"
+                    >
+                      {t.bookTour}
+                    </Button>
+                  }
+                />
               </div>
             </Card>
           </div>
@@ -835,9 +820,11 @@ export default function HomePage() {
           </div>
 
           <div className="mb-8 sm:mb-12">
-            <div
-              className="aspect-[16/9] sm:aspect-[21/9] rounded-xl overflow-hidden shadow-lg mx-auto max-w-4xl cursor-pointer group hover:shadow-2xl transition-all duration-500"
+            <button
+              type="button"
+              className="aspect-[16/9] sm:aspect-[21/9] w-full rounded-xl overflow-hidden shadow-lg mx-auto max-w-4xl cursor-pointer group hover:shadow-2xl transition-all duration-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
               onClick={() => openImagePopup("/images/mira/pantry-1.jpg", t.facilitiesImageAlt)}
+              aria-label={`View photo: ${t.facilitiesImageAlt}`}
             >
               <img
                 src="/images/mira/pantry-1.jpg"
@@ -845,7 +832,7 @@ export default function HomePage() {
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 loading="lazy"
               />
-            </div>
+            </button>
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
