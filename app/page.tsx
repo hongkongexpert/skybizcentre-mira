@@ -268,7 +268,7 @@ export default function HomePage() {
       </div>
 
       {/* Hero Banner - half height image */}
-      <section className="relative h-[48vh] sm:h-[55vh]">
+      <section className="relative h-[42vh] sm:h-[48vh]">
         <img
           src="/images/mira/hero.jpg"
           alt={t.heroImageAlt}
@@ -278,61 +278,66 @@ export default function HomePage() {
       </section>
 
       {/* Hero Content */}
-      <section className="py-12 sm:py-16 bg-background border-b border-border/40">
+      <section className="py-8 sm:py-12 bg-background border-b border-border/40">
         <div className="container mx-auto px-4 max-w-8xl">
-          <div className="max-w-3xl space-y-5 sm:space-y-6">
-            <p className="text-xs sm:text-sm font-semibold uppercase tracking-[0.3em] text-secondary">
-              {t.heroBadge}
-            </p>
-            <h1 className="font-playfair text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground leading-[1.05] tracking-tight">
-              {t.heroTitleA} <span className="text-secondary">{t.heroTitleB}</span>
-            </h1>
-            <p className="text-base sm:text-lg lg:text-xl text-muted-foreground leading-[1.7] font-medium">
-              {t.heroSubtitle}
-            </p>
-
-            <div className="border-l-2 border-secondary pl-4 sm:pl-5">
-              <p className="text-foreground font-semibold text-sm sm:text-base uppercase tracking-[0.15em]">
-                {t.offerTitle}
+          <div className="grid lg:grid-cols-[1.4fr_1fr] gap-8 lg:gap-12 items-start">
+            {/* Left: title + intro */}
+            <div className="space-y-4 sm:space-y-5">
+              <p className="text-xs sm:text-sm font-semibold uppercase tracking-[0.3em] text-secondary">
+                {t.heroBadge}
               </p>
-              <p className="text-muted-foreground text-sm sm:text-base mt-1">{t.offerBody(deadline)}</p>
+              <h1 className="font-playfair text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground leading-[1.08] tracking-tight">
+                {t.heroTitleA} <span className="text-secondary">{t.heroTitleB}</span>
+              </h1>
+              <p className="text-sm sm:text-base lg:text-lg text-muted-foreground leading-[1.7] font-medium">
+                {t.heroSubtitle}
+              </p>
+              <div className="border-l-2 border-secondary pl-4">
+                <p className="text-foreground font-semibold text-sm uppercase tracking-[0.15em]">
+                  {t.offerTitle}
+                </p>
+                <p className="text-muted-foreground text-sm mt-0.5">{t.offerBody(deadline)}</p>
+              </div>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-2">
+            {/* Right: booking card */}
+            <div className="border border-secondary/60 rounded-sm p-5 sm:p-6 space-y-4 bg-card">
               <BookingForm
                 trigger={
                   <Button
                     size="lg"
-                    className="bg-primary hover:bg-primary/90 text-base sm:text-lg px-8 h-12 sm:h-14 font-bold tracking-wide"
+                    className="w-full bg-secondary hover:bg-secondary/90 text-secondary-foreground text-base sm:text-lg h-12 font-bold tracking-wide"
                   >
-                    {t.heroCtaPrimary}
+                    {t.bookTourCta}
                   </Button>
                 }
               />
-              <a
-                href="tel:+85221627306"
-                onClick={(e) => {
-                  if (typeof window !== "undefined" && (window as any).gtag_report_conversion) {
-                    ;(window as any).gtag_report_conversion()
-                  }
-                }}
-              >
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="text-base sm:text-lg px-8 h-12 sm:h-14 bg-transparent font-semibold border-2 border-primary text-primary hover:bg-primary hover:text-white transition-all duration-200 w-full"
-                >
-                  {t.heroCtaCall}
-                </Button>
-              </a>
-            </div>
-
-            <div className="flex flex-wrap items-center gap-x-5 gap-y-2 pt-1 text-muted-foreground text-sm font-medium">
-              <span>{t.heroPoint1}</span>
-              <span className="text-border">·</span>
-              <span>{t.heroPoint2}</span>
-              <span className="text-border">·</span>
-              <span>{t.heroPoint3}</span>
+              <div className="space-y-2.5 text-sm">
+                <div className="flex items-center gap-2.5">
+                  <MapPin className="h-4 w-4 text-secondary flex-shrink-0" />
+                  <span>
+                    {t.addressLine1}, {t.addressLine2}
+                  </span>
+                </div>
+                <div className="flex items-center gap-2.5">
+                  <Phone className="h-4 w-4 text-secondary flex-shrink-0" />
+                  <a href="tel:+85221627306" className="hover:text-primary transition-colors">
+                    {t.phoneDisplay}
+                  </a>
+                </div>
+                <div className="flex items-center gap-2.5">
+                  <Train className="h-4 w-4 text-secondary flex-shrink-0" />
+                  <span>{t.transport[0].name} · {t.transport[0].time}</span>
+                </div>
+              </div>
+              <div className="h-px bg-border" />
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-muted-foreground text-sm font-medium">
+                <span>{t.heroPoint1}</span>
+                <span className="text-border">·</span>
+                <span>{t.heroPoint2}</span>
+                <span className="text-border">·</span>
+                <span>{t.heroPoint3}</span>
+              </div>
             </div>
           </div>
         </div>
