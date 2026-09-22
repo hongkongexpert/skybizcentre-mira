@@ -12,7 +12,7 @@ export const dictionaries = {
     bookTourCta: "Book a Tour",
 
     // Trust bar
-    trustClients: "500+ Happy Clients",
+    trustClients: "500+ Members",
     trustScmp: "Featured in SCMP",
     trustFortune: "Fortune 500 Neighbors",
 
@@ -32,9 +32,9 @@ export const dictionaries = {
     heroImageAlt: "Business lounge and coffee bar - Sky Business Centre Mira Place, Tsim Sha Tsui",
 
     // Stats
-    statClients: "Happy Clients",
+    statClients: "Members",
     statYears: "Years Experience",
-    statSatisfaction: "Client Satisfaction",
+    statCentres: "Centres in HK",
     statAccess: "Access Available",
 
     // Services
@@ -50,6 +50,9 @@ export const dictionaries = {
     svcLoungeTitle: "Business Lounges",
     svcLoungeDesc: "Premium networking and relaxation spaces.",
     svcLoungePrice: "Included",
+    svcVirtualTitle: "Virtual Office",
+    svcVirtualDesc: "Prestigious Mira Place business address with mail handling and call answering.",
+    svcVirtualPrice: "Contact us",
     bookTour: "Book Tour",
     bookNow: "Book Now",
     viewMore: "View More",
@@ -166,13 +169,11 @@ export const dictionaries = {
     // Why choose us
     whyTitle: "Why 500+ Businesses Choose Sky Business Centre",
     whySubtitle: "The smart choice for growing businesses in Hong Kong",
-    why1Title: "Brand New Centre",
-    why1Desc:
-      "Opening November 2026 at Mira Place — fully furnished offices with early bird pricing for our first members.",
-    why2Title: "Premium Location",
-    why2Desc:
-      "Mira Place Tower A on Nathan Road — Tsim Sha Tsui's premier shopping, dining and business hub, home to the five-star Mira Hong Kong hotel.",
-    why3Title: "Flexible Terms",
+    why1Title: "Easy Onboarding",
+    why1Desc: "Fully furnished, ready-to-use offices with a simple sign-up — start working from day one.",
+    why2Title: "Flexible Office Design",
+    why2Desc: "Layouts tailored to your team — from single workstations to 20-person suites.",
+    why3Title: "Flexible Lease Terms",
     why3Desc: "Scale up or down as your business grows. Monthly terms available.",
     centresInfo:
       "Sky Business Centre operates 45,000 sq ft across 3 prime Hong Kong locations: Times Square (Causeway Bay) 17,200 sq ft · Mira Place (Tsim Sha Tsui) 16,800 sq ft · Silvercord (Tsim Sha Tsui) 11,000 sq ft",
@@ -181,13 +182,13 @@ export const dictionaries = {
     facilitiesTitle: "Everything Included. No Hidden Fees.",
     facilitiesSubtitle: "Premium amenities at no extra cost",
     facilities: [
-      { title: "24/7 Secure Access", desc: "Round-the-clock access with advanced security systems" },
-      { title: "Enterprise-Grade Internet", desc: "Dedicated high-speed fiber with backup connections" },
+      { title: "Secure 24/7 Office Access", desc: "Round-the-clock access with advanced security systems" },
+      { title: "Secured High-Speed Wi-Fi & LAN", desc: "Dedicated high-speed fiber with backup connections" },
       { title: "On-Site IT Support", desc: "Professional technical assistance and troubleshooting" },
-      { title: "Premium Refreshments", desc: "Complimentary barista-quality coffee and beverages" },
+      { title: "Fully Equipped Pantry", desc: "Coffee machines, fridge and microwave for your team" },
       { title: "Professional Print Center", desc: "High-quality printing, scanning, and copying services" },
       { title: "Equipped Meeting Spaces", desc: "Boardrooms with video conferencing and presentation tech" },
-      { title: "Private Phone Booths", desc: "Soundproof spaces for confidential calls and video meetings" },
+      { title: "Soundproof Phone Booth", desc: "Private spaces for confidential calls and video meetings" },
       { title: "Dedicated Concierge", desc: "Professional reception and business support services" },
     ] as { title: string; desc: string }[],
     facilitiesImageAlt: "Premium coffee machines and pantry facilities - Mira Place",
@@ -225,6 +226,14 @@ export const dictionaries = {
       "Mira Place — 2 million sq ft of shopping, dining and Grade-A offices on Nathan Road, with the five-star Mira Hong Kong hotel next door.",
     locationMtr: "2 min walk to Tsim Sha Tsui MTR",
     locationCbd: "Central Business District",
+    transportTitle: "Getting Here",
+    transport: [
+      { name: "Tsim Sha Tsui Station (Tsuen Wan Line)", time: "3-min walk", icon: "train" },
+      { name: "Austin Station (Tuen Ma Line)", time: "15-min walk", icon: "train" },
+      { name: "HK West Kowloon Station (High Speed Rail)", time: "15-min walk", icon: "train" },
+      { name: "Hong Kong China Ferry Terminal", time: "10-min walk", icon: "ship" },
+      { name: "Star Ferry Pier", time: "15-min walk", icon: "ship" },
+    ] as { name: string; time: string; icon: string }[],
     getDirections: "Get Directions",
     locationCta: "Secure Your Office - Early Bird Offer",
 
@@ -238,6 +247,7 @@ export const dictionaries = {
 
     // Footer
     footerCopyright: "© 2026 Sky Business Centre",
+    footerLegal: "Sky Business Centre (Caroline) Limited",
 
     // Sticky CTA / WhatsApp
     callNow: "Call Now",
@@ -315,7 +325,7 @@ export const dictionaries = {
     phoneDisplay: "+852 2162 7306",
     bookTourCta: "預約參觀",
 
-    trustClients: "超過500位滿意客戶",
+    trustClients: "超過500位會員",
     trustScmp: "獲《南華早報》報導",
     trustFortune: "與財富500強企業為鄰",
 
@@ -333,9 +343,9 @@ export const dictionaries = {
     heroPoint3: "彌敦道黃金地段",
     heroImageAlt: "商務休息區及咖啡吧 — Sky Business Centre 尖沙咀美麗華廣場",
 
-    statClients: "滿意客戶",
+    statClients: "會員",
     statYears: "年豐富經驗",
-    statSatisfaction: "客戶滿意度",
+    statCentres: "商務中心",
     statAccess: "全天候出入",
 
     servicesTitle: "選擇您的辦公室。2026年11月開幕。",
@@ -350,6 +360,9 @@ export const dictionaries = {
     svcLoungeTitle: "商務休息區",
     svcLoungeDesc: "尊貴社交及休憩空間。",
     svcLoungePrice: "費用全包",
+    svcVirtualTitle: "虛擬辦公室",
+    svcVirtualDesc: "美麗華廣場尊貴商業地址,提供郵件處理及來電接聽服務。",
+    svcVirtualPrice: "聯絡我們",
     bookTour: "預約參觀",
     bookNow: "立即預訂",
     viewMore: "查看更多",
@@ -460,11 +473,10 @@ export const dictionaries = {
 
     whyTitle: "為何超過500間企業選擇 Sky Business Centre",
     whySubtitle: "香港成長型企業的明智之選",
-    why1Title: "全新商務中心",
-    why1Desc: "2026年11月於美麗華廣場開幕 — 全裝修辦公室,首批會員尊享早鳥優惠價。",
-    why2Title: "尊貴地段",
-    why2Desc:
-      "美麗華廣場A座坐落彌敦道 — 尖沙咀首屈一指的購物、餐飲及商業樞紐,毗鄰五星級美麗華酒店。",
+    why1Title: "簡易進駐",
+    why1Desc: "全裝修辦公室即租即用,簽約流程簡單,首日即可開始工作。",
+    why2Title: "靈活辦公室設計",
+    why2Desc: "按團隊需要度身定制佈局 — 由單人工作站至20人套房。",
     why3Title: "靈活租期",
     why3Desc: "隨業務發展靈活擴充或縮減,提供月租方案。",
     centresInfo:
@@ -474,12 +486,12 @@ export const dictionaries = {
     facilitiesSubtitle: "優質配套,不設額外收費",
     facilities: [
       { title: "24/7 保安出入", desc: "先進保安系統,全天候自由進出" },
-      { title: "企業級網絡", desc: "專用高速光纖,設後備連線" },
+      { title: "高速 Wi-Fi 及 LAN 專線", desc: "專用高速光纖,設後備連線" },
       { title: "駐場 IT 支援", desc: "專業技術支援及疑難排解" },
-      { title: "優質茶點", desc: "免費供應咖啡師級咖啡及飲品" },
+      { title: "設備完善茶水間", desc: "咖啡機、雪櫃及微波爐一應俱全" },
       { title: "專業打印中心", desc: "高質素打印、掃描及影印服務" },
       { title: "設備完善會議室", desc: "董事會議室配備視像會議及簡報器材" },
-      { title: "私人電話亭", desc: "隔音空間,適合機密通話及視像會議" },
+      { title: "隔音電話亭", desc: "私人空間,適合機密通話及視像會議" },
       { title: "專屬禮賓服務", desc: "專業接待及商務支援服務" },
     ] as { title: string; desc: string }[],
     facilitiesImageAlt: "優質咖啡機及茶水間設施 — 美麗華廣場",
@@ -515,6 +527,14 @@ export const dictionaries = {
       "美麗華廣場 — 彌敦道上200萬平方呎的購物、餐飲及甲級寫字樓樞紐,毗鄰五星級美麗華酒店。",
     locationMtr: "2分鐘步程直達尖沙咀港鐵站",
     locationCbd: "核心商業區",
+    transportTitle: "交通指南",
+    transport: [
+      { name: "尖沙咀站(荃灣綫)", time: "步行3分鐘", icon: "train" },
+      { name: "柯士甸站(屯馬綫)", time: "步行15分鐘", icon: "train" },
+      { name: "香港西九龍站(高速鐵路)", time: "步行15分鐘", icon: "train" },
+      { name: "中港客運碼頭", time: "步行10分鐘", icon: "ship" },
+      { name: "天星碼頭", time: "步行15分鐘", icon: "ship" },
+    ] as { name: string; time: string; icon: string }[],
     getDirections: "路線指引",
     locationCta: "鎖定您的辦公室 — 早鳥優惠",
 
@@ -526,6 +546,7 @@ export const dictionaries = {
     contactCta: "領取早鳥優惠",
 
     footerCopyright: "© 2026 Sky Business Centre",
+    footerLegal: "Sky Business Centre (Caroline) Limited",
 
     callNow: "立即致電",
     whatsappTooltip: "WhatsApp 與我們聯絡",

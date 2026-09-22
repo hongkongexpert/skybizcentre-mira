@@ -23,6 +23,8 @@ import {
   CheckCircle,
   Zap,
   Mail,
+  Train,
+  Ship,
 } from "lucide-react"
 import { BookingForm } from "@/components/booking-form"
 import Image from "next/image"
@@ -359,15 +361,15 @@ export default function HomePage() {
             </div>
             <div className="text-center">
               <div className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary mb-1 sm:mb-2 tracking-tight">
-                12
+                15+
               </div>
               <div className="text-muted-foreground font-medium text-sm sm:text-base">{t.statYears}</div>
             </div>
             <div className="text-center">
               <div className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary mb-1 sm:mb-2 tracking-tight">
-                99%
+                3
               </div>
-              <div className="text-muted-foreground font-medium text-sm sm:text-base">{t.statSatisfaction}</div>
+              <div className="text-muted-foreground font-medium text-sm sm:text-base">{t.statCentres}</div>
             </div>
             <div className="text-center">
               <div className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary mb-1 sm:mb-2 tracking-tight">
@@ -391,7 +393,7 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-6">
             <Card className="group hover:shadow-2xl transition-all duration-500 border-0 shadow-lg hover:-translate-y-1">
               <CardContent className="p-4 sm:p-6">
                 <button
@@ -464,7 +466,7 @@ export default function HomePage() {
               </CardContent>
             </Card>
 
-            <Card className="group hover:shadow-2xl transition-all duration-500 border-0 shadow-lg col-span-2 lg:col-span-1 hover:-translate-y-1">
+            <Card className="group hover:shadow-2xl transition-all duration-500 border-0 shadow-lg hover:-translate-y-1">
               <CardContent className="p-4 sm:p-6">
                 <button
                   type="button"
@@ -494,6 +496,42 @@ export default function HomePage() {
                       {t.viewMore}
                     </Button>
                   </a>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="group hover:shadow-2xl transition-all duration-500 border-0 shadow-lg hover:-translate-y-1">
+              <CardContent className="p-4 sm:p-6">
+                <button
+                  type="button"
+                  className="aspect-[4/3] w-full rounded-xl overflow-hidden mb-4 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                  onClick={() => openImagePopup("/images/mira/reception-1.jpg", t.imgReception1)}
+                  aria-label={`View photo: ${t.imgReception1}`}
+                >
+                  <img
+                    src="/images/mira/reception-1.jpg"
+                    alt={t.imgReception1}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    loading="lazy"
+                  />
+                </button>
+                <h3 className="font-playfair text-lg sm:text-xl font-bold mb-2 sm:mb-3">{t.svcVirtualTitle}</h3>
+                <p className="text-muted-foreground mb-3 sm:mb-4 leading-relaxed text-sm sm:text-base">
+                  {t.svcVirtualDesc}
+                </p>
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                  <span className="text-primary font-bold text-base sm:text-lg">{t.svcVirtualPrice}</span>
+                  <BookingForm
+                    trigger={
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="bg-white w-full sm:w-auto border-primary text-primary hover:bg-primary hover:text-white font-semibold text-sm hover:shadow-md transition-all duration-300"
+                      >
+                        {t.bookNow}
+                      </Button>
+                    }
+                  />
                 </div>
               </CardContent>
             </Card>
@@ -907,13 +945,23 @@ export default function HomePage() {
                     <p className="text-muted-foreground text-sm sm:text-base">{t.addressLine2}</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-3">
-                  <Building className="h-4 sm:h-5 w-4 sm:w-5 text-primary flex-shrink-0" />
-                  <span className="text-sm sm:text-base">{t.locationMtr}</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <Users className="h-4 sm:h-5 w-4 sm:w-5 text-primary flex-shrink-0" />
-                  <span className="text-sm sm:text-base">{t.locationCbd}</span>
+                <div>
+                  <p className="font-semibold text-sm sm:text-base mb-2">{t.transportTitle}</p>
+                  <ul className="space-y-2">
+                    {t.transport.map((item, index) => (
+                      <li key={index} className="flex items-center gap-3">
+                        {item.icon === "ship" ? (
+                          <Ship className="h-4 sm:h-5 w-4 sm:w-5 text-primary flex-shrink-0" />
+                        ) : (
+                          <Train className="h-4 sm:h-5 w-4 sm:w-5 text-primary flex-shrink-0" />
+                        )}
+                        <span className="text-sm sm:text-base flex-1">{item.name}</span>
+                        <span className="text-muted-foreground text-xs sm:text-sm font-medium whitespace-nowrap">
+                          {item.time}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               </div>
 
@@ -1042,7 +1090,9 @@ export default function HomePage() {
               <span className="text-background/60">|</span>
               <span>{t.locationShort}</span>
               <span className="text-background/60">|</span>
-              <span className="text-background/80">{t.footerCopyright}</span>
+              <span className="text-background/80">
+                {t.footerCopyright} · {t.footerLegal}
+              </span>
             </div>
           </div>
         </div>
