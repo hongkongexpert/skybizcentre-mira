@@ -37,6 +37,18 @@ export const dictionaries = {
     statCentres: "Centres in HK",
     statAccess: "Access Available",
 
+    // Section kickers
+    kServices: "Our Spaces",
+    kGallery: "Gallery",
+    kMeeting: "Meeting Facilities",
+    kPricing: "Pricing",
+    kReviews: "Client Reviews",
+    kWhy: "Why Sky",
+    kFacilities: "Amenities",
+    kFaq: "FAQ",
+    kLocation: "Location",
+    kContact: "Contact",
+
     // Services
     servicesTitle: "Choose Your Office. Opening November 2026.",
     servicesSubtitle:
@@ -111,7 +123,7 @@ export const dictionaries = {
     priceOffice2C: "24/7 access",
     mostPopular: "Most Popular",
     pricingOffer: (date: string) =>
-      `🔥 Early Bird: 2 months rent free on 12-month contracts — sign by ${date} + HK$5,000 setup fee waived`,
+      `Early Bird — 2 months rent free on 12-month contracts · sign by ${date} · HK$5,000 setup fee waived`,
     pricingCta: "Claim Early Bird Offer",
 
     // Reviews
@@ -348,6 +360,17 @@ export const dictionaries = {
     statCentres: "商務中心",
     statAccess: "全天候出入",
 
+    kServices: "辦公空間",
+    kGallery: "環境圖集",
+    kMeeting: "會議設施",
+    kPricing: "收費",
+    kReviews: "客戶評價",
+    kWhy: "我們的優勢",
+    kFacilities: "配套設施",
+    kFaq: "常見問題",
+    kLocation: "位置交通",
+    kContact: "聯絡我們",
+
     servicesTitle: "選擇您的辦公室。2026年11月開幕。",
     servicesSubtitle:
       "為中小企、跨國公司及專業機構提供一站式辦公方案,坐落尖沙咀心臟地帶。設備一應俱全,開幕即可進駐。",
@@ -417,7 +440,7 @@ export const dictionaries = {
     priceOffice2B: "城市景觀",
     priceOffice2C: "24/7 全天候出入",
     mostPopular: "最受歡迎",
-    pricingOffer: (date: string) => `🔥 早鳥優惠:簽署12個月合約即享2個月免租 — 於${date}前簽署,另豁免 HK$5,000 設置費`,
+    pricingOffer: (date: string) => `早鳥優惠 — 簽署12個月合約即享2個月免租 · 於${date}前簽署 · 另豁免 HK$5,000 設置費`,
     pricingCta: "領取早鳥優惠",
 
     reviewsTitle: "Google 評價",

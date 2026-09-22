@@ -113,6 +113,18 @@ export default function HomePage() {
     setPopupImage(imageGallery[newIndex])
   }
 
+  const Kicker = ({ children, align = "center" }: { children: React.ReactNode; align?: "center" | "left" }) => (
+    <p
+      className={`flex items-center gap-4 text-xs sm:text-sm font-semibold uppercase tracking-[0.28em] text-secondary mb-3 sm:mb-4 ${
+        align === "center" ? "justify-center" : "justify-start"
+      }`}
+    >
+      <span className="h-px w-10 bg-secondary/50" />
+      {children}
+      {align === "center" && <span className="h-px w-10 bg-secondary/50" />}
+    </p>
+  )
+
   const galleryButton = (
     image: { src: string; alt: string },
     index: number,
@@ -194,7 +206,7 @@ export default function HomePage() {
       />
 
       {/* Header */}
-      <header className="border-b border-border/40 bg-white/98 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+      <header className="border-b border-border/40 bg-background/95 backdrop-blur-md sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between max-w-8xl">
           <a href="#top" aria-label="Sky Business Centre - back to top" className="flex items-center gap-3">
             <Image src="/sky-logo.png" alt="Sky Business Centre" width={40} height={40} className="h-10 w-auto" />
@@ -240,7 +252,7 @@ export default function HomePage() {
         </div>
       </header>
 
-      <div className="bg-gradient-to-r from-primary/8 to-secondary/8 py-3 border-b border-border/20">
+      <div className="bg-muted/50 py-3 border-b border-border/40">
         <div className="container mx-auto px-4 max-w-8xl">
           <div className="flex items-center justify-center gap-4 sm:gap-6 text-sm text-foreground/70">
             <div className="flex items-center gap-2">
@@ -255,124 +267,100 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* Hero Section */}
-      <section className="relative py-8 sm:py-12 lg:py-16 bg-gradient-to-br from-primary/3 via-background to-secondary/3">
-        <div className="container mx-auto px-4 max-w-8xl">
-          <div className="grid lg:grid-cols-2 gap-6 lg:gap-10 items-center">
-            <div className="space-y-4 lg:space-y-6 order-2 lg:order-1">
-              <Badge
-                variant="secondary"
-                className="w-fit text-xs sm:text-sm font-bold bg-amber-50 text-amber-800 border-amber-200 px-3 sm:px-4 py-1.5"
-              >
-                {t.heroBadge}
-              </Badge>
-              <h1 className="font-playfair text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-foreground leading-[1.05] tracking-tight">
-                {t.heroTitleA} <span className="text-primary">{t.heroTitleB}</span>
-              </h1>
-              <p className="text-base sm:text-lg lg:text-xl text-muted-foreground leading-[1.6] max-w-2xl font-medium">
-                {t.heroSubtitle}
+      {/* Hero Section - full bleed editorial */}
+      <section className="relative min-h-[82vh] flex items-center">
+        <div className="absolute inset-0">
+          <img
+            src="/images/mira/hero.jpg"
+            alt={t.heroImageAlt}
+            className="w-full h-full object-cover"
+            loading="eager"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/45 to-black/15" />
+        </div>
+        <div className="relative container mx-auto px-4 max-w-8xl py-20 sm:py-24">
+          <div className="max-w-2xl space-y-5 sm:space-y-7">
+            <p className="text-xs sm:text-sm font-semibold uppercase tracking-[0.3em] text-white/75">
+              {t.heroBadge}
+            </p>
+            <h1 className="font-playfair text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-white leading-[1.05] tracking-tight">
+              {t.heroTitleA} <span className="text-secondary">{t.heroTitleB}</span>
+            </h1>
+            <p className="text-base sm:text-lg lg:text-xl text-white/85 leading-[1.7] font-medium">
+              {t.heroSubtitle}
+            </p>
+
+            <div className="border-l-2 border-secondary pl-4 sm:pl-5">
+              <p className="text-white font-semibold text-sm sm:text-base uppercase tracking-[0.15em]">
+                {t.offerTitle}
               </p>
-
-              <div className="bg-gradient-to-r from-amber-50 to-orange-50 p-4 sm:p-5 rounded-xl border border-amber-200 shadow-sm">
-                <div className="flex items-center gap-2 mb-2">
-                  <Clock className="h-4 sm:h-5 w-4 sm:w-5 text-amber-700" />
-                  <span className="font-bold text-amber-800 text-base sm:text-lg">{t.offerTitle}</span>
-                </div>
-                <p className="text-amber-800 font-semibold text-sm sm:text-base">{t.offerBody(deadline)}</p>
-              </div>
-
-              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-2">
-                <BookingForm
-                  trigger={
-                    <Button
-                      size="lg"
-                      className="bg-primary hover:bg-primary/90 text-base sm:text-lg px-6 sm:px-8 h-12 sm:h-14 shadow-lg font-bold tracking-wide"
-                    >
-                      {t.heroCtaPrimary}
-                    </Button>
-                  }
-                />
-                <a
-                  href="tel:+85221627306"
-                  onClick={(e) => {
-                    if (typeof window !== "undefined" && (window as any).gtag_report_conversion) {
-                      ;(window as any).gtag_report_conversion()
-                    }
-                  }}
-                >
-                  <Button
-                    variant="outline"
-                    size="lg"
-                    className="text-base sm:text-lg px-6 sm:px-8 h-12 sm:h-14 bg-white font-semibold border-2 border-primary text-primary hover:bg-primary hover:text-white transition-all duration-200 w-full"
-                  >
-                    {t.heroCtaCall}
-                  </Button>
-                </a>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 pt-3">
-                <div className="flex items-center gap-3">
-                  <CheckCircle className="h-5 w-5 text-emerald-600 flex-shrink-0" />
-                  <span className="font-semibold text-sm sm:text-base">{t.heroPoint1}</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <CheckCircle className="h-5 w-5 text-emerald-600 flex-shrink-0" />
-                  <span className="font-semibold text-sm sm:text-base">{t.heroPoint2}</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <CheckCircle className="h-5 w-5 text-emerald-600 flex-shrink-0" />
-                  <span className="font-semibold text-sm sm:text-base">{t.heroPoint3}</span>
-                </div>
-              </div>
+              <p className="text-white/80 text-sm sm:text-base mt-1">{t.offerBody(deadline)}</p>
             </div>
 
-            {/* Hero Image */}
-            <button
-              type="button"
-              className="relative h-[400px] sm:h-[500px] lg:h-[600px] w-full rounded-2xl overflow-hidden shadow-2xl group cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
-              onClick={() => openImagePopup("/images/mira/hero.jpg", t.heroImageAlt)}
-              aria-label={`View photo: ${t.heroImageAlt}`}
-            >
-              <div className="absolute inset-0 bg-gradient-to-r from-slate-900/20 to-transparent z-10 group-hover:from-slate-900/10 transition-all duration-300" />
-              <div className="relative h-full">
-                <div className="absolute inset-0">
-                  <img
-                    src="/images/mira/hero.jpg"
-                    alt={t.heroImageAlt}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    loading="eager"
-                  />
-                </div>
-              </div>
-            </button>
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-2">
+              <BookingForm
+                trigger={
+                  <Button
+                    size="lg"
+                    className="bg-white text-foreground hover:bg-white/90 text-base sm:text-lg px-8 h-12 sm:h-14 font-bold tracking-wide"
+                  >
+                    {t.heroCtaPrimary}
+                  </Button>
+                }
+              />
+              <a
+                href="tel:+85221627306"
+                onClick={(e) => {
+                  if (typeof window !== "undefined" && (window as any).gtag_report_conversion) {
+                    ;(window as any).gtag_report_conversion()
+                  }
+                }}
+              >
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="text-base sm:text-lg px-8 h-12 sm:h-14 bg-transparent font-semibold border-2 border-white text-white hover:bg-white hover:text-foreground transition-all duration-200 w-full"
+                >
+                  {t.heroCtaCall}
+                </Button>
+              </a>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-x-5 gap-y-2 pt-1 text-white/75 text-sm font-medium">
+              <span>{t.heroPoint1}</span>
+              <span className="text-white/40">·</span>
+              <span>{t.heroPoint2}</span>
+              <span className="text-white/40">·</span>
+              <span>{t.heroPoint3}</span>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Social Proof Numbers Section */}
-      <section className="py-8 sm:py-12 bg-gradient-to-r from-primary/5 to-secondary/5">
+      <section className="py-10 sm:py-14 bg-background border-b border-border/40">
         <div className="container mx-auto px-4 max-w-8xl">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
             <div className="text-center">
-              <div className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary mb-1 sm:mb-2 tracking-tight">
+              <div className="font-playfair text-3xl sm:text-4xl lg:text-5xl font-bold text-primary mb-1 sm:mb-2 tracking-tight">
                 500+
               </div>
               <div className="text-muted-foreground font-medium text-sm sm:text-base">{t.statClients}</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary mb-1 sm:mb-2 tracking-tight">
+              <div className="font-playfair text-3xl sm:text-4xl lg:text-5xl font-bold text-primary mb-1 sm:mb-2 tracking-tight">
                 15+
               </div>
               <div className="text-muted-foreground font-medium text-sm sm:text-base">{t.statYears}</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary mb-1 sm:mb-2 tracking-tight">
+              <div className="font-playfair text-3xl sm:text-4xl lg:text-5xl font-bold text-primary mb-1 sm:mb-2 tracking-tight">
                 3
               </div>
               <div className="text-muted-foreground font-medium text-sm sm:text-base">{t.statCentres}</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary mb-1 sm:mb-2 tracking-tight">
+              <div className="font-playfair text-3xl sm:text-4xl lg:text-5xl font-bold text-primary mb-1 sm:mb-2 tracking-tight">
                 24/7
               </div>
               <div className="text-muted-foreground font-medium text-sm sm:text-base">{t.statAccess}</div>
@@ -382,9 +370,10 @@ export default function HomePage() {
       </section>
 
       {/* Services Section */}
-      <section id="services" className="py-12 sm:py-16 bg-white">
+      <section id="services" className="py-14 sm:py-20 bg-background">
         <div className="container mx-auto px-4 max-w-8xl">
-          <div className="text-center mb-8 sm:mb-12">
+          <div className="text-center mb-10 sm:mb-14">
+            <Kicker>{t.kServices}</Kicker>
             <h2 className="font-playfair text-2xl sm:text-3xl lg:text-4xl font-bold mb-3 sm:mb-4 tracking-tight leading-[1.1]">
               {t.servicesTitle}
             </h2>
@@ -394,7 +383,7 @@ export default function HomePage() {
           </div>
 
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-6">
-            <Card className="group hover:shadow-2xl transition-all duration-500 border-0 shadow-lg hover:-translate-y-1">
+            <Card className="group hover:shadow-lg transition-all duration-500 border border-border/70 shadow-none hover:-translate-y-1">
               <CardContent className="p-4 sm:p-6">
                 <button
                   type="button"
@@ -430,7 +419,7 @@ export default function HomePage() {
               </CardContent>
             </Card>
 
-            <Card className="group hover:shadow-2xl transition-all duration-500 border-0 shadow-lg hover:-translate-y-1">
+            <Card className="group hover:shadow-lg transition-all duration-500 border border-border/70 shadow-none hover:-translate-y-1">
               <CardContent className="p-4 sm:p-6">
                 <button
                   type="button"
@@ -466,7 +455,7 @@ export default function HomePage() {
               </CardContent>
             </Card>
 
-            <Card className="group hover:shadow-2xl transition-all duration-500 border-0 shadow-lg hover:-translate-y-1">
+            <Card className="group hover:shadow-lg transition-all duration-500 border border-border/70 shadow-none hover:-translate-y-1">
               <CardContent className="p-4 sm:p-6">
                 <button
                   type="button"
@@ -500,7 +489,7 @@ export default function HomePage() {
               </CardContent>
             </Card>
 
-            <Card className="group hover:shadow-2xl transition-all duration-500 border-0 shadow-lg hover:-translate-y-1">
+            <Card className="group hover:shadow-lg transition-all duration-500 border border-border/70 shadow-none hover:-translate-y-1">
               <CardContent className="p-4 sm:p-6">
                 <button
                   type="button"
@@ -540,9 +529,10 @@ export default function HomePage() {
       </section>
 
       {/* Office Gallery Section */}
-      <section id="gallery" className="py-12 sm:py-16 bg-gradient-to-br from-muted/20 to-background">
+      <section id="gallery" className="py-14 sm:py-20 bg-muted/40 border-t border-border/40">
         <div className="container mx-auto px-4 max-w-8xl">
-          <div className="text-center mb-8 sm:mb-12">
+          <div className="text-center mb-10 sm:mb-14">
+            <Kicker>{t.kGallery}</Kicker>
             <h2 className="font-playfair text-2xl sm:text-3xl lg:text-4xl font-bold mb-3 sm:mb-4 tracking-tight leading-[1.1]">
               {t.galleryTitle}
             </h2>
@@ -594,9 +584,10 @@ export default function HomePage() {
       </section>
 
       {/* Professional Meeting Rooms */}
-      <section className="py-12 sm:py-16 lg:py-20 bg-muted/30">
+      <section className="py-14 sm:py-20 bg-background border-t border-border/40">
         <div className="container mx-auto px-4 max-w-8xl">
-          <div className="text-center mb-12 sm:mb-16">
+          <div className="text-center mb-10 sm:mb-14">
+            <Kicker>{t.kMeeting}</Kicker>
             <h2 className="font-playfair text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 sm:mb-6 tracking-tight">
               {t.meetingTitle}
             </h2>
@@ -612,9 +603,10 @@ export default function HomePage() {
       </section>
 
       {/* Pricing Section */}
-      <section className="py-12 sm:py-16 bg-gradient-to-br from-muted/30 to-muted/10">
+      <section className="py-14 sm:py-20 bg-muted/40 border-t border-border/40">
         <div className="container mx-auto px-4 max-w-8xl">
-          <div className="text-center mb-8 sm:mb-12">
+          <div className="text-center mb-10 sm:mb-14">
+            <Kicker>{t.kPricing}</Kicker>
             <h2 className="font-playfair text-2xl sm:text-3xl lg:text-4xl font-bold mb-3 sm:mb-4 tracking-tight leading-[1.1]">
               {t.pricingTitle}
             </h2>
@@ -622,7 +614,7 @@ export default function HomePage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 max-w-5xl mx-auto">
-            <Card className="p-5 sm:p-6 hover:shadow-xl transition-all duration-300 border-0 shadow-md">
+            <Card className="p-5 sm:p-6 hover:shadow-xl transition-all duration-300 border border-border/70 shadow-none">
               <div className="text-center">
                 <h3 className="font-playfair text-xl sm:text-2xl font-bold mb-3 tracking-tight">{t.priceOfficeTitle}</h3>
                 <div className="mb-4 sm:mb-5">
@@ -656,7 +648,7 @@ export default function HomePage() {
               </div>
             </Card>
 
-            <Card className="p-6 sm:p-8 hover:shadow-xl transition-all duration-300 border-2 border-primary relative shadow-lg">
+            <Card className="p-6 sm:p-8 hover:shadow-xl transition-all duration-300 border-2 border-primary relative shadow-none">
               <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
                 <Badge className="bg-primary text-white px-4 py-1 font-semibold">{t.mostPopular}</Badge>
               </div>
@@ -686,7 +678,7 @@ export default function HomePage() {
               </div>
             </Card>
 
-            <Card className="p-6 sm:p-8 hover:shadow-xl transition-all duration-300 border-0 shadow-md">
+            <Card className="p-6 sm:p-8 hover:shadow-xl transition-all duration-300 border border-border/70 shadow-none">
               <div className="text-center">
                 <h3 className="font-playfair text-xl sm:text-2xl font-bold mb-3 sm:mb-4">{t.priceOffice2Title}</h3>
                 <div className="mb-4 sm:mb-6">
@@ -738,9 +730,10 @@ export default function HomePage() {
       </section>
 
       {/* Google Reviews Section */}
-      <section className="py-12 sm:py-16 bg-white">
+      <section className="py-14 sm:py-20 bg-background border-t border-border/40">
         <div className="container mx-auto px-4 max-w-8xl">
-          <div className="text-center mb-8 sm:mb-12">
+          <div className="text-center mb-10 sm:mb-14">
+            <Kicker>{t.kReviews}</Kicker>
             <div className="flex items-center justify-center gap-3 mb-3 sm:mb-4">
               <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
                 <span className="text-white font-bold text-sm">G</span>
@@ -764,7 +757,7 @@ export default function HomePage() {
             {t.reviews.map((review, index) => {
               const avatar = reviewAvatars[review.name] || {}
               return (
-                <Card key={index} className="p-6 hover:shadow-lg transition-shadow border border-gray-200">
+                <Card key={index} className="p-6 hover:shadow-lg transition-shadow border border-border/70">
                   <div className="flex items-start gap-3 mb-4">
                     {avatar.img ? (
                       <img
@@ -810,9 +803,10 @@ export default function HomePage() {
       </section>
 
       {/* Why Choose Us Section */}
-      <section className="py-12 sm:py-16 bg-gradient-to-br from-primary/5 to-secondary/5">
+      <section className="py-14 sm:py-20 bg-muted/40 border-t border-border/40">
         <div className="container mx-auto px-4 max-w-8xl">
-          <div className="text-center mb-8 sm:mb-12">
+          <div className="text-center mb-10 sm:mb-14">
+            <Kicker>{t.kWhy}</Kicker>
             <h2 className="font-playfair text-2xl sm:text-3xl lg:text-4xl font-bold mb-3 sm:mb-4 tracking-tight leading-[1.1]">
               {t.whyTitle}
             </h2>
@@ -852,9 +846,10 @@ export default function HomePage() {
       </section>
 
       {/* Facilities Section */}
-      <section className="py-12 sm:py-16 lg:py-20 bg-muted/30">
+      <section className="py-14 sm:py-20 bg-background border-t border-border/40">
         <div className="container mx-auto px-4 max-w-8xl">
-          <div className="text-center mb-12 sm:mb-16">
+          <div className="text-center mb-10 sm:mb-14">
+            <Kicker>{t.kFacilities}</Kicker>
             <h2 className="font-playfair text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 sm:mb-6">
               {t.facilitiesTitle}
             </h2>
@@ -883,7 +878,7 @@ export default function HomePage() {
               return (
                 <Card
                   key={index}
-                  className="text-center p-4 sm:p-6 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 border-0 shadow-sm"
+                  className="text-center p-4 sm:p-6 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 border border-border/60 shadow-none"
                 >
                   <Icon className="h-6 w-6 sm:h-8 sm:w-8 text-primary mx-auto mb-2 sm:mb-3" />
                   <h3 className="font-semibold mb-1 sm:mb-2 text-sm sm:text-base">{facility.title}</h3>
@@ -896,9 +891,10 @@ export default function HomePage() {
       </section>
 
       {/* FAQ Section */}
-      <section className="py-12 sm:py-16 lg:py-20">
+      <section className="py-14 sm:py-20 bg-background border-t border-border/40">
         <div className="container mx-auto px-4 max-w-8xl">
-          <div className="text-center mb-12 sm:mb-16">
+          <div className="text-center mb-10 sm:mb-14">
+            <Kicker>{t.kFaq}</Kicker>
             <h2 className="font-playfair text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 sm:mb-6">{t.faqTitle}</h2>
             <p className="text-base sm:text-lg text-muted-foreground">{t.faqSubtitle}</p>
           </div>
@@ -928,10 +924,11 @@ export default function HomePage() {
       </section>
 
       {/* Location Section */}
-      <section className="py-12 sm:py-16 lg:py-20 bg-muted/30">
+      <section className="py-14 sm:py-20 bg-muted/40 border-t border-border/40">
         <div className="container mx-auto px-4 max-w-8xl">
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             <div className="order-2 lg:order-1">
+              <Kicker align="left">{t.kLocation}</Kicker>
               <h2 className="font-playfair text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 sm:mb-6">
                 {t.locationTitle}
               </h2>
@@ -1011,10 +1008,11 @@ export default function HomePage() {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-12 sm:py-16 lg:py-20 bg-primary/5">
+      <section id="contact" className="py-14 sm:py-20 bg-muted/40 border-t border-border/40">
         <div className="container mx-auto px-4 max-w-8xl">
           <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-8 sm:mb-12">
+            <div className="text-center mb-10 sm:mb-14">
+              <Kicker>{t.kContact}</Kicker>
               <h2 className="font-playfair text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 sm:mb-6 tracking-tight">
                 {t.contactTitle}
               </h2>
@@ -1060,46 +1058,44 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <div className="bg-foreground text-background py-6 sm:py-8">
+      <div className="bg-foreground text-background py-10 sm:py-14">
         <div className="container mx-auto px-4 max-w-8xl">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-2 sm:gap-3">
-              <Image
-                src="/sky-logo.png"
-                alt="Sky Business Centre"
-                width={32}
-                height={32}
-                className="h-6 sm:h-8 w-auto brightness-0 invert"
-              />
-              <span className="font-playfair text-base sm:text-lg font-bold">{t.brand}</span>
-            </div>
-
-            <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-6 text-sm">
-              <a
-                href="tel:+85221627306"
-                onClick={(e) => {
-                  if (typeof window !== "undefined" && (window as any).gtag_report_conversion) {
-                    ;(window as any).gtag_report_conversion()
-                  }
-                }}
-                className="flex items-center gap-2 hover:text-background/80"
-              >
-                <Phone className="h-4 w-4" />
-                (852) 2162 7306
-              </a>
-              <span className="text-background/60">|</span>
-              <span>{t.locationShort}</span>
-              <span className="text-background/60">|</span>
-              <span className="text-background/80">
-                {t.footerCopyright} · {t.footerLegal}
-              </span>
-            </div>
+          <div className="flex flex-col items-center text-center gap-4 sm:gap-5">
+            <Image
+              src="/sky-logo.png"
+              alt="Sky Business Centre"
+              width={40}
+              height={40}
+              className="h-10 w-auto brightness-0 invert"
+            />
+            <p className="font-playfair text-lg sm:text-xl font-bold tracking-wide">{t.brand}</p>
+            <div className="h-px w-16 bg-background/30" />
+            <p className="text-sm text-background/80 leading-relaxed">
+              {t.addressLine1}
+              <br />
+              {t.addressLine2}
+            </p>
+            <a
+              href="tel:+85221627306"
+              onClick={(e) => {
+                if (typeof window !== "undefined" && (window as any).gtag_report_conversion) {
+                  ;(window as any).gtag_report_conversion()
+                }
+              }}
+              className="flex items-center gap-2 text-sm hover:text-background/80"
+            >
+              <Phone className="h-4 w-4" />
+              (852) 2162 7306
+            </a>
+            <p className="text-xs text-background/60 mt-2">
+              {t.footerCopyright} · {t.footerLegal}
+            </p>
           </div>
         </div>
       </div>
 
       {/* Sticky Mobile CTA */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-border shadow-lg p-3 sm:p-4 z-40 lg:hidden">
+      <div className="fixed bottom-0 left-0 right-0 bg-background border-t border-border p-3 sm:p-4 z-40 lg:hidden">
         <div className="flex gap-2 sm:gap-3">
           <a
             href="tel:+85221627306"
