@@ -18,6 +18,7 @@ export const dictionaries = {
 
     // Hero
     heroBadge: "NOW LEASING • Opening November 2026 • Mira Place, Tsim Sha Tsui",
+    newLocationTag: "New Location",
     heroTitleA: "Premium Office Space at",
     heroTitleB: "Mira Place, Tsim Sha Tsui",
     heroSubtitle:
@@ -342,6 +343,7 @@ export const dictionaries = {
     trustFortune: "與財富500強企業為鄰",
 
     heroBadge: "現正招租 • 2026年11月開幕 • 尖沙咀美麗華廣場",
+    newLocationTag: "全新據點",
     heroTitleA: "尊貴辦公空間 進駐",
     heroTitleB: "尖沙咀美麗華廣場",
     heroSubtitle:

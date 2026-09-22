@@ -275,6 +275,9 @@ export default function HomePage() {
           className="absolute inset-0 w-full h-full object-cover object-[center_80%]"
           loading="eager"
         />
+        <span className="absolute top-4 left-4 sm:top-6 sm:left-6 bg-secondary text-secondary-foreground text-xs sm:text-sm font-bold uppercase tracking-[0.2em] px-3 sm:px-4 py-1.5 rounded-sm shadow-md">
+          {t.newLocationTag}
+        </span>
       </section>
 
       {/* Hero Content */}
