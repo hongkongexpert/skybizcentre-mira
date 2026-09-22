@@ -267,34 +267,35 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* Hero Section - full bleed editorial */}
-      <section className="relative min-h-[82vh] flex items-center">
-        <div className="absolute inset-0">
-          <img
-            src="/images/mira/hero.jpg"
-            alt={t.heroImageAlt}
-            className="w-full h-full object-cover"
-            loading="eager"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/45 to-black/15" />
-        </div>
-        <div className="relative container mx-auto px-4 max-w-8xl py-20 sm:py-24">
-          <div className="max-w-2xl space-y-5 sm:space-y-7">
-            <p className="text-xs sm:text-sm font-semibold uppercase tracking-[0.3em] text-white/75">
+      {/* Hero Banner - half height image */}
+      <section className="relative h-[48vh] sm:h-[55vh]">
+        <img
+          src="/images/mira/hero.jpg"
+          alt={t.heroImageAlt}
+          className="absolute inset-0 w-full h-full object-cover"
+          loading="eager"
+        />
+      </section>
+
+      {/* Hero Content */}
+      <section className="py-12 sm:py-16 bg-background border-b border-border/40">
+        <div className="container mx-auto px-4 max-w-8xl">
+          <div className="max-w-3xl space-y-5 sm:space-y-6">
+            <p className="text-xs sm:text-sm font-semibold uppercase tracking-[0.3em] text-secondary">
               {t.heroBadge}
             </p>
-            <h1 className="font-playfair text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-white leading-[1.05] tracking-tight">
+            <h1 className="font-playfair text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground leading-[1.05] tracking-tight">
               {t.heroTitleA} <span className="text-secondary">{t.heroTitleB}</span>
             </h1>
-            <p className="text-base sm:text-lg lg:text-xl text-white/85 leading-[1.7] font-medium">
+            <p className="text-base sm:text-lg lg:text-xl text-muted-foreground leading-[1.7] font-medium">
               {t.heroSubtitle}
             </p>
 
             <div className="border-l-2 border-secondary pl-4 sm:pl-5">
-              <p className="text-white font-semibold text-sm sm:text-base uppercase tracking-[0.15em]">
+              <p className="text-foreground font-semibold text-sm sm:text-base uppercase tracking-[0.15em]">
                 {t.offerTitle}
               </p>
-              <p className="text-white/80 text-sm sm:text-base mt-1">{t.offerBody(deadline)}</p>
+              <p className="text-muted-foreground text-sm sm:text-base mt-1">{t.offerBody(deadline)}</p>
             </div>
 
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-2">
@@ -302,7 +303,7 @@ export default function HomePage() {
                 trigger={
                   <Button
                     size="lg"
-                    className="bg-white text-foreground hover:bg-white/90 text-base sm:text-lg px-8 h-12 sm:h-14 font-bold tracking-wide"
+                    className="bg-primary hover:bg-primary/90 text-base sm:text-lg px-8 h-12 sm:h-14 font-bold tracking-wide"
                   >
                     {t.heroCtaPrimary}
                   </Button>
@@ -319,18 +320,18 @@ export default function HomePage() {
                 <Button
                   variant="outline"
                   size="lg"
-                  className="text-base sm:text-lg px-8 h-12 sm:h-14 bg-transparent font-semibold border-2 border-white text-white hover:bg-white hover:text-foreground transition-all duration-200 w-full"
+                  className="text-base sm:text-lg px-8 h-12 sm:h-14 bg-transparent font-semibold border-2 border-primary text-primary hover:bg-primary hover:text-white transition-all duration-200 w-full"
                 >
                   {t.heroCtaCall}
                 </Button>
               </a>
             </div>
 
-            <div className="flex flex-wrap items-center gap-x-5 gap-y-2 pt-1 text-white/75 text-sm font-medium">
+            <div className="flex flex-wrap items-center gap-x-5 gap-y-2 pt-1 text-muted-foreground text-sm font-medium">
               <span>{t.heroPoint1}</span>
-              <span className="text-white/40">·</span>
+              <span className="text-border">·</span>
               <span>{t.heroPoint2}</span>
-              <span className="text-white/40">·</span>
+              <span className="text-border">·</span>
               <span>{t.heroPoint3}</span>
             </div>
           </div>
