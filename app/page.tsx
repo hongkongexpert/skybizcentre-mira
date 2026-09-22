@@ -588,7 +588,7 @@ export default function HomePage() {
               <div className="text-center">
                 <h3 className="font-playfair text-xl sm:text-2xl font-bold mb-3 tracking-tight">{t.priceOfficeTitle}</h3>
                 <div className="mb-4 sm:mb-5">
-                  <span className="text-3xl sm:text-4xl font-bold text-primary tracking-tight">HK$6,000</span>
+                  <span className="text-3xl sm:text-4xl font-bold text-primary tracking-tight">{t.priceOfficeAmount}</span>
                   <span className="text-muted-foreground text-base sm:text-lg font-medium">{t.pricePerMonth}</span>
                 </div>
                 <ul className="space-y-2 text-muted-foreground mb-5 sm:mb-6">
@@ -625,7 +625,7 @@ export default function HomePage() {
               <div className="text-center">
                 <h3 className="font-playfair text-xl sm:text-2xl font-bold mb-3 sm:mb-4">{t.priceMeetingTitle}</h3>
                 <div className="mb-4 sm:mb-6">
-                  <span className="text-3xl sm:text-4xl font-bold text-primary">HK$200</span>
+                  <span className="text-3xl sm:text-4xl font-bold text-primary">{t.priceMeetingAmount}</span>
                   <span className="text-muted-foreground text-base sm:text-lg">{t.pricePerHour}</span>
                 </div>
                 <ul className="space-y-2 sm:space-y-3 text-muted-foreground mb-6 sm:mb-8">
@@ -652,8 +652,8 @@ export default function HomePage() {
               <div className="text-center">
                 <h3 className="font-playfair text-xl sm:text-2xl font-bold mb-3 sm:mb-4">{t.priceOffice2Title}</h3>
                 <div className="mb-4 sm:mb-6">
-                  <span className="text-3xl sm:text-4xl font-bold text-primary">HK$8,000</span>
-                  <span className="text-muted-foreground text-base sm:text-lg">{t.pricePerMonth}</span>
+                  <span className="text-3xl sm:text-4xl font-bold text-primary">{t.priceTeamAmount}</span>
+                  <span className="text-muted-foreground text-base sm:text-lg">{t.pricePerWorkstation}</span>
                 </div>
                 <ul className="space-y-2 sm:space-y-3 text-muted-foreground mb-6 sm:mb-8">
                   <li className="flex items-center gap-3 text-sm sm:text-base">
@@ -806,6 +806,10 @@ export default function HomePage() {
               <p className="text-muted-foreground">{t.why3Desc}</p>
             </Card>
           </div>
+
+          <p className="text-center text-muted-foreground font-medium text-sm sm:text-base mt-8 sm:mt-10 max-w-3xl mx-auto leading-relaxed">
+            {t.centresInfo}
+          </p>
         </div>
       </section>
 
@@ -979,7 +983,9 @@ export default function HomePage() {
               <Card className="text-center p-4 sm:p-6">
                 <Mail className="h-6 w-6 sm:h-8 sm:w-8 text-primary mx-auto mb-2 sm:mb-3" />
                 <h3 className="font-semibold mb-1 sm:mb-2 text-sm sm:text-base">{t.contactEmail}</h3>
-                <p className="text-muted-foreground text-sm sm:text-base">info@skybizcentre.com</p>
+                <a href="mailto:sales@skybizcentre.com" className="text-muted-foreground text-sm sm:text-base hover:text-primary transition-colors">
+                  sales@skybizcentre.com
+                </a>
               </Card>
 
               <Card className="text-center p-4 sm:p-6 sm:col-span-2 lg:col-span-1">
