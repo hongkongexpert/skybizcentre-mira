@@ -252,16 +252,16 @@ export default function HomePage() {
         </div>
       </header>
 
-      <div className="bg-muted/50 py-3 border-b border-border/40">
+      <div className="bg-foreground py-3">
         <div className="container mx-auto px-4 max-w-8xl">
-          <div className="flex items-center justify-center gap-4 sm:gap-6 text-sm text-foreground/70">
+          <div className="flex items-center justify-center gap-4 sm:gap-6 text-sm text-background/85">
             <div className="flex items-center gap-2">
-              <Star className="h-4 w-4 text-yellow-500 fill-current" />
+              <Star className="h-4 w-4 text-secondary fill-current" />
               <span className="font-semibold">{t.trustClients}</span>
             </div>
-            <span className="text-border">•</span>
+            <span className="text-background/30">•</span>
             <span className="font-semibold">{t.trustScmp}</span>
-            <span className="text-border hidden sm:inline">•</span>
+            <span className="text-background/30 hidden sm:inline">•</span>
             <span className="font-semibold hidden sm:inline">{t.trustFortune}</span>
           </div>
         </div>
