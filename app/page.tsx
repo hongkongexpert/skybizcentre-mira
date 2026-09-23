@@ -268,7 +268,7 @@ export default function HomePage() {
       </div>
 
       {/* Hero Banner - half height image */}
-      <section className="relative h-[56vh] sm:h-[68vh]">
+      <section className="relative h-[62vw] sm:h-[68vh]">
         <img
           src="/images/mira/banner.jpg"
           alt={t.heroImageAlt}
@@ -622,7 +622,7 @@ export default function HomePage() {
             <p className="text-base sm:text-lg text-muted-foreground font-medium">{t.pricingSubtitle}</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 max-w-7xl mx-auto">
             <Card className="p-5 sm:p-6 hover:shadow-xl transition-all duration-300 border border-border/70 shadow-none">
               <div className="text-center">
                 <h3 className="font-playfair text-xl sm:text-2xl font-bold mb-3 tracking-tight">{t.priceOfficeTitle}</h3>
@@ -715,6 +715,40 @@ export default function HomePage() {
                       className="w-full border-2 border-primary text-primary hover:bg-primary hover:text-white bg-white font-semibold h-11 sm:h-12 text-sm sm:text-base"
                     >
                       {t.bookTour}
+                    </Button>
+                  }
+                />
+              </div>
+            </Card>
+
+            <Card className="p-6 sm:p-8 hover:shadow-xl transition-all duration-300 border border-border/70 shadow-none">
+              <div className="text-center">
+                <h3 className="font-playfair text-xl sm:text-2xl font-bold mb-3 sm:mb-4">{t.priceVirtualTitle}</h3>
+                <div className="mb-4 sm:mb-6">
+                  <span className="text-3xl sm:text-4xl font-bold text-primary">{t.priceVirtualAmount}</span>
+                  <span className="text-muted-foreground text-base sm:text-lg">{t.pricePerMonth}</span>
+                </div>
+                <ul className="space-y-2 sm:space-y-3 text-muted-foreground mb-6 sm:mb-8">
+                  <li className="flex items-center gap-3 text-sm sm:text-base">
+                    <CheckCircle className="h-4 sm:h-5 w-4 sm:w-5 text-emerald-600" />
+                    {t.priceVirtualA}
+                  </li>
+                  <li className="flex items-center gap-3 text-sm sm:text-base">
+                    <CheckCircle className="h-4 sm:h-5 w-4 sm:w-5 text-emerald-600" />
+                    {t.priceVirtualB}
+                  </li>
+                  <li className="flex items-center gap-3 text-sm sm:text-base">
+                    <CheckCircle className="h-4 sm:h-5 w-4 sm:w-5 text-emerald-600" />
+                    {t.priceVirtualC}
+                  </li>
+                </ul>
+                <BookingForm
+                  trigger={
+                    <Button
+                      variant="outline"
+                      className="w-full border-2 border-primary text-primary hover:bg-primary hover:text-white bg-white font-semibold h-11 sm:h-12 text-sm sm:text-base"
+                    >
+                      {t.bookNow}
                     </Button>
                   }
                 />
