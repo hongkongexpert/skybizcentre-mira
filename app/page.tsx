@@ -268,11 +268,11 @@ export default function HomePage() {
       </div>
 
       {/* Hero Banner - half height image */}
-      <section className="relative h-[62vw] sm:h-[68vh]">
+      <section className="relative sm:h-[68vh]">
         <img
           src="/images/mira/banner.jpg"
           alt={t.heroImageAlt}
-          className="absolute inset-0 w-full h-full object-cover object-[center_80%]"
+          className="w-full h-auto sm:absolute sm:inset-0 sm:h-full sm:object-cover sm:object-[center_80%]"
           loading="eager"
         />
         <span className="absolute top-4 left-4 sm:top-6 sm:left-6 bg-secondary text-secondary-foreground text-xs sm:text-sm font-bold uppercase tracking-[0.2em] px-3 sm:px-4 py-1.5 rounded-sm shadow-md">
