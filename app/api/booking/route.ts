@@ -70,7 +70,7 @@ Sky Business Centre Team
     console.log("[v0] Sending emails...")
 
     const salesEmailResponse = await resend.emails.send({
-      from: "bookings@skybizcentre.com",
+      from: "bookings@miraplace.skybizcentre.com",
       to: ["sales@skybizcentre.com", "shahseo5@gmail.com"],
       subject: `New Booking Enquiry - Mira Place - ${service} - ${name}`,
       text: salesEmailContent,
@@ -78,7 +78,7 @@ Sky Business Centre Team
     })
 
     const customerEmailResponse = await resend.emails.send({
-      from: "bookings@skybizcentre.com",
+      from: "bookings@miraplace.skybizcentre.com",
       to: [email],
       subject: `Booking Confirmation - Sky Business Centre Mira Place - ${service}`,
       text: customerEmailContent,
