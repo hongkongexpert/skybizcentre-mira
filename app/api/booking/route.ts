@@ -88,6 +88,11 @@ Sky Business Centre Team
     console.log("[v0] Sales email sent:", salesEmailResponse)
     console.log("[v0] Customer email sent:", customerEmailResponse)
 
+    if (salesEmailResponse.error || customerEmailResponse.error) {
+      console.error("[v0] Resend rejected the send:", salesEmailResponse.error || customerEmailResponse.error)
+      return NextResponse.json({ error: "Failed to send booking enquiry" }, { status: 500 })
+    }
+
     return NextResponse.json({
       success: true,
       message: "Booking confirmed! Check your email for confirmation details.",
