@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -25,6 +25,15 @@ interface BookingFormProps {
   trigger: React.ReactNode
 }
 
+const RECAPTCHA_SITE_KEY = "6LfLChguAAAAADgG8TJ9jaDJQ3kY0k5KRXh3M2Hk"
+
+declare global {
+  interface Window {
+    grecaptcha?: any
+    onRecaptchaLoad?: () => void
+  }
+}
+
 export function BookingForm({ trigger }: BookingFormProps) {
   const { lang, t } = useLanguage()
   const f = t.form
@@ -34,6 +43,33 @@ export function BookingForm({ trigger }: BookingFormProps) {
   const [currentMonth, setCurrentMonth] = useState(new Date())
   const [isSuccess, setIsSuccess] = useState(false)
   const { toast } = useToast()
+  const captchaRef = useRef<HTMLDivElement>(null)
+  const captchaWidgetId = useRef<number | null>(null)
+
+  useEffect(() => {
+    if (step !== 3 || !isOpen) return
+
+    const renderWidget = () => {
+      if (captchaRef.current && window.grecaptcha && captchaWidgetId.current === null) {
+        captchaWidgetId.current = window.grecaptcha.render(captchaRef.current, {
+          sitekey: RECAPTCHA_SITE_KEY,
+        })
+      }
+    }
+
+    if (window.grecaptcha) {
+      renderWidget()
+    } else {
+      window.onRecaptchaLoad = renderWidget
+      if (!document.querySelector('script[src*="recaptcha/api.js"]')) {
+        const script = document.createElement("script")
+        script.src = "https://www.google.com/recaptcha/api.js?onload=onRecaptchaLoad&render=explicit"
+        script.async = true
+        script.defer = true
+        document.body.appendChild(script)
+      }
+    }
+  }, [step, isOpen])
   const [formData, setFormData] = useState({
     serviceType: "",
     groupSize: "",
@@ -178,6 +214,15 @@ export function BookingForm({ trigger }: BookingFormProps) {
       return
     }
 
+    const captchaToken = window.grecaptcha?.getResponse(captchaWidgetId.current ?? undefined)
+    if (!captchaToken) {
+      toast({
+        title: f.captchaRequired,
+        variant: "destructive",
+      })
+      return
+    }
+
     setIsSubmitting(true)
 
     try {
@@ -196,6 +241,7 @@ export function BookingForm({ trigger }: BookingFormProps) {
           phone: formData.phone,
           company: formData.company,
           requirements: formData.requirements,
+          captchaToken,
         }),
       })
 
@@ -205,6 +251,9 @@ export function BookingForm({ trigger }: BookingFormProps) {
         setIsSuccess(true)
         setStep(4)
       } else {
+        if (captchaWidgetId.current !== null && window.grecaptcha) {
+          window.grecaptcha.reset(captchaWidgetId.current)
+        }
         throw new Error(responseData.error || "Failed to send booking request")
       }
     } catch (error) {
@@ -368,7 +417,13 @@ export function BookingForm({ trigger }: BookingFormProps) {
   }
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog
+      open={isOpen}
+      onOpenChange={(open) => {
+        setIsOpen(open)
+        if (!open) captchaWidgetId.current = null
+      }}
+    >
       <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent className="sm:max-w-md max-w-[95vw] max-h-[85vh] overflow-y-auto p-4">
         <DialogHeader className="space-y-2 pb-3 border-b border-border/20">
@@ -670,6 +725,8 @@ export function BookingForm({ trigger }: BookingFormProps) {
                   className="mt-1 min-h-[60px] border-2 hover:border-primary/50 focus:border-primary text-sm"
                 />
               </div>
+
+              <div ref={captchaRef} className="flex justify-center" />
 
               <div className="flex gap-3 pt-1">
                 <Button

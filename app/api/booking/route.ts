@@ -10,12 +10,27 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     console.log("[v0] Request body:", body)
 
-    const { service, groupSize, date, time, name, email, phone, company, requirements } = body
+    const { service, groupSize, date, time, name, email, phone, company, requirements, captchaToken } = body
 
     // Validate required fields
     if (!service || !date || !time || !name || !email || !phone) {
       console.log("[v0] Missing required fields")
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 })
+    }
+
+    if (!captchaToken) {
+      return NextResponse.json({ error: "Captcha required" }, { status: 400 })
+    }
+
+    const verifyRes = await fetch("https://www.google.com/recaptcha/api/siteverify", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: `secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${captchaToken}`,
+    })
+    const verifyData = await verifyRes.json()
+    if (!verifyData.success) {
+      console.log("[v0] Captcha verification failed:", verifyData)
+      return NextResponse.json({ error: "Captcha verification failed" }, { status: 400 })
     }
 
     const salesEmailContent = `
@@ -71,7 +86,7 @@ Sky Business Centre Team
 
     const salesEmailResponse = await resend.emails.send({
       from: "bookings@miraplace.skybizcentre.com",
-      to: ["sales@skybizcentre.com", "shahseo5@gmail.com"],
+      to: ["sales@skybizcentre.com"],
       subject: `New Booking Enquiry - Mira Place - ${service} - ${name}`,
       text: salesEmailContent,
       replyTo: email,

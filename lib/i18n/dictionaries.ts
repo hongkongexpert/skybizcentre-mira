@@ -316,6 +316,7 @@ export const dictionaries = {
       toastWeekend: "Weekends Not Available",
       toastMissing: "Missing Information",
       toastError: "Error",
+      captchaRequired: "Please complete the captcha verification",
       months: [
         "January",
         "February",
@@ -630,6 +631,7 @@ export const dictionaries = {
       toastWeekend: "星期六、日不設參觀",
       toastMissing: "資料不完整",
       toastError: "發生錯誤",
+      captchaRequired: "請完成驗證碼核實",
       months: [
         "1月",
         "2月",
