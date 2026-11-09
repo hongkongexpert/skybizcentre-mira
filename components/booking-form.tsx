@@ -25,7 +25,7 @@ interface BookingFormProps {
   trigger: React.ReactNode
 }
 
-const RECAPTCHA_SITE_KEY = "6LfLChguAAAAADgG8TJ9jaDJQ3kY0k5KRXh3M2Hk"
+const RECAPTCHA_SITE_KEY = "6LeHGBguAAAAADskvo988Ivl758JEmlksHnFKDW9"
 
 declare global {
   interface Window {
